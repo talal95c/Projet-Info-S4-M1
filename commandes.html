@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Commandes | L'Île au Fruit</title>
+    <title>Commandes | L'Île au Fruit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="commandes.css">
 </head>
 
@@ -19,158 +20,111 @@
                 </a>
             </div>
             <ul>
-                <li><a href="presentation.html">Menu</a></li>
                 <li><a href="commandes.html" class="active">Commandes</a></li>
-                <li><a href="profil.html">Profil</a></li>
-                <li><a href="avis.html">Avis</a></li>
+                <li><a href="presentation.html">Menu</a></li>
+                <li><a href="admin.html">Admin</a></li>
             </ul>
-            <a href="connexion.html" class="btn-connexion">Déconnexion</a>
+            <a href="connexion.html" class="btn-deconnexion">Déconnexion</a>
         </nav>
     </header>
 
     <main>
         <section class="page-header">
-            <h1>📦 Gestion des Commandes</h1>
-            <h3>Tableau de bord restaurateur</h3>
+            <h1>Commandes</h1>
+            <h3>Gestion des commandes en cours</h3>
         </section>
 
-        <!-- SECTION 1 : COMMANDES À PRÉPARER -->
-        <section class="section-commandes">
-            <h2>🔔 Commandes en attente (à préparer)</h2>
-            <p class="nb-commandes">3 commande(s) en attente</p>
+        <div class="commandes-container">
 
-            <!-- Commande 1 -->
-            <div class="commande attente">
-                <div class="commande-header">
-                    <div>
-                        <strong>Commande #2618</strong>
-                        <span class="date">14 février 2026 - 11:45</span>
+            <section class="commandes-colonne">
+                <div class="colonne-titre a-preparer">
+                    <h2>🍽️ À préparer <span class="badge-count">3</span></h2>
+                </div>
+
+                <div class="commande-card">
+                    <div class="commande-header">
+                        <span class="commande-id">#1040</span>
+                        <span class="commande-heure">12:15</span>
                     </div>
-                    <span class="statut statut-attente">⏳ En attente</span>
+                    <div class="commande-client">👤 Marie Dupont</div>
+                    <ul class="commande-items">
+                        <li>× 1 Smoothie Bowl Mangue-Passion</li>
+                        <li>× 1 Green Power Juice</li>
+                    </ul>
+                    <div class="commande-adresse">📍 15 rue des Fleurs, 75001 Paris</div>
+                    <button class="btn-statut btn-livraison">🚴 Passer en livraison</button>
                 </div>
-                <div class="client-info">
-                    <p><strong>Client :</strong> Marie Dupont</p>
-                    <p><strong>Téléphone :</strong> 06 12 34 56 78</p>
-                    <p><strong>Adresse :</strong> 15 rue des Fleurs, 75001 Paris</p>
-                    <p><strong>Instructions :</strong> Sonner 2 fois, code A1234</p>
-                </div>
-                <div class="commande-produits">
-                    <p>🥗 Acai Bowl Myrtilles x1 - 12,50 €</p>
-                    <p>🍊 Jus Orange Sanguine x1 - 5,90 €</p>
-                </div>
-                <div class="commande-footer">
-                    <strong class="prix">Total : 18,40 €</strong>
-                    <button class="btn-action btn-preparer">Prendre en charge</button>
-                </div>
-            </div>
 
-            <!-- Commande 2 -->
-            <div class="commande attente">
-                <div class="commande-header">
-                    <div>
-                        <strong>Commande #2619</strong>
-                        <span class="date">14 février 2026 - 11:52</span>
+                <div class="commande-card">
+                    <div class="commande-header">
+                        <span class="commande-id">#1041</span>
+                        <span class="commande-heure">12:28</span>
                     </div>
-                    <span class="statut statut-attente">⏳ En attente</span>
+                    <div class="commande-client">👤 Douglas Costa</div>
+                    <ul class="commande-items">
+                        <li>× 2 Poké Bowl Ananas-Saumon</li>
+                        <li>× 1 Latte Coco-Curcuma</li>
+                        <li>× 1 Tarte Fraise-Basilic</li>
+                    </ul>
+                    <div class="commande-adresse">📍 8 avenue Victor Hugo, 75016 Paris</div>
+                    <button class="btn-statut btn-livraison">🚴 Passer en livraison</button>
                 </div>
-                <div class="client-info">
-                    <p><strong>Client :</strong> Jean Martin</p>
-                    <p><strong>Téléphone :</strong> 06 98 76 54 32</p>
-                    <p><strong>Adresse :</strong> 23 avenue Victor Hugo, 75016 Paris</p>
-                </div>
-                <div class="commande-produits">
-                    <p>🥗 Poke Bowl Saumon x1 - 14,90 €</p>
-                    <p>🥤 Green Power Juice x1 - 6,50 €</p>
-                    <p>🍰 Energy Balls Coco x1 - 3,90 €</p>
-                </div>
-                <div class="commande-footer">
-                    <strong class="prix">Total : 25,30 €</strong>
-                    <button class="btn-action btn-preparer">Prendre en charge</button>
-                </div>
-            </div>
 
-            <!-- Commande 3 -->
-            <div class="commande attente">
-                <div class="commande-header">
-                    <div>
-                        <strong>Commande #2620</strong>
-                        <span class="date">14 février 2026 - 12:05</span>
+                <div class="commande-card">
+                    <div class="commande-header">
+                        <span class="commande-id">#1042</span>
+                        <span class="commande-heure">12:35</span>
                     </div>
-                    <span class="statut statut-attente">⏳ En attente</span>
+                    <div class="commande-client">👤 Neymar Jr</div>
+                    <ul class="commande-items">
+                        <li>× 1 Acai Bowl Myrtilles</li>
+                        <li>× 2 Jus Orange Sanguine</li>
+                    </ul>
+                    <div class="commande-adresse">📍 3 rue de la Paix, 75002 Paris</div>
+                    <button class="btn-statut btn-livraison">🚴 Passer en livraison</button>
                 </div>
-                <div class="client-info">
-                    <p><strong>Client :</strong> Sophie Dubois</p>
-                    <p><strong>Téléphone :</strong> 06 45 67 89 01</p>
-                    <p><strong>Adresse :</strong> 8 rue de la Paix, 75002 Paris</p>
-                    <p><strong>Instructions :</strong> Interphone au nom de DUBOIS</p>
-                </div>
-                <div class="commande-produits">
-                    <p>🥗 Buddha Bowl Quinoa x2 - 27,80 €</p>
-                    <p>🥤 Detox Green Smoothie x2 - 13,00 €</p>
-                </div>
-                <div class="commande-footer">
-                    <strong class="prix">Total : 40,80 €</strong>
-                    <button class="btn-action btn-preparer">Prendre en charge</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- SECTION 2 : COMMANDES EN LIVRAISON -->
-        <section class="section-commandes">
-            <h2>🚚 Commandes en cours de livraison</h2>
-            <p class="nb-commandes">2 commande(s) en livraison</p>
+            <section class="commandes-colonne">
+                <div class="colonne-titre en-livraison">
+                    <h2>🚴 En livraison <span class="badge-count">2</span></h2>
+                </div>
 
-            <!-- Commande en livraison 1 -->
-            <div class="commande en-livraison">
-                <div class="commande-header">
-                    <div>
-                        <strong>Commande #2615</strong>
-                        <span class="date">14 février 2026 - 10:30</span>
+                <div class="commande-card en-cours">
+                    <div class="commande-header">
+                        <span class="commande-id">#1038</span>
+                        <span class="commande-heure">11:50</span>
                     </div>
-                    <span class="statut statut-livraison">🚚 En livraison</span>
+                    <div class="commande-client">👤 Roberto Hongo</div>
+                    <ul class="commande-items">
+                        <li>× 1 Salade Pastèque & Feta</li>
+                        <li>× 1 Toast Avocat-Œuf</li>
+                    </ul>
+                    <div class="commande-adresse">📍 22 boulevard Haussmann, 75009 Paris</div>
+                    <div class="statut-label">🚴 En cours de livraison...</div>
                 </div>
-                <div class="client-info">
-                    <p><strong>Client :</strong> Lucas Petit</p>
-                    <p><strong>Téléphone :</strong> 06 11 22 33 44</p>
-                    <p><strong>Adresse :</strong> 42 boulevard Haussmann, 75009 Paris</p>
-                </div>
-                <div class="commande-produits">
-                    <p>🥗 Smoothie Bowl Mangue-Passion x1 - 11,90 €</p>
-                    <p>🥤 Jus Ananas-Menthe x1 - 5,50 €</p>
-                </div>
-                <div class="commande-footer">
-                    <strong class="prix">Total : 17,40 €</strong>
-                    <button class="btn-action btn-livree">Marquer comme livrée</button>
-                </div>
-            </div>
 
-            <!-- Commande en livraison 2 -->
-            <div class="commande en-livraison">
-                <div class="commande-header">
-                    <div>
-                        <strong>Commande #2616</strong>
-                        <span class="date">14 février 2026 - 10:45</span>
+                <div class="commande-card en-cours">
+                    <div class="commande-header">
+                        <span class="commande-id">#1039</span>
+                        <span class="commande-heure">12:05</span>
                     </div>
-                    <span class="statut statut-livraison">🚚 En livraison</span>
+                    <div class="commande-client">👤 Mark Evans</div>
+                    <ul class="commande-items">
+                        <li>× 1 Green Power Juice</li>
+                        <li>× 1 Latte Coco-Curcuma</li>
+                    </ul>
+                    <div class="commande-adresse">📍 5 impasse des Lilas, 75011 Paris</div>
+                    <div class="statut-label">🚴 En cours de livraison...</div>
                 </div>
-                <div class="client-info">
-                    <p><strong>Client :</strong> Emma Leroy</p>
-                    <p><strong>Téléphone :</strong> 06 55 66 77 88</p>
-                    <p><strong>Adresse :</strong> 10 rue de Rivoli, 75001 Paris</p>
-                    <p><strong>Instructions :</strong> Laisser au gardien si absent</p>
-                </div>
-                <div class="commande-produits">
-                    <p>🥗 Acai Bowl Framboise x1 - 12,50 €</p>
-                </div>
-                <div class="commande-footer">
-                    <strong class="prix">Total : 12,50 €</strong>
-                    <button class="btn-action btn-livree">Marquer comme livrée</button>
-                </div>
-            </div>
-        </section>
+            </section>
+
+        </div>
     </main>
 
-    
+    <footer>
+        <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
+        <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
+    </footer>
 </body>
 </html>
-
