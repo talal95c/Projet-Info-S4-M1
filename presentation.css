@@ -1,86 +1,3 @@
-
-/* Suppression des marges par défaut */
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url("image/bg2test.png");
-    background-size: cover;
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-}
-
-/* Barre de navigation */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 20px; 
-    background: rgba(255, 255, 255, 0.349); 
-}
-
-
-nav img {
-    width: 100px; 
-    height: auto;
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 40px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #1a1a1a;
-    font-weight: 500;
-    transition: 0.3s;
-}
-nav img:hover{
-    transform: scale(1.05);
-    transition: 0.3s;
-}
-nav ul li a:hover {
-    color: #015a17;
-}
-
-nav .btn-connexion {
-    font-style:normal;
-    background-color: #00704b;
-    border-radius: 50px;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-nav .btn-connexion:hover {
-    transform: scale(1.05);
-    background-color: #005a3c;
-}
-
-/* Section page-header */
-.page-header {
-    text-align: center;
-    padding: 60px 20px 40px;
-}
-
-.page-header h1 {
-    font-size: 60px;
-    color: #015a17;
-    margin: 0 0 10px 0;
-}
-
-.page-header h3 {
-    font-size: 22px;
-    color: #333;
-    font-weight: 400;
-    margin: 0;
-}
-
-/* Section recherche-filtre */
 .recherche-filtre {
     background: rgba(255, 255, 255, 0.5);
     padding: 30px 20px;
@@ -90,11 +7,6 @@ nav .btn-connexion:hover {
     backdrop-filter: blur(10px);
 }
 
-.recherche-container {
-    max-width: 100%;
-}
-
-/* Barre de recherche */
 .barre-de-recherche {
     margin-bottom: 25px;
 }
@@ -116,7 +28,6 @@ nav .btn-connexion:hover {
     box-shadow: 0 0 0 3px rgba(1, 90, 23, 0.1);
 }
 
-/* Filtres */
 .filtre {
     display: flex;
     gap: 20px;
@@ -153,14 +64,12 @@ nav .btn-connexion:hover {
     border-color: #015a17;
 }
 
-/* Section products-section */
 .products-section {
     padding: 20px;
     max-width: 1400px;
     margin: 0 auto;
 }
 
-/* Grille des produits */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -168,7 +77,6 @@ nav .btn-connexion:hover {
     padding: 20px 0;
 }
 
-/* carte des produits */
 .product-card {
     background: white;
     border-radius: 30px;
@@ -183,7 +91,6 @@ nav .btn-connexion:hover {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Badge produit */
 .product-badge {
     position: absolute;
     top: 15px;
@@ -210,7 +117,6 @@ nav .btn-connexion:hover {
     color: white;
 }
 
-/* Image produit */
 .product-image {
     width: 100%;
     height: 220px;
@@ -232,7 +138,6 @@ nav .btn-connexion:hover {
     transform: scale(1.1);
 }
 
-/* Informations produit */
 .product-info {
     padding: 25px;
 }
@@ -252,7 +157,6 @@ nav .btn-connexion:hover {
     min-height: 60px;
 }
 
-/* Tags produit */
 .product-tags {
     display: flex;
     flex-wrap: wrap;
@@ -269,22 +173,10 @@ nav .btn-connexion:hover {
     font-weight: 500;
 }
 
-.tag.vegan {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
+.tag.vegan { background: #e8f5e9; color: #2e7d32; }
+.tag.vegetarian { background: #fff3e0; color: #e65100; }
+.tag.sans-gluten { background: #fff9c4; color: #f57f17; }
 
-.tag.vegetarian {
-    background: #fff3e0;
-    color: #e65100;
-}
-
-.tag.sans-gluten {
-    background: #fff9c4;
-    color: #f57f17;
-}
-
-/* Footer produit */
 .product-footer {
     display: flex;
     justify-content: space-between;
@@ -299,7 +191,6 @@ nav .btn-connexion:hover {
     color: #015a17;
 }
 
-/* Bouton ajouter */
 .btn-add {
     background-color: #ffd900;
     color: #4d3d00;
@@ -317,17 +208,3 @@ nav .btn-connexion:hover {
     transform: scale(1.08);
     box-shadow: 0 5px 15px rgba(255, 217, 0, 0.4);
 }
-
-/* Footer */
-footer {
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.5);
-    margin-top: 50px;
-}
-
-footer p {
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-}
-
