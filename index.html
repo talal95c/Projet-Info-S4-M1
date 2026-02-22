@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Île au Fruit | Restaurant Frais & Gourmand</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -34,7 +33,13 @@
             <h1>Bienvenue sur</h1>
             <img src="image/texte.png" alt="L'Île au Fruit" class="img-title">
             <p>Découvrez nos délicieuses créations à base de fruits frais, préparées avec passion chaque matin.</p>
-            <a href="presentation.html" class="btn-cta">
+
+            <div class="search-bar">
+                <input type="text" placeholder="🔍 Rechercher un plat, un fruit..." id="homeSearch">
+                <a href="presentation.html"><button class="btn-search">Rechercher</button></a>
+            </div>
+
+            <a href="presentation.html">
                 <button class="btn-cta">Voir le menu</button>
             </a>
         </section>
@@ -85,15 +90,12 @@
                     <p>Le réflexe détox indispensable pour purifier votre organisme.</p>
                 </div>
             </div>
-
         </section>
-
     </main>
 
     <footer>
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
-       
     </footer>
 
 </body>
