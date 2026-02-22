@@ -9,7 +9,7 @@
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background-image: url("bg2test.png");
+    background-image: url("image/bg2test.png");
     background-size: cover;
     background-position: center;
     display: flex;
