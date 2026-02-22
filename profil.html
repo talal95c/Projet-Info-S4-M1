@@ -4,33 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil | L'Île au Fruit</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="profil.css">
 </head>
 
 <body>
-    <!-- Navigation -->
     <header>
         <nav>
-            <div class="logo">
-                <a href="index.html">
-                    <img src="image/lgoo.png" alt="Logo">
-                </a>
-            </div>
+            <img src="image/lgoo.png" alt="Logo" class="logo">
             <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="menu.html">Menu</a></li>
+                <li><a href="presentation.html">Menu</a></li>
                 <li><a href="profil.html" class="active">Profil</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="avis.html">Avis</a></li>
             </ul>
-            <a href="connexion.html" class="btn-connexion">Déconnexion</a>
+            <a href="connexion.html" class="btn-deconnexion">Déconnexion</a>
         </nav>
     </header>
 
     <main>
-        <!-- En-tête du profil -->
         <section class="profil-header">
             <div class="avatar">MJ</div>
             <div>
@@ -40,167 +32,132 @@
             </div>
         </section>
 
-        <!-- Contenu en 2 colonnes -->
-        <div class="profil-content">
+        <div class="profil-grid">
 
-            <!-- COLONNE GAUCHE : INFOS + fidelité-->
-            <div class="profil-gauche">
-
-                <!-- 1. INFORMATIONS PERSONNELLES -->
-                <section class="card">
-                    <h2>📋 Mes informations</h2>
-
-                    <div class="info-ligne">
-                        <span class="info-label">Nom complet</span>
-                        <span class="info-value">Marie Dupont <button class="btn-edit">✏️</button></span>
+            <section class="card">
+                <h2>📋 Mes informations</h2>
+                
+                <div class="info-ligne">
+                    <span>📧 Email</span>
+                    <div>
+                        <span>marie.dupont@email.fr</span>
+                        <button class="btn-edit">✏️</button>
                     </div>
-                    <div class="info-ligne">
-                        <span class="info-label">Email</span>
-                        <span class="info-value">marie@email.fr <button class="btn-edit">✏️</button></span>
+                </div>
+                
+                <div class="info-ligne">
+                    <span>📱 Téléphone</span>
+                    <div>
+                        <span>06 12 34 56 78</span>
+                        <button class="btn-edit">✏️</button>
                     </div>
-                    <div class="info-ligne">
-                        <span class="info-label">Téléphone</span>
-                        <span class="info-value">06 12 34 56 78 <button class="btn-edit">✏️</button></span>
+                </div>
+                
+                <div class="info-ligne">
+                    <span>📍 Adresse</span>
+                    <div>
+                        <span>15 rue des Fleurs, 75001 Paris</span>
+                        <button class="btn-edit">✏️</button>
                     </div>
-                    <div class="info-ligne">
-                        <span class="info-label">Adresse</span>
-                        <span class="info-value">15 rue des Fleurs, 75001 Paris <button class="btn-edit">✏️</button></span>
+                </div>
+                
+                <div class="info-ligne">
+                    <span>🔔 Code interphone</span>
+                    <div>
+                        <span>A1234</span>
+                        <button class="btn-edit">✏️</button>
                     </div>
-                    <div class="info-ligne">
-                        <span class="info-label">Code interphone</span>
-                        <span class="info-value">A1234 <button class="btn-edit">✏️</button></span>
-                    </div>
-                </section>
+                </div>
 
-                <!-- 2. COMPTE FIDÉLITÉ -->
-                <section class="card">
-                    <h2>💎 Compte fidélité</h2>
-
-                    <div class="points-display">
-                        <div class="points-number">230</div>
-                        <div class="points-label">points</div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill"></div>
-                        </div>
-                        <p class="fidelite-info">Plus que <strong>70 points</strong> pour le niveau Platine !</p>
+                <div class="info-ligne">
+                    <span>🏢 Étage</span>
+                    <div>
+                        <span>3ème étage</span>
+                        <button class="btn-edit">✏️</button>
                     </div>
+                </div>
+            </section>
 
-                    <div class="avantages">
-                        <h3>Vos avantages Gold :</h3>
-                        <ul>
-                            <li>🎁 10% de réduction</li>
-                            <li>🚚 Livraison gratuite</li>
-                            <li>🎂 Cadeau d'anniversaire</li>
-                        </ul>
+            <section class="card">
+                <h2>💎 Compte fidélité</h2>
+                
+                <div class="cercle-container">
+                    <svg class="cercle-svg" viewBox="0 0 120 120">
+                        <circle class="cercle-fond" cx="60" cy="60" r="54"/>
+                        <circle class="cercle-progression" cx="60" cy="60" r="54"/>
+                    </svg>
+                    <div class="cercle-texte">
+                        <div class="points">230</div>
+                        <div class="label">points</div>
                     </div>
-                </section>
-            </div>
+                </div>
+                
+                <p class="fidelite-info">
+                    Plus que <strong>70 points</strong> pour le niveau Platine !
+                </p>
 
-            <!-- COLONNE DROITE : HISTORIQUE DES COMMANDES -->
-            <div class="profil-droite">
-                <section class="card">
-                    <h2>📦 Mes commandes</h2>
-                    <p class="nb-commandes">4 commande(s)</p>
+                <div class="niveaux">
+                    <div class="niveau actif">🥉 Bronze</div>
+                    <div class="niveau actif">🥈 Argent</div>
+                    <div class="niveau actif">🥇 Gold</div>
+                    <div class="niveau">💎 Platine</div>
+                </div>
+            </section>
 
-                    <!-- Commande EN COURS -->
-                    <div class="commande en-cours">
-                        <div class="commande-header">
-                            <div>
-                                <strong>Commande #2612</strong>
-                                <span class="date">14 février 2026</span>
-                            </div>
-                            <span class="statut en-livraison">🚚 En livraison</span>
-                        </div>
-                        <div class="commande-produits">
-                            <p>🥗 Acai Bowl Myrtilles</p>
-                            <p>🍊 Jus Orange Sanguine</p>
-                        </div>
-                        <div class="tracking">
-                            <div class="step done">
-                                <div class="step-icon">✓</div>
-                                <span>Préparée</span>
-                            </div>
-                            <div class="step-line done"></div>
-                            <div class="step active">
-                                <div class="step-icon">🚚</div>
-                                <span>En route</span>
-                            </div>
-                            <div class="step-line"></div>
-                            <div class="step">
-                                <div class="step-icon">🏠</div>
-                                <span>Livrée</span>
-                            </div>
-                        </div>
-                        <p class="tracking-info">Arrive dans <strong>15 min</strong></p>
-                        <div class="commande-footer">
-                            <strong class="prix">15,40 €</strong>
-                            <button class="btn-action">Suivre</button>
-                        </div>
+            <section class="card card-full">
+                <h2>📦 Mes commandes</h2>
+
+                <div class="commande-item">
+                    <div class="commande-info">
+                        <span class="commande-date">15 février 2026</span>
+                        <span class="commande-detail">Smoothie Bowl Mangue-Passion, Green Power Juice</span>
                     </div>
-
-                    <!-- Commande 1 -->
-                    <div class="commande">
-                        <div class="commande-header">
-                            <div>
-                                <strong>Commande #2534</strong>
-                                <span class="date">12 février 2026</span>
-                            </div>
-                            <span class="statut livree">✓ Livrée</span>
-                        </div>
-                        <div class="commande-produits">
-                            <p>🥗 Smoothie Bowl Mangue-Passion</p>
-                            <p>🥤 Green Power Juice</p>
-                        </div>
-                        <div class="commande-footer">
-                            <strong class="prix">17,40 €</strong>
-                            <button class="btn-action">Recommander</button>
-                        </div>
+                    <div class="commande-right">
+                        <span class="commande-prix">15,40 €</span>
+                        <span class="commande-statut livree">✅ Livrée</span>
                     </div>
+                </div>
 
-                    <!-- Commande 2 -->
-                    <div class="commande">
-                        <div class="commande-header">
-                            <div>
-                                <strong>Commande #2401</strong>
-                                <span class="date">8 février 2026</span>
-                            </div>
-                            <span class="statut livree">✓ Livrée</span>
-                        </div>
-                        <div class="commande-produits">
-                            <p>🥗 Buddha Bowl Quinoa</p>
-                            <p>🥤 Detox Green Smoothie</p>
-                        </div>
-                        <div class="commande-footer">
-                            <strong class="prix">22,90 €</strong>
-                            <button class="btn-action">Recommander</button>
-                        </div>
+                <div class="commande-item">
+                    <div class="commande-info">
+                        <span class="commande-date">8 février 2026</span>
+                        <span class="commande-detail">Poké Bowl Ananas-Saumon, Latte Coco-Curcuma</span>
                     </div>
-
-                    <!-- Commande 3 -->
-                    <div class="commande">
-                        <div class="commande-header">
-                            <div>
-                                <strong>Commande #2289</strong>
-                                <span class="date">3 février 2026</span>
-                            </div>
-                            <span class="statut livree">✓ Livrée</span>
-                        </div>
-                        <div class="commande-produits">
-                            <p>🥗 Poke Bowl Saumon</p>
-                            <p>🥤 Jus Ananas-Menthe</p>
-                        </div>
-                        <div class="commande-footer">
-                            <strong class="prix">18,50 €</strong>
-                            <button class="btn-action">Recommander</button>
-                        </div>
+                    <div class="commande-right">
+                        <span class="commande-prix">17,80 €</span>
+                        <span class="commande-statut livree">✅ Livrée</span>
                     </div>
+                </div>
 
-                </section>
-            </div>
+                <div class="commande-item">
+                    <div class="commande-info">
+                        <span class="commande-date">1 février 2026</span>
+                        <span class="commande-detail">Acai Bowl Myrtilles, Jus Orange Sanguine, Tarte Fraise-Basilic</span>
+                    </div>
+                    <div class="commande-right">
+                        <span class="commande-prix">21,30 €</span>
+                        <span class="commande-statut livree">✅ Livrée</span>
+                    </div>
+                </div>
+
+                <div class="commande-item">
+                    <div class="commande-info">
+                        <span class="commande-date">22 janvier 2026</span>
+                        <span class="commande-detail">Salade Pastèque & Feta, Toast Avocat-Œuf</span>
+                    </div>
+                    <div class="commande-right">
+                        <span class="commande-prix">17,40 €</span>
+                        <span class="commande-statut livree">✅ Livrée</span>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
-    
-
+    <footer>
+        <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
+        <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
+    </footer>
 </body>
 </html>
