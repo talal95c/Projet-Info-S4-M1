@@ -1,0 +1,94 @@
+<?php
+// index.php — Page d'accueil dynamique
+require_once 'includes/session.php';
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Île au Fruit | Restaurant Frais &amp; Gourmand</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <header>
+        <?= nav_html('accueil') ?>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h1>Bienvenue sur</h1>
+            <img src="image/texte.png" alt="L'Île au Fruit" class="img-title">
+            <p>Découvrez nos délicieuses créations à base de fruits frais, préparées avec passion chaque matin.</p>
+
+            <div class="search-bar">
+                <input type="text" placeholder="🔍 Rechercher un plat, un fruit..." id="homeSearch">
+                <a href="presentation.php"><button class="btn-search">Rechercher</button></a>
+            </div>
+
+            <a href="presentation.php">
+                <button class="btn-cta">Voir le menu</button>
+            </a>
+        </section>
+
+        <section class="concept">
+            <h2>Notre concept</h2>
+            <p>Un lieu frais et dépaysant pour savourer la nature.</p>
+            
+            <div class="grille">
+                <div class="card c1">
+                    <img src="image/c1.png" alt="Icône Fruits">
+                    <h3>Produits ultra frais</h3>
+                    <p>Fruits découpés chaque jour et ingrédients sélectionnés avec soin.</p>
+                </div>
+
+                <div class="card c2">
+                    <img src="image/c2.png" alt="Icône Environnement">
+                    <h3>Recettes gourmandes</h3>
+                    <p>Des recettes originales pour un plaisir gourmand et sain.</p>  
+                </div>    
+
+                <div class="card c3">
+                    <img src="image/c3.png" alt="Icône Recette">
+                    <h3>Ambiance tropicale</h3>
+                    <p>Un décor chaleureux pour s'évader le temps d'un repas savoureux.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bottom">
+            <h2>Recette de saison</h2>
+            <p>Découvrez notre dessert de saison, une création fraîche et gourmande à base de fruits de saison.</p>
+            
+            <div class="grille">
+                <div class="card c4">
+                    <img src="image/image1.png" alt="Icône Recette de saison">
+                    <h3>Le Bol Exotique</h3>
+                    <p>Le plein d'énergie pour rayonner toute la journée.</p>
+                </div>
+                <div class="card c5">
+                    <img src="image/image2.png" alt="Icône Recette de saison">
+                    <h3>La Salade Fraîcheur</h3>
+                    <p>Une explosion de fraîcheur pour vos déjeuners d'été.</p>
+                </div>
+                <div class="card c5">
+                    <img src="image/image3.png" alt="Icône Recette de saison">
+                    <h3>Smoothie Vitalité au Kiwi</h3>
+                    <p>Le réflexe détox indispensable pour purifier votre organisme.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
+        <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
+    </footer>
+
+</body>
+</html>

@@ -1,43 +1,122 @@
 <?php
-// includes/session.php - Version très simple
+// includes/session.php — Gestion des sessions PHP
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // On démarre la session (obligatoire pour utiliser $_SESSION)
+    session_start();
 }
 
-// Fonction pour vérifier si quelqu'un est connecté
+// ─────────────────────────────────────────────────
+// FONCTIONS DE BASE
+// ─────────────────────────────────────────────────
+
+/**
+ * Vérifie si un utilisateur est connecté.
+ */
 function est_connecte() {
     return isset($_SESSION['user_id']);
 }
 
-// Fonction qui retourne le code HTML du menu en haut de la page
-function nav_html() {
-    // Si PAS connecté
+/**
+ * Retourne le rôle de l'utilisateur connecté (ou '' si déconnecté).
+ */
+function get_role() {
+    return $_SESSION['role'] ?? '';
+}
+
+/**
+ * Crée la session après une connexion réussie.
+ */
+function creer_session($utilisateur) {
+    $_SESSION['user_id']  = $utilisateur['id'];
+    $_SESSION['role']     = $utilisateur['role'];
+    $_SESSION['nom']      = $utilisateur['nom'];
+    $_SESSION['prenom']   = $utilisateur['prenom'];
+    $_SESSION['login']    = $utilisateur['login'];
+}
+
+/**
+ * Détruit la session (déconnexion).
+ */
+function detruire_session() {
+    $_SESSION = [];
+    session_destroy();
+}
+
+/**
+ * Vérifie que l'utilisateur est connecté et a le bon rôle.
+ * Si pas connecté → redirige vers connexion.php
+ * Si mauvais rôle → redirige vers index.php
+ *
+ * @param array $roles  Liste des rôles autorisés (vide = tous les rôles acceptés)
+ */
+function verifier_connexion($roles = []) {
     if (!est_connecte()) {
-        return '<nav>
-            <a href="index.php">Accueil</a>
-            <a href="presentation.php">Menu</a>
-            <a href="connexion.php">Connexion</a>
+        header('Location: connexion.php');
+        exit;
+    }
+    if (!empty($roles) && !in_array(get_role(), $roles)) {
+        header('Location: index.php');
+        exit;
+    }
+}
+
+// ─────────────────────────────────────────────────
+// GÉNÉRATION DE LA NAVIGATION
+// ─────────────────────────────────────────────────
+
+/**
+ * Génère le HTML du menu de navigation selon l'état de connexion et le rôle.
+ * 
+ * @param string $page_active  Slug de la page active (ex: 'accueil', 'menu', 'profil')
+ */
+function nav_html($page_active = '') {
+    $logo = '<div class="logo"><a href="index.php"><img src="image/lgoo.png" alt="L\'Île au Fruit"></a></div>';
+
+    // Utilisateur NON connecté
+    if (!est_connecte()) {
+        return '
+        <nav>
+            ' . $logo . '
+            <ul>
+                <li><a href="presentation.php"' . ($page_active === 'menu' ? ' class="active"' : '') . '>Menu</a></li>
+                <li><a href="avis.php"' . ($page_active === 'avis' ? ' class="active"' : '') . '>Avis</a></li>
+            </ul>
+            <a href="connexion.php" class="btn-connexion">Se connecter</a>
         </nav>';
     }
 
-    // Si connecté, on récupère son rôle
-    $role = $_SESSION['role'];
-    $menu = '<nav><a href="index.php">Accueil</a> ';
+    // Utilisateur connecté
+    $role   = get_role();
+    $prenom = htmlspecialchars($_SESSION['prenom'] ?? '');
+    $liens  = '';
 
     if ($role === 'client') {
-        $menu .= '<a href="presentation.php">Menu</a> <a href="profil.php">Mon Profil</a>';
-    } 
-    elseif ($role === 'admin') {
-        $menu .= '<a href="admin.php">Admin</a> <a href="commandes.php">Commandes</a>';
-    }
-    elseif ($role === 'restaurateur') {
-        $menu .= '<a href="commandes.php">Gestion Commandes</a>';
-    }
-    elseif ($role === 'livreur') {
-        $menu .= '<a href="livraison.php">Ma Livraison</a>';
+        $liens = '
+                <li><a href="presentation.php"' . ($page_active === 'menu' ? ' class="active"' : '') . '>Menu</a></li>
+                <li><a href="panier.php"' . ($page_active === 'panier' ? ' class="active"' : '') . '>🛒 Panier</a></li>
+                <li><a href="profil.php"' . ($page_active === 'profil' ? ' class="active"' : '') . '>Mon Profil</a></li>
+                <li><a href="avis.php"' . ($page_active === 'avis' ? ' class="active"' : '') . '>Avis</a></li>';
+    } elseif ($role === 'admin') {
+        $liens = '
+                <li><a href="admin.php"' . ($page_active === 'admin' ? ' class="active"' : '') . '>Admin</a></li>
+                <li><a href="commandes.php"' . ($page_active === 'commandes' ? ' class="active"' : '') . '>Commandes</a></li>';
+    } elseif ($role === 'restaurateur') {
+        $liens = '
+                <li><a href="commandes.php"' . ($page_active === 'commandes' ? ' class="active"' : '') . '>Gestion Commandes</a></li>';
+    } elseif ($role === 'livreur') {
+        $liens = '
+                <li><a href="livraison.php"' . ($page_active === 'livraison' ? ' class="active"' : '') . '>Ma Livraison</a></li>';
     }
 
-    $menu .= ' | <a href="deconnexion.php">Déconnexion</a></nav>';
-    return $menu;
+    return '
+        <nav>
+            ' . $logo . '
+            <ul>
+                ' . $liens . '
+            </ul>
+            <div class="nav-user">
+                <span>Bonjour, ' . $prenom . '</span>
+                <a href="deconnexion.php" class="btn-connexion">Déconnexion</a>
+            </div>
+        </nav>';
 }
