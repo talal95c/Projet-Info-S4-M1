@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1040,
+    "client_id": 1,
+    "livreur_id": null,
+    "articles": [
+      {"plat_id": 1, "quantite": 1},
+      {"plat_id": 3, "quantite": 1}
+    ],
+    "adresse_livraison": "15 rue des Fleurs, 75001 Paris",
+    "code_interphone": "A1234",
+    "etage": "3ème étage",
+    "telephone": "0612345678",
+    "commentaire": "",
+    "statut": "a_preparer",
+    "date": "2026-04-03T12:15:00",
+    "total": 15.40,
+    "paiement_effectue": true,
+    "avis": null
+  },
+  {
+    "id": 1041,
+    "client_id": 2,
+    "livreur_id": null,
+    "articles": [
+      {"plat_id": 4, "quantite": 2},
+      {"plat_id": 6, "quantite": 1},
+      {"plat_id": 5, "quantite": 1}
+    ],
+    "adresse_livraison": "8 avenue Victor Hugo, 75016 Paris",
+    "code_interphone": "B5678",
+    "etage": "2ème étage",
+    "telephone": "0711223344",
+    "commentaire": "Sonner à l'interphone",
+    "statut": "a_preparer",
+    "date": "2026-04-03T12:28:00",
+    "total": 36.20,
+    "paiement_effectue": true,
+    "avis": null
+  },
+  {
+    "id": 1042,
+    "client_id": 3,
+    "livreur_id": 9,
+    "articles": [
+      {"plat_id": 7, "quantite": 1},
+      {"plat_id": 8, "quantite": 2}
+    ],
+    "adresse_livraison": "3 rue de la Paix, 75002 Paris",
+    "code_interphone": "1234",
+    "etage": "RDC",
+    "telephone": "0798765432",
+    "commentaire": "",
+    "statut": "en_livraison",
+    "date": "2026-04-03T12:35:00",
+    "total": 20.90,
+    "paiement_effectue": true,
+    "avis": null
+  },
+  {
+    "id": 1038,
+    "client_id": 5,
+    "livreur_id": 9,
+    "articles": [
+      {"plat_id": 2, "quantite": 1},
+      {"plat_id": 9, "quantite": 1}
+    ],
+    "adresse_livraison": "22 boulevard Haussmann, 75009 Paris",
+    "code_interphone": "C9999",
+    "etage": "5ème étage",
+    "telephone": "0612345678",
+    "commentaire": "Pas d'ascenseur",
+    "statut": "livree",
+    "date": "2026-04-03T11:50:00",
+    "total": 17.40,
+    "paiement_effectue": true,
+    "avis": {
+      "note_livraison": 5,
+      "commentaire_livraison": "Très rapide !",
+      "note_produits": 4,
+      "commentaire_produits": "Délicieux, très frais",
+      "date": "2026-04-03T13:00:00"
+    }
+  }
+]

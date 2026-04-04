@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nom": "Menu Tropical",
+    "description": "Un bowl au choix + un jus ou smoothie — le combo idéal pour une pause énergisante",
+    "prix_total": 13.90,
+    "plats_ids": [1, 3],
+    "nb_personnes": 1,
+    "creneaux": "toute la journée",
+    "disponible": true
+  },
+  {
+    "id": 2,
+    "nom": "Menu Midi Équilibré",
+    "description": "Un plat gourmand + une boisson chaude + un dessert — le déjeuner complet",
+    "prix_total": 16.90,
+    "plats_ids": [2, 6, 5],
+    "nb_personnes": 1,
+    "creneaux": "12h-14h30",
+    "disponible": true
+  },
+  {
+    "id": 3,
+    "nom": "Menu Duo Partage",
+    "description": "2 bowls + 2 jus — parfait pour partager à deux",
+    "prix_total": 27.90,
+    "plats_ids": [7, 13, 8, 12],
+    "nb_personnes": 2,
+    "creneaux": "toute la journée",
+    "disponible": true
+  }
+]

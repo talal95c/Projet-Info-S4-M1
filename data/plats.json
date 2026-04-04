@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "nom": "Smoothie Bowl Mangue-Passion",
+    "description": "Bowl de smoothie à la mangue, fruit de la passion, granola croquant et noix de coco fraîche",
+    "prix": 8.90,
+    "categorie": "bowls",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image1.png",
+    "disponible": true
+  },
+  {
+    "id": 2,
+    "nom": "Salade Pastèque & Feta",
+    "description": "Pastèque fraîche, feta crémeuse, menthe, huile d'olive et graines de tournesol",
+    "prix": 9.50,
+    "categorie": "plats",
+    "tags": ["vegetarien"],
+    "image": "image/image2.png",
+    "disponible": true
+  },
+  {
+    "id": 3,
+    "nom": "Green Power Juice",
+    "description": "Jus détox au kiwi, épinards, concombre, citron vert et gingembre frais",
+    "prix": 6.50,
+    "categorie": "jus",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image3.png",
+    "disponible": true
+  },
+  {
+    "id": 4,
+    "nom": "Poké Bowl Ananas-Saumon",
+    "description": "Riz sushi, saumon frais, ananas caramélisé, avocat, edamame et sauce soja sucrée",
+    "prix": 12.90,
+    "categorie": "plats",
+    "tags": [],
+    "image": "image/image4.png",
+    "disponible": true
+  },
+  {
+    "id": 5,
+    "nom": "Tarte Fraise-Basilic",
+    "description": "Pâte sablée maison, crème pâtissière vanille, fraises fraîches et basilic",
+    "prix": 5.90,
+    "categorie": "desserts",
+    "tags": ["vegetarien"],
+    "image": "image/image5.png",
+    "disponible": true
+  },
+  {
+    "id": 6,
+    "nom": "Latte Coco-Curcuma",
+    "description": "Lait de coco, curcuma frais, miel et une touche de cannelle",
+    "prix": 4.90,
+    "categorie": "boissons",
+    "tags": ["vegan"],
+    "image": "image/image6.png",
+    "disponible": true
+  },
+  {
+    "id": 7,
+    "nom": "Acai Bowl Myrtilles",
+    "description": "Açai brésilien, myrtilles fraîches, banane, granola et beurre d'amande",
+    "prix": 9.90,
+    "categorie": "bowls",
+    "tags": ["vegan"],
+    "image": "image/image7.png",
+    "disponible": true
+  },
+  {
+    "id": 8,
+    "nom": "Jus Orange Sanguine",
+    "description": "100% orange sanguine pressée à froid, sans sucre ajouté",
+    "prix": 5.50,
+    "categorie": "jus",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image8.png",
+    "disponible": true
+  },
+  {
+    "id": 9,
+    "nom": "Toast Avocat-Œuf",
+    "description": "Pain complet toasté, avocat écrasé, œuf poché et graines de sésame",
+    "prix": 7.90,
+    "categorie": "plats",
+    "tags": ["vegetarien"],
+    "image": "image/image9.png",
+    "disponible": true
+  },
+  {
+    "id": 10,
+    "nom": "Banana Split Tropical",
+    "description": "Banane fraîche, glace coco, ananas, sirop passion et noix de cajou",
+    "prix": 6.90,
+    "categorie": "desserts",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image1.png",
+    "disponible": true
+  },
+  {
+    "id": 11,
+    "nom": "Chia Pudding Mangue",
+    "description": "Graines de chia, lait de coco, mangue fraîche et coulis de fruits de la passion",
+    "prix": 5.50,
+    "categorie": "desserts",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image2.png",
+    "disponible": true
+  },
+  {
+    "id": 12,
+    "nom": "Smoothie Fraise-Banane",
+    "description": "Fraises fraîches, banane, yaourt nature et miel d'acacia",
+    "prix": 5.90,
+    "categorie": "jus",
+    "tags": ["vegetarien", "sans-gluten"],
+    "image": "image/image3.png",
+    "disponible": true
+  },
+  {
+    "id": 13,
+    "nom": "Bowl Buddha Quinoa",
+    "description": "Quinoa, pois chiches rôtis, légumes de saison, tahini et herbes fraîches",
+    "prix": 10.90,
+    "categorie": "bowls",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image4.png",
+    "disponible": true
+  },
+  {
+    "id": 14,
+    "nom": "Thé Glacé Hibiscus",
+    "description": "Thé hibiscus infusé à froid, citron vert, menthe et sirop d'agave",
+    "prix": 3.90,
+    "categorie": "boissons",
+    "tags": ["vegan", "sans-gluten"],
+    "image": "image/image5.png",
+    "disponible": true
+  },
+  {
+    "id": 15,
+    "nom": "Wrap Poulet Avocat",
+    "description": "Tortilla complète, poulet grillé, avocat, salade, tomates cerises et sauce yaourt citron",
+    "prix": 8.50,
+    "categorie": "plats",
+    "tags": ["sans-lactose"],
+    "image": "image/image6.png",
+    "disponible": true
+  }
+]
