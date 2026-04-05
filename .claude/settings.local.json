@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(ls c:/Users/talal/Videos/Projet-Info-S4-M1/*.txt)"
-    ]
-  }
-}
