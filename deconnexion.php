@@ -1,9 +1,14 @@
 <?php
 /*
  * deconnexion.php
+ * ---------------------------------------------------------------
+ * Déconnecte l'utilisateur du site L'Île au Fruit.
  *
- * Détruit la session de l'utilisateur connecté et redirige vers connexion.php.
- * Appelé via le lien "Déconnexion" présent dans nav_html().
+ * Appelé via le lien "Déconnexion" généré dans nav_html().
+ * Détruit la session PHP via detruire_session(), puis redirige
+ * vers connexion.php. Ne contient aucune interface graphique.
+ *
+ * Dépendances : includes/session.php
  */
 
 require_once 'includes/session.php';

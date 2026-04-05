@@ -88,12 +88,45 @@
     transform: scale(1.03);
 }
 
+/* Mobile-first : smartphone du livreur (gros gants → grands boutons) */
 @media (max-width: 768px) {
-    .info-card p {
-        font-size: 26px;
+    .livraison-infos {
+        padding: 0 12px;
+        gap: 10px;
     }
-    .btn-maps, .btn-waze, .btn-livree {
-        padding: 25px;
+
+    .info-card {
+        padding: 18px 20px;
+        border-radius: 14px;
+    }
+
+    .info-card h2 {
+        font-size: 15px;
+    }
+
+    /* Texte très lisible sur petit écran */
+    .info-card p {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    /* Boutons larges et très hauts : faciles à tapper avec des gants */
+    .livraison-boutons {
+        padding: 0 12px;
+        gap: 12px;
+        margin-bottom: 40px;
+    }
+
+    .btn-maps,
+    .btn-waze,
+    .btn-livree,
+    .btn-abandonnee {
+        padding: 22px 20px;
         font-size: 20px;
+        border-radius: 16px;
+        min-height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

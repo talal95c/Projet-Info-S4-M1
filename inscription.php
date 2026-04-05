@@ -1,6 +1,19 @@
 <?php
-// Page d'inscription
-// Crée un nouveau compte client après vérification des champs du formulaire
+/*
+ * inscription.php
+ * ---------------------------------------------------------------
+ * Page d'inscription du site L'Île au Fruit.
+ *
+ * Traite le formulaire POST de création de compte client.
+ * Vérifie que tous les champs obligatoires sont remplis, que les
+ * deux mots de passe correspondent, que le mot de passe fait au
+ * moins 6 caractères et que l'email n'est pas déjà utilisé.
+ * En cas de succès, crée le compte via ajouter_utilisateur() avec
+ * le rôle 'client', le statut 'bronze' et 0 points de fidélité,
+ * puis redirige vers connexion.php.
+ *
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -23,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mdp        = $_POST['mot_de_passe'];
     $mdp2       = $_POST['mot_de_passe2'];
 
-    // Vérifications de base
     if (empty($nom) || empty($prenom) || empty($login) || empty($telephone) || empty($adresse) || empty($mdp)) {
         $erreur = 'Veuillez remplir tous les champs obligatoires.';
     } elseif ($mdp !== $mdp2) {
@@ -33,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (trouver_utilisateur_par_login($login)) {
         $erreur = 'Cet email est déjà utilisé.';
     } else {
-        // Tout est bon, on crée le compte
         $nouvel_user = [
             'login'           => $login,
             'mot_de_passe'    => password_hash($mdp, PASSWORD_DEFAULT),

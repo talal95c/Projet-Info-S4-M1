@@ -1,7 +1,24 @@
 <?php
-// Page profil du client connecté
-// Affiche ses informations personnelles avec possibilité de les modifier
-// Modification via formulaire POST (phase 3)
+/*
+ * profil.php
+ * ---------------------------------------------------------------
+ * Page de profil du client connecté.
+ *
+ * Affiche les informations personnelles de l'utilisateur (email,
+ * téléphone, adresse, code interphone, étage), son niveau de
+ * fidélité (Bronze / Argent / Gold / Platine selon les points)
+ * avec un cercle de progression SVG, et l'historique de ses
+ * commandes avec les statuts (en préparation, en livraison,
+ * livrée, abandonnée).
+ *
+ * En mode édition (?edit=1), les champs modifiables (téléphone,
+ * adresse, code interphone, étage) deviennent des inputs. Le
+ * formulaire POST appelle mettre_a_jour_utilisateur() pour
+ * sauvegarder les modifications dans utilisateurs.json.
+ *
+ * Accès : client connecté uniquement
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -11,7 +28,6 @@ verifier_connexion(['client']);
 $message = '';
 $erreur  = '';
 
-// Traitement du formulaire de modification
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'modifier_profil') {
     $telephone      = trim($_POST['telephone'] ?? '');
     $adresse        = trim($_POST['adresse'] ?? '');
@@ -42,7 +58,6 @@ elseif ($points >= 200)  $niveau = '🥇 Gold';
 elseif ($points >= 100)  $niveau = '🥈 Argent';
 else                     $niveau = '🥉 Bronze';
 
-// Mode édition : on affiche le formulaire si ?edit=1
 $mode_edition = isset($_GET['edit']);
 ?>
 <!DOCTYPE html>

@@ -1,12 +1,26 @@
 <?php
-// Page de connexion
-// Si le formulaire est soumis, on vérifie l'email et le mot de passe
-// Si c'est bon, on crée la session et on redirige selon le rôle
+/*
+ * connexion.php
+ * ---------------------------------------------------------------
+ * Page de connexion du site L'Île au Fruit.
+ *
+ * Traite le formulaire POST (email + mot de passe).
+ * Vérifie que l'email existe dans utilisateurs.json, que le compte
+ * est actif et que le mot de passe correspond au hash bcrypt stocké.
+ * En cas de succès, crée la session PHP et redirige l'utilisateur
+ * vers la page correspondant à son rôle :
+ *   - admin       → admin.php
+ *   - restaurateur → commandes.php
+ *   - livreur     → livraison.php
+ *   - client      → profil.php
+ * Affiche un message de succès si l'utilisateur vient de s'inscrire.
+ *
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
 
-// Si déjà connecté, pas besoin d'être ici
 if (est_connecte()) {
     header('Location: index.php');
     exit;
@@ -28,15 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!password_verify($mdp, $utilisateur['mot_de_passe'])) {
         $erreur = 'Mot de passe incorrect.';
     } else {
-        // Connexion réussie
         creer_session($utilisateur);
 
-        // On redirige selon le rôle
         $role = $utilisateur['role'];
-        if ($role === 'admin')        header('Location: admin.php');
-        elseif ($role === 'restaurateur') header('Location: commandes.php');
-        elseif ($role === 'livreur')  header('Location: livraison.php');
-        else                          header('Location: profil.php');
+        if ($role === 'admin')             header('Location: admin.php');
+        elseif ($role === 'restaurateur')  header('Location: commandes.php');
+        elseif ($role === 'livreur')       header('Location: livraison.php');
+        else                               header('Location: profil.php');
         exit;
     }
 }

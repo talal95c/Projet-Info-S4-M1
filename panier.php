@@ -1,6 +1,27 @@
 <?php
-// Page panier du client
-// Affiche les articles ajoutés, permet de modifier les quantités et de valider la commande
+/*
+ * panier.php
+ * ---------------------------------------------------------------
+ * Page panier du client connecté.
+ *
+ * Le panier est stocké en session ($_SESSION['panier']), sous la
+ * forme d'un tableau de lignes {plat_id, quantite}.
+ * Les articles sont ajoutés depuis presentation.php (bouton POST).
+ *
+ * Trois actions POST disponibles :
+ *   action='modifier'  → met à jour la quantité d'un article
+ *                        (supprime l'article si quantité <= 0)
+ *   action='supprimer' → retire un article du panier
+ *   action='vider'     → supprime tous les articles
+ *
+ * Calcule le sous-total par ligne, le total général et applique
+ * automatiquement la remise (%) définie par l'admin sur le compte
+ * client (champ 'remise' dans utilisateurs.json).
+ * Lien vers paiement.php pour finaliser la commande.
+ *
+ * Accès : client connecté uniquement
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -9,7 +30,6 @@ verifier_connexion(['client']);
 
 if (!isset($_SESSION['panier'])) $_SESSION['panier'] = [];
 
-// Modifier la quantité d'un article
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $plat_id = intval($_POST['plat_id'] ?? 0);
 
@@ -41,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     exit;
 }
 
-// Calcul du total
 $total = 0;
 $lignes = [];
 foreach ($_SESSION['panier'] as $ligne) {
@@ -53,7 +72,6 @@ foreach ($_SESSION['panier'] as $ligne) {
     }
 }
 
-// Appliquer la remise si le client en a une
 $user   = trouver_utilisateur_par_id($_SESSION['user_id']);
 $remise = intval($user['remise'] ?? 0);
 $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;

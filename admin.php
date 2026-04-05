@@ -1,7 +1,25 @@
 <?php
-// Page d'administration
-// Accessible uniquement au rôle 'admin'
-// Gestion des utilisateurs : bloquer/activer, changer le statut fidélité, définir une remise
+/*
+ * admin.php
+ * ---------------------------------------------------------------
+ * Tableau de bord d'administration (rôle : admin).
+ *
+ * Affiche des statistiques globales (nombre d'utilisateurs,
+ * nouveaux ce mois, total commandes) et la liste complète des
+ * utilisateurs avec leurs informations.
+ *
+ * Trois actions POST sont disponibles depuis le tableau :
+ *   - Bloquer / activer un compte    (toggle_user_id)
+ *   - Changer le statut fidélité     (statut_user_id + nouveau_statut)
+ *     valeurs possibles : bronze, argent, gold, platine, vip, premium
+ *   - Définir un pourcentage de remise (remise_user_id + remise 0-100)
+ *     appliqué lors du paiement dans paiement.php
+ * Un admin ne peut pas modifier son propre compte.
+ * Les comptes bloqués apparaissent en opacité réduite.
+ *
+ * Accès : admin uniquement
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -10,7 +28,6 @@ verifier_connexion(['admin']);
 
 $message = '';
 
-// Bloquer / activer un compte
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_user_id'])) {
     $id   = intval($_POST['toggle_user_id']);
     $user = trouver_utilisateur_par_id($id);
@@ -20,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_user_id'])) {
     }
 }
 
-// Changer le statut fidélité
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['statut_user_id'])) {
     $id     = intval($_POST['statut_user_id']);
     $statut = $_POST['nouveau_statut'] ?? '';
@@ -31,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['statut_user_id'])) {
     }
 }
 
-// Définir une remise (en %)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remise_user_id'])) {
     $id     = intval($_POST['remise_user_id']);
     $remise = max(0, min(100, intval($_POST['remise'] ?? 0)));

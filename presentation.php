@@ -1,17 +1,35 @@
 <?php
-// Page de présentation des produits
-// Affiche les plats depuis plats.json avec filtres (catégorie, régime, prix) via GET
-// Bouton "Ajouter au panier" disponible uniquement pour les clients connectés
+/*
+ * presentation.php
+ * ---------------------------------------------------------------
+ * Page de présentation de la carte (menu) du restaurant.
+ *
+ * Charge tous les plats disponibles depuis plats.json et les filtre
+ * côté serveur selon les paramètres GET :
+ *   - recherche  : filtre sur le nom ou la description du plat
+ *   - categorie  : bowls, jus, desserts, plats, boissons
+ *   - regime     : vegan, vegetarien, sans-gluten, sans-lactose
+ *   - prix       : tranches 0-5€, 5-10€, 10-15€, 15€+
+ * Les filtres sont envoyés via un formulaire GET (pas de JS requis).
+ * Un bouton "Réinitialiser" apparaît si au moins un filtre est actif.
+ *
+ * Pour les clients connectés, chaque plat affiche un bouton
+ * "+ Ajouter" qui envoie un POST pour ajouter l'article au panier
+ * (stocké en $_SESSION['panier']). Un encart "Voir mon panier"
+ * s'affiche en bas si le panier contient au moins un article.
+ * Pour les visiteurs non connectés, le bouton renvoie vers connexion.php.
+ *
+ * Accès : tout le monde (panier réservé aux clients connectés)
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
 
-// Ajout d'un plat au panier (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_id']) && est_connecte() && get_role() === 'client') {
     $plat_id = intval($_POST['plat_id']);
     if (!isset($_SESSION['panier'])) $_SESSION['panier'] = [];
 
-    // Si le plat est déjà dans le panier, on incrémente la quantité
     $trouve = false;
     foreach ($_SESSION['panier'] as &$ligne) {
         if ($ligne['plat_id'] == $plat_id) {
@@ -27,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_id']) && est_con
     exit;
 }
 
-// Lecture et filtrage des plats
 $plats = lire_json('plats.json');
 $plats = array_filter($plats, fn($p) => $p['disponible']);
 
@@ -55,7 +72,6 @@ if ($recherche !== '') {
     );
 }
 
-// Nombre d'articles dans le panier (pour affichage)
 $nb_panier = 0;
 if (isset($_SESSION['panier'])) {
     foreach ($_SESSION['panier'] as $l) $nb_panier += $l['quantite'];

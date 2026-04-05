@@ -1,10 +1,16 @@
 <?php
 /*
  * index.php
- *
+ * ---------------------------------------------------------------
  * Page d'accueil du site L'Île au Fruit.
- * Présente le concept du restaurant, une barre de recherche et les recettes de saison.
- * La navigation est générée dynamiquement selon l'état de connexion de l'utilisateur.
+ *
+ * Page statique (pas de formulaire POST) qui présente le concept
+ * du restaurant, une barre de recherche qui redirige vers
+ * presentation.php, et une sélection de recettes de saison.
+ * La navigation est générée par nav_html() selon l'état de
+ * connexion : visiteur, client, admin, restaurateur ou livreur.
+ *
+ * Dépendances : includes/session.php
  */
 
 require_once 'includes/session.php';

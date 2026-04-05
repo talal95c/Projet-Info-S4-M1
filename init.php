@@ -1,15 +1,26 @@
 <?php
 /*
  * init.php
+ * ---------------------------------------------------------------
+ * Script d'initialisation à exécuter UNE SEULE FOIS après
+ * l'installation du projet sur un nouveau serveur.
  *
- * Script d'initialisation à exécuter UNE SEULE FOIS après l'installation du projet.
- * Lit utilisateurs.json, hache les mots de passe en clair avec bcrypt (PASSWORD_DEFAULT),
- * et réécrit le fichier. Sécurisé contre les doubles-exécutions : ignore les mots de passe
- * déjà hashés (qui commencent par '$2y$').
+ * Lit utilisateurs.json, hache les mots de passe en clair avec
+ * bcrypt (PASSWORD_DEFAULT) et réécrit le fichier. Protégé contre
+ * les doubles-exécutions : ignore les mots de passe déjà hashés
+ * (ceux qui commencent par '$2y$').
  * Affiche un tableau récapitulatif de tous les comptes disponibles.
  *
- * URL d'accès : http://localhost/Projet-Info-S4-M1/init.php
+ * Comptes par défaut (tous dans utilisateurs.json) :
+ *   clients      → client123
+ *   admins       → admin123
+ *   restaurateur → resto123
+ *   livreur      → livreur123
+ *
+ * URL : http://localhost/Projet-Info-S4-M1/init.php
  * À supprimer ou protéger après usage.
+ *
+ * Dépendances : includes/data.php
  */
 
 require_once 'includes/data.php';

@@ -1,7 +1,27 @@
 <?php
-// Page du livreur
-// Accessible seulement au rôle 'livreur'
-// Phase 3 : bouton "Livraison terminée" et bouton "Livraison abandonnée"
+/*
+ * livraison.php
+ * ---------------------------------------------------------------
+ * Page du livreur — interface optimisée pour smartphone.
+ *
+ * Recherche automatiquement la commande en cours assignée au
+ * livreur connecté (statut 'en_livraison' et livreur_id = user_id).
+ * Affiche toutes les informations nécessaires à la livraison :
+ * adresse, code interphone, étage, téléphone, commentaire, liste
+ * des articles et total. Fournit des liens directs vers Google Maps
+ * et Waze avec l'adresse encodée.
+ *
+ * Deux actions POST :
+ *   action='livree'     → passe la commande en statut 'livree'
+ *   action='abandonnee' → passe la commande en statut 'abandonnee'
+ *                         (adresse introuvable)
+ * Si aucune commande n'est assignée, affiche un message d'attente.
+ * Le CSS mobile-first (livraison.css) prévoit de grands boutons
+ * (min 64px) pour une utilisation avec des gants.
+ *
+ * Accès : livreur uniquement
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -11,7 +31,6 @@ verifier_connexion(['livreur']);
 $livreur_id = $_SESSION['user_id'];
 $message = '';
 
-// Traitement des actions du livreur
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['commande_id'])) {
     $commande_id = intval($_POST['commande_id']);
     $action      = $_POST['action'];
@@ -25,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['com
     }
 }
 
-// Chercher la commande en cours assignée à ce livreur
 $commande_en_cours = null;
 foreach (lire_json('commandes.json') as $c) {
     if ($c['livreur_id'] == $livreur_id && $c['statut'] === 'en_livraison') {

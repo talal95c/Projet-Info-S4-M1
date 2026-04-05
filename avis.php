@@ -1,7 +1,22 @@
 <?php
-// Page de notation d'une commande
-// Le client peut noter sa dernière commande livrée (livraison + produits)
-// Si aucune commande n'est à noter, on affiche un message
+/*
+ * avis.php
+ * ---------------------------------------------------------------
+ * Page de notation d'une commande livrée (rôle : client).
+ *
+ * Cherche automatiquement la première commande du client dont le
+ * statut est 'livree' et dont le champ 'avis' est null.
+ * Affiche un formulaire avec deux blocs de notation par étoiles
+ * (1 à 5) : un pour la livraison, un pour les produits, chacun
+ * accompagné d'un champ commentaire facultatif.
+ * À la soumission, l'avis est sauvegardé dans commandes.json via
+ * mettre_a_jour_commande(). Le formulaire disparaît une fois noté.
+ * Contient un script JS inline pour l'interaction des étoiles
+ * (clic → coloration + mise à jour du champ caché).
+ *
+ * Accès : client connecté uniquement
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -11,7 +26,6 @@ verifier_connexion(['client']);
 $message = '';
 $commande_a_noter = null;
 
-// On cherche la dernière commande livrée du client qui n'a pas encore d'avis
 $commandes = commandes_du_client($_SESSION['user_id']);
 foreach ($commandes as $c) {
     if ($c['statut'] === 'livree' && $c['avis'] === null) {
@@ -20,7 +34,6 @@ foreach ($commandes as $c) {
     }
 }
 
-// Si le formulaire est soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
     $note_livraison       = intval($_POST['note_livraison']);
     $commentaire_livraison = trim($_POST['commentaire_livraison']);
@@ -37,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
 
     mettre_a_jour_commande($commande_a_noter['id'], ['avis' => $avis]);
     $message = 'Merci pour votre avis sur la commande #' . $commande_a_noter['id'] . ' !';
-    $commande_a_noter = null; // on n'affiche plus le formulaire
+    $commande_a_noter = null;
 }
 ?>
 <!DOCTYPE html>
@@ -130,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
     </footer>
 
     <script>
-    // Script pour les étoiles cliquables (identique à la Phase 1)
     document.querySelectorAll('.etoiles').forEach(function(bloc) {
         var etoiles = bloc.querySelectorAll('.etoile');
         var input   = document.getElementById('note-' + bloc.id.replace('etoiles-', ''));

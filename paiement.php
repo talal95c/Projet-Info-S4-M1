@@ -1,7 +1,30 @@
 <?php
-// Page de paiement
-// Récapitulatif de la commande + formulaire de carte bancaire
-// Simule le paiement via CYBank (includes/cybank.php)
+/*
+ * paiement.php
+ * ---------------------------------------------------------------
+ * Page de paiement et de validation de la commande (rôle : client).
+ *
+ * Redirige vers panier.php si le panier est vide.
+ * Affiche trois blocs dans le formulaire POST :
+ *   1. Choix de livraison : "dès que possible" ou "plus tard"
+ *      (sélecteur datetime-local). Si "plus tard", le statut de
+ *      la commande créée sera 'en_attente' au lieu de 'a_preparer'.
+ *   2. Adresse de livraison (pré-remplie avec les données du profil,
+ *      modifiable : adresse, interphone, étage, commentaire).
+ *   3. Formulaire de carte bancaire (numéro 16 chiffres, expiration
+ *      MM/AA, CVV 3 chiffres) traité par cybank_payer().
+ *
+ * En cas de succès du paiement :
+ *   - crée la commande dans commandes.json via ajouter_commande()
+ *   - ajoute 1 point de fidélité par euro dépensé
+ *   - vide le panier session
+ *   - affiche une page de confirmation
+ * La remise (%) éventuellement attribuée par l'admin est appliquée
+ * au total avant l'appel à CYBank.
+ *
+ * Accès : client connecté uniquement
+ * Dépendances : includes/session.php, includes/data.php, includes/cybank.php
+ */
 
 require_once 'includes/session.php';
 require_once 'includes/data.php';
@@ -42,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $code_interphone   = trim($_POST['code_interphone'] ?? $user['code_interphone']);
     $etage             = trim($_POST['etage'] ?? $user['etage']);
     $commentaire       = trim($_POST['commentaire'] ?? '');
+    $type_livraison    = $_POST['type_livraison'] ?? 'maintenant';
+    $date_souhaitee    = trim($_POST['date_souhaitee'] ?? '');
 
     // Appel simulation CYBank
     $resultat = cybank_payer($total_apres_remise, $numero_carte, $expiration, $cvv);
@@ -49,7 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$resultat['succes']) {
         $erreur = $resultat['message'];
     } else {
-        // Créer la commande dans commandes.json
+        if ($type_livraison === 'plus_tard' && $date_souhaitee !== '') {
+            $statut_commande = 'en_attente';
+        } else {
+            $statut_commande = 'a_preparer';
+            $date_souhaitee  = null;
+        }
+
         $articles = array_map(fn($l) => ['plat_id' => $l['plat']['id'], 'quantite' => $l['quantite']], $lignes);
 
         $nouvelle_commande = [
@@ -61,7 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'etage'            => $etage,
             'telephone'        => $user['telephone'],
             'commentaire'      => $commentaire,
-            'statut'           => 'a_preparer',
+            'statut'           => $statut_commande,
+            'date_souhaitee'   => $date_souhaitee,
             'date'             => date('Y-m-d\TH:i:s'),
             'total'            => round($total_apres_remise, 2),
             'paiement_effectue' => true,
@@ -71,13 +103,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         ajouter_commande($nouvelle_commande);
 
-        // Ajouter des points de fidélité (1 point par euro)
         $points_gagnes = intval($total_apres_remise);
         mettre_a_jour_utilisateur($_SESSION['user_id'], [
             'points_fidelite' => ($user['points_fidelite'] + $points_gagnes),
         ]);
 
-        // Vider le panier
         $_SESSION['panier'] = [];
         $succes = true;
     }
@@ -146,6 +176,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <form method="POST" action="paiement.php">
+
+                <!-- Quand souhaitez-vous être livré ? -->
+                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+                    <h2 style="margin:0 0 1rem;">🕐 Quand souhaitez-vous être livré ?</h2>
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:600;">
+                            <input type="radio" name="type_livraison" value="maintenant" checked
+                                   onchange="document.getElementById('bloc_date').style.display='none'">
+                            ⚡ Dès que possible
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:600;">
+                            <input type="radio" name="type_livraison" value="plus_tard"
+                                   onchange="document.getElementById('bloc_date').style.display='block'">
+                            📅 Plus tard
+                        </label>
+                    </div>
+                    <div id="bloc_date" style="display:none;">
+                        <label style="font-size:0.9rem; color:#555; display:block; margin-bottom:4px;">Date et heure souhaitées</label>
+                        <input type="datetime-local" name="date_souhaitee"
+                               min="<?= date('Y-m-d\TH:i') ?>"
+                               style="padding:8px; border:1px solid #ddd; border-radius:8px; font-family:Poppins,sans-serif;">
+                    </div>
+                </div>
 
                 <!-- Adresse de livraison -->
                 <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
