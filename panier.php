@@ -129,7 +129,7 @@ $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;
 
                 <!-- Liste des articles -->
                 <?php foreach ($lignes as $l): ?>
-                <div style="display:flex; justify-content:space-between; align-items:center; background:white; border-radius:12px; padding:1rem 1.5rem; margin-bottom:0.8rem; box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+                <div style="display:flex; justify-content:space-between; align-items:center; background:white; border-radius:20px; padding:1.2rem 1.5rem; margin-bottom:1rem; box-shadow:0 6px 16px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); transition: transform 0.2s;">
                     <div style="flex:1;">
                         <strong><?= htmlspecialchars($l['item']['nom']) ?></strong>
                         <?php if ($l['type'] === 'menu'): ?>
@@ -151,7 +151,7 @@ $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;
                         <?php endif; ?>
                         <input type="number" name="quantite" value="<?= $l['quantite'] ?>" min="1" max="20"
                                style="width:55px; padding:4px; border:1px solid #ddd; border-radius:6px; text-align:center;">
-                        <button type="submit" class="btn-voir" style="font-size:0.75rem; padding:4px 10px;">OK</button>
+                        <button type="submit" style="background:var(--green-main); color:white; border:none; border-radius:8px; font-size:0.8rem; padding:6px 14px; font-weight:600; cursor:pointer; font-family:'Poppins', sans-serif;">OK</button>
                     </form>
 
                     <div style="font-weight:600; min-width:70px; text-align:right;"><?= number_format($l['sous_total'], 2, ',', ' ') ?> €</div>
@@ -171,7 +171,7 @@ $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;
                 <?php endforeach; ?>
 
                 <!-- Résumé total -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-top:1rem;">
+                <div style="background:white; border-radius:20px; padding:1.8rem; box-shadow:0 6px 16px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); margin-top:1.5rem;">
                     <div style="display:flex; justify-content:space-between; font-size:1rem; color:#555; margin-bottom:0.4rem;">
                         <span>Sous-total</span>
                         <span><?= number_format($total, 2, ',', ' ') ?> €</span>
@@ -189,15 +189,15 @@ $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;
                 </div>
 
                 <!-- Actions -->
-                <div style="display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap;">
-                    <a href="presentation.php" class="btn-voir" style="background:#aaa;">← Continuer mes achats</a>
-                    <a href="paiement.php" class="btn-voir" style="flex:1; text-align:center; font-size:1rem;">💳 Passer la commande</a>
+                <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
+                    <a href="presentation.php" class="btn-voir" style="background:#f5f5f5; color:#555; text-align:center; padding:15px; border-radius:50px; font-weight:600; flex:1; text-decoration:none; display:flex; align-items:center; justify-content:center;">← Continuer mes achats</a>
+                    <a href="paiement.php" class="submit-btn" style="flex:2; text-align:center; margin:0; text-decoration:none; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">💳 Passer la commande</a>
                 </div>
 
-                <form method="POST" action="panier.php" style="margin-top:0.8rem;">
+                <form method="POST" action="panier.php" style="margin-top:1.5rem;">
                     <input type="hidden" name="action" value="vider">
-                    <button type="submit" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:0.85rem; text-decoration:underline;">
-                        Vider le panier
+                    <button type="submit" style="background:#fff0f0; border:1px solid #f5c6cb; color:#c0392b; border-radius:50px; padding:12px; cursor:pointer; font-size:0.95rem; font-weight:600; width:100%; font-family:'Poppins', sans-serif;">
+                        🗑️ Vider tout le panier
                     </button>
                 </form>
 

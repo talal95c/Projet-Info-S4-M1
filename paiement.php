@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($succes): ?>
 
             <!-- Confirmation de commande -->
-            <div style="background:white; border-radius:16px; padding:3rem; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.08);">
+            <div style="background:white; border-radius:24px; padding:4rem 2rem; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);">
                 <div style="font-size:3rem; margin-bottom:1rem;">✅</div>
                 <h1 style="color:#015a17;">Commande confirmée !</h1>
                 <p style="color:#555; margin:1rem 0;">Votre commande a bien été enregistrée et sera préparée dès que possible.</p>
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <!-- Récapitulatif -->
-            <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+            <div style="background:white; border-radius:20px; padding:1.8rem; box-shadow:0 6px 16px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); margin-bottom:1.5rem;">
                 <h2 style="margin:0 0 1rem;">📋 Récapitulatif</h2>
                 <?php foreach ($lignes as $l): ?>
                 <div style="display:flex; justify-content:space-between; padding:0.4rem 0; border-bottom:1px solid #f5f5f5; font-size:0.95rem;">
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="paiement.php">
 
                 <!-- Quand souhaitez-vous être livré ? -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+                <div style="background:white; border-radius:20px; padding:1.8rem; box-shadow:0 6px 16px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); margin-bottom:1.5rem;">
                     <h2 style="margin:0 0 1rem;">🕐 Quand souhaitez-vous être livré ?</h2>
                     <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
                         <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:600;">
@@ -175,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <!-- Adresse de livraison -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+                <div style="background:white; border-radius:20px; padding:1.8rem; box-shadow:0 6px 16px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); margin-bottom:1.5rem;">
                     <h2 style="margin:0 0 1rem;">📍 Adresse de livraison</h2>
                     <div class="form-group">
                         <label>Adresse</label>
@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit" style="width:100%; font-size:1.1rem; padding:1rem;">
+                <button type="submit" class="submit-btn" style="width:100%; font-size:1.1rem; padding:1rem; margin-top: 0;">
                     🔒 Continuer vers le paiement sécurisé (<?= number_format($total_apres_remise, 2, ',', ' ') ?> €)
                 </button>
 

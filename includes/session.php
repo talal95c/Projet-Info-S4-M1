@@ -97,7 +97,9 @@ function nav_html($page_active = '') {
         <nav>
             ' . $logo . '
             <ul>' . $liens . '</ul>
-            <span>Bonjour, ' . $prenom . ' | </span>
-            <a href="deconnexion.php" class="btn-connexion">Déconnexion</a>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <span style="font-weight:600; color:var(--text); font-size:0.95rem;">👋 Bonjour, ' . $prenom . '</span>
+                <a href="deconnexion.php" class="btn-deconnexion">Déconnexion</a>
+            </div>
         </nav>';
 }

@@ -6,7 +6,7 @@
         "role": "client",
         "nom": "Martin",
         "prenom": "Alice",
-        "telephone": "0601010101",
+        "telephone": "sqdqsdq",
         "adresse": "1 Rue de la Paix, 75001 Paris",
         "code_interphone": "1234",
         "etage": "1er",
@@ -14,7 +14,8 @@
         "statut": "bronze",
         "date_inscription": "2026-01-01",
         "actif": true,
-        "remise": 0
+        "remise": 0,
+        "date_derniere_connexion": "2026-05-16T12:51:03"
     },
     {
         "id": 2,
