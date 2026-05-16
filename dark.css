@@ -1,0 +1,87 @@
+/* dark.css - Charte Graphique Mode Sombre */
+:root {
+    --green-dark:  #8ce99a;
+    --green-main:  #40c057;
+    --green-light: #1b2f21;
+    --yellow:      #ffd43b;
+    --yellow-dark: #f08c00;
+    --primary-color: #fcc419;
+    --text-color:  #d8f5a2;
+    --text:        #f1f3f5;
+    --text-soft:   #ced4da;
+    --white:       #212529;
+    --border:      rgba(255, 255, 255, 0.15);
+}
+
+body {
+    background-image: none !important;
+    background-color: #121212 !important;
+    color: var(--text) !important;
+}
+
+nav {
+    background: rgba(33, 37, 41, 0.85) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Forcer les cartes en mode sombre */
+.card, .auth-card, 
+[style*="background:white"], 
+[style*="background: white"], 
+[style*="background:#fff"], 
+[style*="background: #fff"] {
+    background: #1e1e1e !important;
+    border-color: rgba(255,255,255,0.05) !important;
+    color: #f1f3f5 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3) !important;
+}
+
+.message.succes {
+    background: #1e4620 !important;
+    color: #75b798 !important;
+    border-color: #2b8a3e !important;
+}
+
+.message.erreur {
+    background: #4a191b !important;
+    color: #ea868f !important;
+    border-color: #c92a2a !important;
+}
+
+.btn-voir[style*="background:#f5f5f5"] {
+    background: #333 !important;
+    color: #eee !important;
+}
+
+/* Champs de formulaire */
+.input-group input, 
+.input-group textarea, 
+.input-group select,
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="password"] {
+    background: #2c2c2c !important;
+    border-color: #444 !important;
+    color: white !important;
+}
+
+/* Textes qui restent sombres par défaut */
+h1, h2, h3, h4, strong, span, p, label {
+    color: #f1f3f5;
+}
+
+/* Cas spécifiques où la couleur est fixée en inline */
+[style*="color:#015a17"], [style*="color:#014d14"] {
+    color: #8ce99a !important;
+}
+
+[style*="color:#555"], [style*="color:#777"] {
+    color: #adb5bd !important;
+}
+
+[style*="background:#eef5f0"] {
+    background: #1b2f21 !important;
+}
