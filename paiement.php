@@ -66,67 +66,20 @@ $total_apres_remise = $remise > 0 ? $total * (1 - $remise / 100) : $total;
 $erreur  = '';
 $succes  = false;
 
-// Traitement du paiement
+// Traitement de l'adresse de livraison et redirection vers CY Bank
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $numero_carte = trim($_POST['numero_carte'] ?? '');
-    $expiration   = trim($_POST['expiration'] ?? '');
-    $cvv          = trim($_POST['cvv'] ?? '');
-    $adresse_livraison = trim($_POST['adresse_livraison'] ?? $user['adresse']);
-    $code_interphone   = trim($_POST['code_interphone'] ?? $user['code_interphone']);
-    $etage             = trim($_POST['etage'] ?? $user['etage']);
-    $commentaire       = trim($_POST['commentaire'] ?? '');
-    $type_livraison    = $_POST['type_livraison'] ?? 'maintenant';
-    $date_souhaitee    = trim($_POST['date_souhaitee'] ?? '');
+    $_SESSION['checkout'] = [
+        'adresse_livraison' => trim($_POST['adresse_livraison'] ?? $user['adresse']),
+        'code_interphone'   => trim($_POST['code_interphone'] ?? $user['code_interphone']),
+        'etage'             => trim($_POST['etage'] ?? $user['etage']),
+        'commentaire'       => trim($_POST['commentaire'] ?? ''),
+        'type_livraison'    => $_POST['type_livraison'] ?? 'maintenant',
+        'date_souhaitee'    => trim($_POST['date_souhaitee'] ?? '')
+    ];
 
-    // Appel simulation CYBank
-    $resultat = cybank_payer($total_apres_remise, $numero_carte, $expiration, $cvv);
-
-    if (!$resultat['succes']) {
-        $erreur = $resultat['message'];
-    } else {
-        if ($type_livraison === 'plus_tard' && $date_souhaitee !== '') {
-            $statut_commande = 'en_attente';
-        } else {
-            $statut_commande = 'a_preparer';
-            $date_souhaitee  = null;
-        }
-
-        $articles = array_map(function($l) {
-            if ($l['type'] === 'menu') {
-                return ['menu_id' => $l['item']['id'], 'quantite' => $l['quantite']];
-            }
-            return ['plat_id' => $l['item']['id'], 'quantite' => $l['quantite']];
-        }, $lignes);
-
-        $nouvelle_commande = [
-            'client_id'        => $_SESSION['user_id'],
-            'livreur_id'       => null,
-            'articles'         => $articles,
-            'adresse_livraison' => $adresse_livraison,
-            'code_interphone'  => $code_interphone,
-            'etage'            => $etage,
-            'telephone'        => $user['telephone'],
-            'commentaire'      => $commentaire,
-            'statut'           => $statut_commande,
-            'date_souhaitee'   => $date_souhaitee,
-            'date'             => date('Y-m-d\TH:i:s'),
-            'total'            => round($total_apres_remise, 2),
-            'paiement_effectue' => true,
-            'transaction_id'   => $resultat['transaction_id'],
-            'avis'             => null,
-        ];
-
-        ajouter_commande($nouvelle_commande);
-
-        $points_gagnes = intval($total_apres_remise);
-        mettre_a_jour_utilisateur($_SESSION['user_id'], [
-            'points_fidelite' => ($user['points_fidelite'] + $points_gagnes),
-        ]);
-
-        $_SESSION['panier'] = [];
-        $_SESSION['panier_menus'] = [];
-        $succes = true;
-    }
+    // On redirige vers la vraie interface d'API CY Bank
+    header('Location: api/paiement.php');
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -242,29 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <!-- Carte bancaire (CYBank) -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
-                    <h2 style="margin:0 0 0.4rem;">💳 Carte bancaire</h2>
-                    <p style="font-size:0.8rem; color:#aaa; margin:0 0 1rem;">Paiement sécurisé via CYBank</p>
-                    <div class="form-group">
-                        <label>Numéro de carte (16 chiffres)</label>
-                        <input type="text" name="numero_carte" placeholder="1234 5678 9012 3456"
-                               maxlength="19" required>
-                    </div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                        <div class="form-group">
-                            <label>Date d'expiration (MM/AA)</label>
-                            <input type="text" name="expiration" placeholder="12/27" maxlength="5" required>
-                        </div>
-                        <div class="form-group">
-                            <label>CVV</label>
-                            <input type="text" name="cvv" placeholder="123" maxlength="3" required>
-                        </div>
-                    </div>
-                </div>
-
                 <button type="submit" class="btn-submit" style="width:100%; font-size:1.1rem; padding:1rem;">
-                    ✅ Confirmer et payer <?= number_format($total_apres_remise, 2, ',', ' ') ?> €
+                    🔒 Continuer vers le paiement sécurisé (<?= number_format($total_apres_remise, 2, ',', ' ') ?> €)
                 </button>
 
             </form>
