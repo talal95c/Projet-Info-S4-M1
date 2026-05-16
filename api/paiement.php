@@ -18,7 +18,8 @@ $cybank_url = 'https://www.plateforme-smc.fr/cybank/index.php';
 
 // URL de retour. On passe l'identifiant de session dans l'URL.
 // A adapter selon votre configuration locale (port, dossier).
-$url_retour = 'http://localhost/Projet-Info-S4-M1/api/retour_paiement.php?session=' . session_id();
+$url_retour = 'http://localhost:8000/api/retour_paiement.php?session=' . session_id();
+
 
 // 3. Calcul du montant
 $montant = 29.99; // Valeur par défaut pour tester

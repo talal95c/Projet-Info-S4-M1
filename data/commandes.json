@@ -108,5 +108,32 @@
             "commentaire_produits": "Délicieux, très frais",
             "date": "2026-04-03T13:00:00"
         }
+    },
+    {
+        "client_id": 998,
+        "livreur_id": 9,
+        "articles": [
+            {
+                "plat_id": 12,
+                "quantite": 1
+            },
+            {
+                "plat_id": 1,
+                "quantite": 1
+            }
+        ],
+        "adresse_livraison": "10 rue Test Client, 75000 Paris",
+        "code_interphone": "T123",
+        "etage": "1er étage",
+        "telephone": "0600000001",
+        "commentaire": "",
+        "statut": "en_livraison",
+        "date_souhaitee": null,
+        "date": "2026-05-16T12:41:05",
+        "total": 14.8,
+        "paiement_effectue": true,
+        "transaction_id": "tx6a0865c09322d",
+        "avis": null,
+        "id": 1043
     }
 ]
