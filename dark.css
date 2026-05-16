@@ -1,4 +1,4 @@
-/* dark.css - Charte Graphique Mode Sombre */
+/* dark.css - Charte Graphique Mode Sombre (Corrigée et Harmonieuse) */
 :root {
     --green-dark:  #8ce99a;
     --green-main:  #40c057;
@@ -14,37 +14,84 @@
 }
 
 body {
-    background-image: none !important;
-    background-color: #121212 !important;
+    /* Fond dynamique et subtil au lieu du noir complet */
+    background-image: radial-gradient(circle at 50% 0%, #162c1e 0%, #0d0d0d 60%) !important;
+    background-color: #0d0d0d !important;
     color: var(--text) !important;
 }
 
+/* Navbar */
 nav {
-    background: rgba(33, 37, 41, 0.85) !important;
-    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+    background: rgba(15, 15, 15, 0.85) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Forcer les cartes en mode sombre */
-.card, .auth-card, 
+nav a, nav span {
+    color: #f1f3f5 !important;
+}
+
+/* Footer et espace pour panier */
+main {
+    padding-bottom: 50px !important;
+}
+
+footer {
+    background: #111 !important;
+    color: #888 !important;
+    border-top: 1px solid #222 !important;
+    margin-top: 40px !important;
+}
+
+/* Cartes (Profil, Menus, Recherche, Auth) */
+.card, .auth-card, .product-card, .profil-header, .recherche-filtre,
 [style*="background:white"], 
 [style*="background: white"], 
 [style*="background:#fff"], 
 [style*="background: #fff"] {
-    background: #1e1e1e !important;
-    border-color: rgba(255,255,255,0.05) !important;
+    background: #1a1a1a !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
     color: #f1f3f5 !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
 }
 
+/* Correction Typographie Profil et Menus */
+.product-info h3, .profil-header h1, h1, h2, h3, h4, strong {
+    color: #f1f3f5 !important;
+}
+
+.product-description, .info-ligne > span:first-child, .fidelite-info, .commande-date {
+    color: #aaa !important;
+}
+
+.info-ligne > div span, .commande-detail, .commande-prix {
+    color: #e0e0e0 !important;
+}
+
+.price {
+    color: #8ce99a !important;
+}
+
+.cercle-fond {
+    stroke: #333 !important;
+}
+
+/* Tags Menu (Ex: Vegan, Sans gluten) */
+.tag.vegan, .tag.vegetarian, .tag.sans-gluten {
+    background: #2a2a2a !important;
+    color: #ccc !important;
+    border: 1px solid #444 !important;
+}
+
+/* Messages */
 .message.succes {
-    background: #1e4620 !important;
+    background: rgba(43, 138, 62, 0.2) !important;
     color: #75b798 !important;
     border-color: #2b8a3e !important;
 }
 
 .message.erreur {
-    background: #4a191b !important;
+    background: rgba(201, 42, 42, 0.2) !important;
     color: #ea868f !important;
     border-color: #c92a2a !important;
 }
@@ -52,6 +99,7 @@ nav {
 .btn-voir[style*="background:#f5f5f5"] {
     background: #333 !important;
     color: #eee !important;
+    border: 1px solid #444 !important;
 }
 
 /* Champs de formulaire */
@@ -62,15 +110,15 @@ input[type="text"],
 input[type="number"],
 input[type="datetime-local"],
 input[type="email"],
-input[type="password"] {
-    background: #2c2c2c !important;
-    border-color: #444 !important;
+input[type="password"],
+input[type="tel"] {
+    background: #222 !important;
+    border: 1px solid #444 !important;
     color: white !important;
 }
 
-/* Textes qui restent sombres par défaut */
-h1, h2, h3, h4, strong, span, p, label {
-    color: #f1f3f5;
+input:focus {
+    border-color: #40c057 !important;
 }
 
 /* Cas spécifiques où la couleur est fixée en inline */
@@ -78,10 +126,21 @@ h1, h2, h3, h4, strong, span, p, label {
     color: #8ce99a !important;
 }
 
-[style*="color:#555"], [style*="color:#777"] {
+[style*="color:#555"], [style*="color:#777"], [style*="color:#888"] {
     color: #adb5bd !important;
 }
 
 [style*="background:#eef5f0"] {
     background: #1b2f21 !important;
+    color: #8ce99a !important;
+}
+
+[style*="background:#fff0f0"] {
+    background: rgba(201, 42, 42, 0.2) !important;
+    border-color: #c92a2a !important;
+    color: #ea868f !important;
+}
+
+[style*="border-bottom:1px solid #f5f5f5"], [style*="border-top:1px solid #eee"], [style*="border-top:2px solid #eee"] {
+    border-color: #333 !important;
 }
