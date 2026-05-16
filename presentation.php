@@ -171,6 +171,16 @@ $labels_tags = [
                             <option value="15+"   <?= $prix === '15+'   ? 'selected' : '' ?>>Plus de 15€</option>
                         </select>
                     </div>
+                    
+                    <div class="filtre-groupe">
+                        <label for="tri">Trier par :</label>
+                        <select name="tri" id="tri" class="filtre-select">
+                            <option value="">Pertinence</option>
+                            <option value="prix_asc">Prix croissant</option>
+                            <option value="prix_desc">Prix décroissant</option>
+                            <option value="nom_asc">De A à Z</option>
+                        </select>
+                    </div>
 
                     <button type="submit" class="btn-filtrer">Filtrer</button>
                     <?php if ($categorie || $regime || $prix || $recherche): ?>
@@ -228,7 +238,7 @@ $labels_tags = [
             <?php if (empty($plats)): ?>
                 <p style="text-align:center; padding:3rem; color:#888;">Aucun produit trouvé pour ces filtres.</p>
             <?php else: ?>
-            <div class="product-grid">
+            <div class="product-grid" id="plats-grid">
                 <?php foreach ($plats as $plat): ?>
                 <div class="product-card" data-category="<?= htmlspecialchars($plat['categorie']) ?>">
                     <div class="product-image">
@@ -276,5 +286,108 @@ $labels_tags = [
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
+    <script>
+    const labels_tags = {
+        'vegan': '🌱 Vegan',
+        'vegetarien': '🥕 Végétarien',
+        'sans-gluten': '🌾 Sans gluten',
+        'sans-lactose': '🥛 Sans lactose'
+    };
+    
+    const is_client = <?= (est_connecte() && get_role() === 'client') ? 'true' : 'false' ?>;
+
+    function loadPlats() {
+        const categorie = document.getElementById('categorie').value;
+        const regime = document.getElementById('regime').value;
+        const prix = document.getElementById('prix').value;
+        const recherche = document.querySelector('input[name="recherche"]').value;
+        const tri = document.getElementById('tri') ? document.getElementById('tri').value : '';
+
+        const params = new URLSearchParams({ categorie, regime, prix, recherche, tri });
+
+        // Appel asynchrone pour respecter la consigne
+        fetch('api/filtres.php?' + params.toString())
+            .then(response => response.json())
+            .then(plats => {
+                const container = document.getElementById('plats-grid');
+                container.innerHTML = '';
+
+                if (plats.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding:3rem; color:#888; grid-column:1/-1;">Aucun produit trouvé pour ces filtres.</p>';
+                    return;
+                }
+
+                plats.forEach(plat => {
+                    let tagsHtml = '';
+                    if (plat.tags && plat.tags.length > 0) {
+                        tagsHtml = '<div class="product-tags">';
+                        plat.tags.forEach(tag => {
+                            let label = labels_tags[tag] || tag;
+                            tagsHtml += `<span class="tag ${tag}">${label}</span>`;
+                        });
+                        tagsHtml += '</div>';
+                    }
+
+                    let btnHtml = '';
+                    if (is_client) {
+                        btnHtml = `
+                            <form method="POST" action="presentation.php" style="display:inline;">
+                                <input type="hidden" name="plat_id" value="${plat.id}">
+                                <button type="submit" class="btn-add">+ Ajouter</button>
+                            </form>
+                        `;
+                    } else {
+                        btnHtml = `<a href="connexion.php" class="btn-add">Se connecter</a>`;
+                    }
+
+                    let priceStr = parseFloat(plat.prix).toFixed(2).replace('.', ',') + ' €';
+                    
+                    // On gère la source de l'image (repli si manque ../ etc)
+                    let imgSrc = plat.image;
+
+                    const cardHtml = `
+                    <div class="product-card" data-category="${plat.categorie}">
+                        <div class="product-image">
+                            <img src="${imgSrc}" alt="${plat.nom}">
+                        </div>
+                        <div class="product-info">
+                            <h3>${plat.nom}</h3>
+                            <p class="product-description">${plat.description}</p>
+                            ${tagsHtml}
+                            <div class="product-footer">
+                                <span class="price">${priceStr}</span>
+                                ${btnHtml}
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    container.innerHTML += cardHtml;
+                });
+            })
+            .catch(err => console.error("Erreur asynchrone filtres:", err));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('.recherche-container');
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loadPlats();
+            });
+        }
+        document.querySelectorAll('.filtre-select').forEach(sel => {
+            sel.addEventListener('change', loadPlats);
+        });
+        
+        let searchInput = document.querySelector('input[name="recherche"]');
+        if(searchInput) {
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    loadPlats();
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html>
