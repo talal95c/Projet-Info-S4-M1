@@ -1,10 +1,16 @@
 .commandes-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    max-width: 1200px;
+    grid-template-columns: 1fr 1fr 1fr;   /* 3 colonnes : à préparer / prête / en livraison (phase 3) */
+    gap: 24px;
+    max-width: 1400px;
     margin: 0 auto 60px;
     padding: 0 20px;
+}
+
+@media (max-width: 1000px) {
+    .commandes-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 .commandes-colonne {
@@ -31,6 +37,11 @@
 .colonne-titre.a-preparer {
     background: linear-gradient(135deg, #fff3e0, #ffe0b2);
     color: #e65100;
+}
+
+.colonne-titre.prete {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
 }
 
 .colonne-titre.en-livraison {

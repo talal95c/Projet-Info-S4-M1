@@ -15,10 +15,6 @@
     --border-radius: 20px;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 * {
     box-sizing: border-box;
 }
@@ -31,28 +27,17 @@ body {
     background-size: cover;
     background-attachment: fixed;
     color: var(--text);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex: 1;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.349);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
 nav img {
@@ -94,19 +79,16 @@ nav .btn-connexion {
     border-radius: 50px;
     color: white;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 25px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 0.95rem;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 112, 75, 0.2);
+    transition: 0.3s;
 }
 
 nav .btn-connexion:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 112, 75, 0.3);
+    transform: scale(1.05);
     background-color: #005a3c;
 }
 
@@ -115,19 +97,16 @@ nav .btn-deconnexion {
     border-radius: 50px;
     color: white;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 25px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 0.95rem;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(192, 57, 43, 0.2);
+    transition: 0.3s;
 }
 
 nav .btn-deconnexion:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.3);
+    transform: scale(1.05);
     background-color: #a93226;
 }
 
@@ -157,15 +136,51 @@ footer {
     color: var(--text-soft);
     font-size: 0.82rem;
     line-height: 2;
-    margin-top: auto;
+    margin-top: 50px;
+}
+
+/* ===================================================== */
+/* Phase 3 : bouton de bascule de thème (clair / sombre)  */
+/* ===================================================== */
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-theme {
+    background: rgba(0, 112, 75, 0.1);
+    color: var(--green-main);
+    border: 1px solid rgba(0, 112, 75, 0.2);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s, background 0.3s;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-theme:hover {
+    transform: scale(1.1) rotate(-15deg);
+    background: rgba(0, 112, 75, 0.18);
+}
+
+/* Bouton flottant pour les pages sans navigation (connexion, inscription) */
+.btn-theme-flottant {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-    }
     nav ul {
         display: none;
     }

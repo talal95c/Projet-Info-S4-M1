@@ -1,4 +1,4 @@
-body.auth-page {
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -139,4 +139,68 @@ body.auth-page {
     background: #f0fff4;
     color: #1e7e34;
     border: 1px solid #c3e6cb;
+}
+
+/* ===================================================== */
+/* Phase 3 : styles validation JS, œil, compteur          */
+/* ===================================================== */
+
+/* Champ en erreur (bordure rouge) */
+.input-group input.input-erreur,
+.input-edit.input-erreur {
+    border-color: #c0392b !important;
+    background: #fff0f0 !important;
+}
+
+/* Message d'erreur sous un champ */
+.message-erreur-champ {
+    color: #c0392b;
+    font-size: 0.82rem;
+    margin: 6px 2px 0;
+    text-align: left;
+    font-weight: 500;
+}
+
+/* Wrapper du champ mot de passe (pour l'œil) */
+.wrapper-password {
+    position: relative;
+    width: 100%;
+}
+
+.wrapper-password input {
+    padding-right: 45px !important;
+}
+
+.btn-oeil {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    line-height: 1;
+    color: var(--text-soft, #6b7280);
+    transition: 0.2s;
+}
+
+.btn-oeil:hover {
+    transform: translateY(-50%) scale(1.15);
+}
+
+/* Compteur de caractères en temps réel */
+.compteur-info {
+    display: block;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-soft, #6b7280);
+    margin-top: 4px;
+    margin-right: 2px;
+}
+
+.compteur-info.compteur-limite {
+    color: #c0392b;
+    font-weight: 600;
 }
