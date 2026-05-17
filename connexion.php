@@ -65,8 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="auth.css">
+    <script src="js/theme.js"></script>
 </head>
-<body class="auth-page">
+<body>
     <main class="login-container">
         <header class="logo-section">
             <a href="index.php">
@@ -88,15 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="message succes">✅ Compte créé ! Vous pouvez vous connecter.</div>
             <?php endif; ?>
 
-            <form class="auth-form" method="POST" action="connexion.php">
+            <form class="auth-form" method="POST" action="connexion.php" novalidate>
                 <h2>Bienvenue</h2>
 
                 <div class="input-group">
-                    <input type="email" name="login" placeholder="Adresse e-mail" required>
+                    <input type="email" name="login" placeholder="Adresse e-mail"
+                           maxlength="100" data-compteur required>
                 </div>
 
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
+                    <input type="password" name="mot_de_passe" placeholder="Mot de passe"
+                           maxlength="50" data-toggle-password required>
                 </div>
 
                 <button type="submit" class="submit-btn">Se connecter</button>
@@ -104,5 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
     </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/connexion.js"></script>
 </body>
 </html>
