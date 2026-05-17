@@ -35,40 +35,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commande_id'], $_POST
     if ($id > 0 && $livreur_id > 0) {
         mettre_a_jour_commande($id, ['statut' => 'en_livraison', 'livreur_id' => $livreur_id]);
         $message = 'Commande #' . $id . ' passée en livraison.';
-        header('Location: commandes.php');
-        exit;
     }
 }
 
 $tous_utilisateurs = lire_json('utilisateurs.json');
 $livreurs = array_filter($tous_utilisateurs, fn($u) => $u['role'] === 'livreur' && $u['actif']);
 
-// Charger les commandes et les trier par statut
-$toutes         = lire_json('commandes.json');
-$a_preparer     = [];
-$en_preparation = [];
-$en_attente     = [];
-$en_livraison   = [];
+// Charger les commandes et les trier par statut.
+// Phase 3 : ajout du statut intermédiaire "prete" entre "a_preparer"
+// et "en_livraison", comme demandé par le sujet.
+$toutes       = lire_json('commandes.json');
+$a_preparer   = [];
+$en_attente   = [];
+$pretes       = [];
+$en_livraison = [];
 
 foreach ($toutes as $c) {
-    if ($c['statut'] === 'a_preparer')     $a_preparer[]     = $c;
-    if ($c['statut'] === 'en_preparation') $en_preparation[] = $c;
-    if ($c['statut'] === 'en_attente')     $en_attente[]     = $c;
-    if ($c['statut'] === 'en_livraison')   $en_livraison[]   = $c;
+    if ($c['statut'] === 'a_preparer')   $a_preparer[]   = $c;
+    if ($c['statut'] === 'en_attente')   $en_attente[]   = $c;
+    if ($c['statut'] === 'prete')        $pretes[]       = $c;
+    if ($c['statut'] === 'en_livraison') $en_livraison[] = $c;
 }
 
-// Passer une commande "en_attente" en "a_preparer"
+// Passer une commande "en_attente" en "a_preparer" si sa date souhaitée est atteinte
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
     $id = intval($_POST['preparer_id']);
     mettre_a_jour_commande($id, ['statut' => 'a_preparer']);
-    header('Location: commandes.php');
-    exit;
-}
-
-// Passer une commande "a_preparer" en "en_preparation"
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
-    $id = intval($_POST['en_prep_id']);
-    mettre_a_jour_commande($id, ['statut' => 'en_preparation']);
+    $message = 'Commande #' . $id . ' passée en préparation.';
     header('Location: commandes.php');
     exit;
 }
@@ -84,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="commandes.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <header>
@@ -102,6 +96,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
             </p>
         <?php endif; ?>
 
+        <!-- Bandeau de feedback AJAX -->
+        <div id="commandes-feedback" class="message" style="display:none; margin:1rem; padding:0.8rem 1.5rem; border-radius:8px; text-align:center; font-weight:500;"></div>
+
+        <!-- Données livreurs disponibles pour le JS (utilisé lors de l'assignation) -->
+        <script type="application/json" id="data-livreurs">
+            <?= json_encode(array_map(
+                fn($l) => ['id' => $l['id'], 'nom' => $l['prenom'] . ' ' . $l['nom']],
+                array_values($livreurs)
+            )) ?>
+        </script>
+
         <div class="commandes-container">
 
             <!-- Colonne : En attente (commandes différées) -->
@@ -118,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
                               ? date('d/m/Y à H:i', strtotime($c['date_souhaitee']))
                               : '—';
                 ?>
-                    <div class="commande-card" style="min-width:240px; flex:1;">
+                    <div class="commande-card" data-commande-id="<?= $c['id'] ?>" style="min-width:240px; flex:1;">
                         <div class="commande-header">
                             <span class="commande-id">#<?= $c['id'] ?></span>
                             <span class="commande-heure"><?= $heure ?></span>
@@ -132,31 +137,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
                             <?php endforeach; ?>
                         </ul>
                         <div style="font-size:0.85rem; color:#856404; margin:4px 0;">📅 Souhaitée le : <strong><?= $date_s ?></strong></div>
-                        <form method="POST" action="commandes.php" style="margin-top:0.5rem;">
-                            <input type="hidden" name="preparer_id" value="<?= $c['id'] ?>">
-                            <button type="submit" class="btn-statut btn-livraison" style="background:#856404;">▶ Lancer la préparation</button>
-                        </form>
+                        <button type="button"
+                                class="btn-statut btn-action-commande"
+                                style="background:#856404; margin-top:0.5rem;"
+                                data-action="demarrer_preparation"
+                                data-commande-id="<?= $c['id'] ?>">
+                            ▶ Lancer la préparation
+                        </button>
                     </div>
                 <?php endforeach; ?>
                 </div>
             </section>
             <?php endif; ?>
 
-            <!-- Colonne : À préparer -->
-            <section class="commandes-colonne">
+            <!-- Colonne : À préparer (en cours en cuisine) -->
+            <section class="commandes-colonne" id="colonne-a-preparer">
                 <div class="colonne-titre a-preparer">
-                    <h2>🍽️ À préparer <span class="badge-count"><?= count($a_preparer) ?></span></h2>
+                    <h2>🍽️ À préparer <span class="badge-count" data-count="a_preparer"><?= count($a_preparer) ?></span></h2>
                 </div>
 
-                <?php if (empty($a_preparer)): ?>
-                    <p style="padding:1rem; color:#888;">Aucune commande à préparer.</p>
-                <?php endif; ?>
+                <p class="vide-colonne" style="padding:1rem; color:#888; <?= empty($a_preparer) ? '' : 'display:none;' ?>">
+                    Aucune commande à préparer.
+                </p>
 
                 <?php foreach ($a_preparer as $c):
                     $client = trouver_utilisateur_par_id($c['client_id']);
                     $heure  = date('H:i', strtotime($c['date']));
                 ?>
-                    <div class="commande-card">
+                    <div class="commande-card" data-commande-id="<?= $c['id'] ?>">
                         <div class="commande-header">
                             <span class="commande-id">#<?= $c['id'] ?></span>
                             <span class="commande-heure"><?= $heure ?></span>
@@ -171,31 +179,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
 
-                        <form method="POST" action="commandes.php" style="margin-top:0.5rem;">
-                            <input type="hidden" name="en_prep_id" value="<?= $c['id'] ?>">
-                            <button type="submit" class="btn-statut btn-livraison">👨‍🍳 Mettre en préparation</button>
-                        </form>
+                        <!-- Phase 3 : bouton AJAX pour marquer la commande PRÊTE -->
+                        <button type="button"
+                                class="btn-statut btn-action-commande"
+                                style="background:#28a745; margin-top:0.5rem;"
+                                data-action="marquer_prete"
+                                data-commande-id="<?= $c['id'] ?>">
+                            ✅ Marquer prête
+                        </button>
                     </div>
                 <?php endforeach; ?>
             </section>
 
-            <!-- Colonne : En préparation -->
-            <section class="commandes-colonne">
-                <div class="colonne-titre" style="background:#e3f2fd; color:#1565c0;">
-                    <h2>👨‍🍳 En préparation <span class="badge-count"><?= count($en_preparation) ?></span></h2>
+            <!-- Colonne : Prêtes (en attente d'attribution livreur) -->
+            <section class="commandes-colonne" id="colonne-prete">
+                <div class="colonne-titre prete" style="background:#d1ecf1; color:#0c5460;">
+                    <h2>📦 Prêtes <span class="badge-count" data-count="prete"><?= count($pretes) ?></span></h2>
                 </div>
 
-                <?php if (empty($en_preparation)): ?>
-                    <p style="padding:1rem; color:#888;">Aucune commande en préparation.</p>
-                <?php endif; ?>
+                <p class="vide-colonne" style="padding:1rem; color:#888; <?= empty($pretes) ? '' : 'display:none;' ?>">
+                    Aucune commande prête.
+                </p>
 
-                <?php foreach ($en_preparation as $c):
+                <?php foreach ($pretes as $c):
                     $client = trouver_utilisateur_par_id($c['client_id']);
                     $heure  = date('H:i', strtotime($c['date']));
                 ?>
-                    <div class="commande-card" style="border-left-color: #1976d2;">
+                    <div class="commande-card" data-commande-id="<?= $c['id'] ?>">
                         <div class="commande-header">
-                            <span class="commande-id" style="color: #1565c0;">#<?= $c['id'] ?></span>
+                            <span class="commande-id">#<?= $c['id'] ?></span>
                             <span class="commande-heure"><?= $heure ?></span>
                         </div>
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
@@ -208,39 +220,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
 
-                        <form method="POST" action="commandes.php">
-                            <input type="hidden" name="commande_id" value="<?= $c['id'] ?>">
-                            <div style="margin:0.5rem 0;">
-                                <label style="font-size:0.85rem; color:#555;">Assigner un Livreur :</label>
-                                <select name="livreur_id" style="width:100%; margin-top:4px; padding:6px; border-radius:6px; border:1px solid #ddd;" required>
-                                    <option value="">-- Choisir --</option>
-                                    <?php foreach ($livreurs as $l): ?>
-                                        <option value="<?= $l['id'] ?>"><?= htmlspecialchars($l['prenom'] . ' ' . $l['nom']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn-statut btn-livraison" style="background:#1976d2; color:#fff;">🚴 Passer en livraison</button>
-                        </form>
+                        <!-- Phase 3 : choix livreur + bouton AJAX d'assignation -->
+                        <div style="margin:0.5rem 0;">
+                            <label style="font-size:0.85rem; color:#555;">Livreur :</label>
+                            <select class="select-livreur"
+                                    style="width:100%; margin-top:4px; padding:6px; border-radius:6px; border:1px solid #ddd;"
+                                    required>
+                                <option value="">-- Choisir un livreur --</option>
+                                <?php foreach ($livreurs as $l): ?>
+                                    <option value="<?= $l['id'] ?>"><?= htmlspecialchars($l['prenom'] . ' ' . $l['nom']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <button type="button"
+                                class="btn-statut btn-livraison btn-action-commande"
+                                data-action="assigner_livreur"
+                                data-commande-id="<?= $c['id'] ?>">
+                            🚴 Assigner et passer en livraison
+                        </button>
                     </div>
                 <?php endforeach; ?>
             </section>
 
             <!-- Colonne : En livraison -->
-            <section class="commandes-colonne">
+            <section class="commandes-colonne" id="colonne-en-livraison">
                 <div class="colonne-titre en-livraison">
-                    <h2>🚴 En livraison <span class="badge-count"><?= count($en_livraison) ?></span></h2>
+                    <h2>🚴 En livraison <span class="badge-count" data-count="en_livraison"><?= count($en_livraison) ?></span></h2>
                 </div>
 
-                <?php if (empty($en_livraison)): ?>
-                    <p style="padding:1rem; color:#888;">Aucune commande en livraison.</p>
-                <?php endif; ?>
+                <p class="vide-colonne" style="padding:1rem; color:#888; <?= empty($en_livraison) ? '' : 'display:none;' ?>">
+                    Aucune commande en livraison.
+                </p>
 
                 <?php foreach ($en_livraison as $c):
                     $client  = trouver_utilisateur_par_id($c['client_id']);
                     $livreur = trouver_utilisateur_par_id($c['livreur_id']);
                     $heure   = date('H:i', strtotime($c['date']));
                 ?>
-                    <div class="commande-card en-cours">
+                    <div class="commande-card en-cours" data-commande-id="<?= $c['id'] ?>">
                         <div class="commande-header">
                             <span class="commande-id">#<?= $c['id'] ?></span>
                             <span class="commande-heure"><?= $heure ?></span>
@@ -269,5 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['en_prep_id'])) {
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
+
+    <script src="js/commandes.js"></script>
 </body>
 </html>
