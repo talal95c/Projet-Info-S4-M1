@@ -108,34 +108,5 @@
             "commentaire_produits": "Délicieux, très frais",
             "date": "2026-04-03T13:00:00"
         }
-    },
-    {
-        "client_id": 1,
-        "livreur_id": null,
-        "articles": [
-            {
-                "menu_id": 3,
-                "quantite": 4
-            },
-            {
-                "menu_id": 2,
-                "quantite": 1
-            }
-        ],
-        "adresse_livraison": "15 rue des Fleurs, 75001 Paris",
-        "code_interphone": "A1234",
-        "etage": "3ème étage",
-        "telephone": "0612345678",
-        "commentaire": "",
-        "statut": "a_preparer",
-        "type_livraison": "maintenant",
-        "date_souhaitee": null,
-        "date": "2026-05-17T14:26:16",
-        "total": 120.79,
-        "paiement_effectue": true,
-        "transaction_id": "28f504648a014743CC12",
-        "avis": null,
-        "id": 1043,
-        "date_paiement": "2026-05-17T14:27:15"
     }
 ]
