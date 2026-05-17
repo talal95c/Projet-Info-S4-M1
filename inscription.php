@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="auth.css">
 </head>
-<body>
+<body class="auth-page">
     <main class="login-container">
         <header class="logo-section">
             <a href="index.php">

@@ -55,14 +55,51 @@ function verifier_connexion($roles = []) {
 }
 
 function nav_html($page_active = '') {
-    $logo = '<div class="logo">
+    $script_theme = "
+    <script>
+    (function() {
+        function getCookie(name) {
+            let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) return match[2];
+            return null;
+        }
+        let theme = getCookie('theme');
+        if (theme === 'dark') {
+            let link = document.createElement('link');
+            link.id = 'theme-dark';
+            link.rel = 'stylesheet';
+            link.href = 'dark.css';
+            document.head.appendChild(link);
+        }
+    })();
+    function toggleDarkMode() {
+        let link = document.getElementById('theme-dark');
+        if (link) {
+            link.remove();
+            document.cookie = 'theme=light; path=/; max-age=31536000';
+        } else {
+            let newLink = document.createElement('link');
+            newLink.id = 'theme-dark';
+            newLink.rel = 'stylesheet';
+            newLink.href = 'dark.css';
+            document.head.appendChild(newLink);
+            document.cookie = 'theme=dark; path=/; max-age=31536000';
+        }
+    }
+    </script>
+    ";
+
+    $btn_theme = '<button onclick="toggleDarkMode()" style="background:none; border:none; font-size:1.4rem; cursor:pointer; padding:5px; transition:transform 0.2s;" title="Changer de thème (Clair/Sombre)" onmouseover="this.style.transform=\'rotate(15deg)\'" onmouseout="this.style.transform=\'rotate(0deg)\'">🌗</button>';
+
+    $logo = '<div class="logo" style="display:flex; align-items:center; gap:15px;">
                 <a href="index.php">
                     <img src="image/lgoo.png" alt="Retour à l\'accueil">
                 </a>
+                ' . $btn_theme . '
              </div>';
 
     if (!est_connecte()) {
-        return '
+        return $script_theme . '
         <nav>
             ' . $logo . '
             <ul>
@@ -93,11 +130,13 @@ function nav_html($page_active = '') {
         $liens = '<li><a href="livraison.php">Ma Livraison</a></li>';
     }
 
-    return '
+    return $script_theme . '
         <nav>
             ' . $logo . '
             <ul>' . $liens . '</ul>
-            <span>Bonjour, ' . $prenom . ' | </span>
-            <a href="deconnexion.php" class="btn-connexion">Déconnexion</a>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <span style="font-weight:600; color:var(--text); font-size:0.95rem;">👋 Bonjour, ' . $prenom . '</span>
+                <a href="deconnexion.php" class="btn-deconnexion">Déconnexion</a>
+            </div>
         </nav>';
 }
