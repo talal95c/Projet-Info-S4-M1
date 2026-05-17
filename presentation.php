@@ -60,34 +60,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && est_connecte() && get_role() === 'c
     exit;
 }
 
-$menus = lire_json('menus.json');
-$menus = array_filter($menus, fn($m) => $m['disponible']);
+$tous_menus = lire_json('menus.json');
+$menus = [];
+foreach ($tous_menus as $m) {
+    if ($m['disponible']) {
+        $menus[] = $m;
+    }
+}
 
-$plats = lire_json('plats.json');
-$plats = array_filter($plats, fn($p) => $p['disponible']);
+$tous_plats = lire_json('plats.json');
+$plats = [];
+foreach ($tous_plats as $p) {
+    if ($p['disponible']) {
+        $plats[] = $p;
+    }
+}
 
-$categorie = trim($_GET['categorie'] ?? '');
-$regime    = trim($_GET['regime'] ?? '');
-$prix      = trim($_GET['prix'] ?? '');
-$recherche = trim($_GET['recherche'] ?? '');
+$categorie = isset($_GET['categorie']) ? trim($_GET['categorie']) : '';
+$regime    = isset($_GET['regime'])    ? trim($_GET['regime'])    : '';
+$prix      = isset($_GET['prix'])      ? trim($_GET['prix'])      : '';
+$recherche = isset($_GET['recherche']) ? trim($_GET['recherche']) : '';
 
 if ($categorie !== '') {
-    $plats = array_filter($plats, fn($p) => $p['categorie'] === $categorie);
+    $nouveaux_plats = [];
+    foreach ($plats as $p) {
+        if ($p['categorie'] === $categorie) $nouveaux_plats[] = $p;
+    }
+    $plats = $nouveaux_plats;
 }
 if ($regime !== '') {
-    $plats = array_filter($plats, fn($p) => in_array($regime, $p['tags']));
+    $nouveaux_plats = [];
+    foreach ($plats as $p) {
+        if (in_array($regime, $p['tags'])) $nouveaux_plats[] = $p;
+    }
+    $plats = $nouveaux_plats;
 }
 if ($prix !== '') {
-    if ($prix === '0-5')  $plats = array_filter($plats, fn($p) => $p['prix'] < 5);
-    elseif ($prix === '5-10')  $plats = array_filter($plats, fn($p) => $p['prix'] >= 5 && $p['prix'] <= 10);
-    elseif ($prix === '10-15') $plats = array_filter($plats, fn($p) => $p['prix'] > 10 && $p['prix'] <= 15);
-    elseif ($prix === '15+')   $plats = array_filter($plats, fn($p) => $p['prix'] > 15);
+    $nouveaux_plats = [];
+    foreach ($plats as $p) {
+        if ($prix === '0-5' && $p['prix'] < 5) $nouveaux_plats[] = $p;
+        elseif ($prix === '5-10' && $p['prix'] >= 5 && $p['prix'] <= 10) $nouveaux_plats[] = $p;
+        elseif ($prix === '10-15' && $p['prix'] > 10 && $p['prix'] <= 15) $nouveaux_plats[] = $p;
+        elseif ($prix === '15+' && $p['prix'] > 15) $nouveaux_plats[] = $p;
+    }
+    $plats = $nouveaux_plats;
 }
 if ($recherche !== '') {
-    $plats = array_filter($plats, fn($p) =>
-        stripos($p['nom'], $recherche) !== false ||
-        stripos($p['description'], $recherche) !== false
-    );
+    $nouveaux_plats = [];
+    foreach ($plats as $p) {
+        if (stripos($p['nom'], $recherche) !== false || stripos($p['description'], $recherche) !== false) {
+            $nouveaux_plats[] = $p;
+        }
+    }
+    $plats = $nouveaux_plats;
 }
 
 $nb_panier = 0;

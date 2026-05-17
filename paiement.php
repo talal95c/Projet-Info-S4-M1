@@ -80,12 +80,12 @@ $cybank_form = '';     // HTML du formulaire CY Bank à afficher
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $adresse_livraison = trim($_POST['adresse_livraison'] ?? $user['adresse']);
-    $code_interphone   = trim($_POST['code_interphone']   ?? $user['code_interphone']);
-    $etage             = trim($_POST['etage']             ?? $user['etage']);
-    $commentaire       = trim($_POST['commentaire']       ?? '');
-    $type_livraison    = $_POST['type_livraison']         ?? 'maintenant';
-    $date_souhaitee    = trim($_POST['date_souhaitee']    ?? '');
+    $adresse_livraison = isset($_POST['adresse_livraison']) ? trim($_POST['adresse_livraison']) : $user['adresse'];
+    $code_interphone   = isset($_POST['code_interphone'])   ? trim($_POST['code_interphone'])   : $user['code_interphone'];
+    $etage             = isset($_POST['etage'])             ? trim($_POST['etage'])             : $user['etage'];
+    $commentaire       = isset($_POST['commentaire'])       ? trim($_POST['commentaire'])       : '';
+    $type_livraison    = isset($_POST['type_livraison'])    ? $_POST['type_livraison']          : 'maintenant';
+    $date_souhaitee    = isset($_POST['date_souhaitee'])    ? trim($_POST['date_souhaitee'])    : '';
 
     if ($adresse_livraison === '') {
         $erreur = 'L\'adresse de livraison est obligatoire.';
@@ -94,12 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
 
         // Crée la commande en attente de paiement
-        $articles = array_map(function($l) {
+        $articles = [];
+        foreach ($lignes as $l) {
             if ($l['type'] === 'menu') {
-                return ['menu_id' => $l['item']['id'], 'quantite' => $l['quantite']];
+                $articles[] = ['menu_id' => $l['item']['id'], 'quantite' => $l['quantite']];
+            } else {
+                $articles[] = ['plat_id' => $l['item']['id'], 'quantite' => $l['quantite']];
             }
-            return ['plat_id' => $l['item']['id'], 'quantite' => $l['quantite']];
-        }, $lignes);
+        }
 
         $transaction_id = cybank_generer_transaction_id();
 

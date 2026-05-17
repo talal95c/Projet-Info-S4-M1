@@ -33,20 +33,32 @@ if (!isset($_SESSION['panier_menus'])) $_SESSION['panier_menus'] = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action  = $_POST['action'];
-    $plat_id = intval($_POST['plat_id'] ?? 0);
-    $menu_id = intval($_POST['menu_id'] ?? 0);
+    $plat_id = isset($_POST['plat_id']) ? intval($_POST['plat_id']) : 0;
+    $menu_id = isset($_POST['menu_id']) ? intval($_POST['menu_id']) : 0;
 
     if ($action === 'supprimer' && $plat_id) {
-        $_SESSION['panier'] = array_values(array_filter($_SESSION['panier'], fn($l) => $l['plat_id'] != $plat_id));
+        $nouveau_panier = [];
+        foreach ($_SESSION['panier'] as $l) {
+            if ($l['plat_id'] != $plat_id) $nouveau_panier[] = $l;
+        }
+        $_SESSION['panier'] = $nouveau_panier;
     }
     if ($action === 'supprimer_menu' && $menu_id) {
-        $_SESSION['panier_menus'] = array_values(array_filter($_SESSION['panier_menus'], fn($l) => $l['menu_id'] != $menu_id));
+        $nouveau_panier = [];
+        foreach ($_SESSION['panier_menus'] as $l) {
+            if ($l['menu_id'] != $menu_id) $nouveau_panier[] = $l;
+        }
+        $_SESSION['panier_menus'] = $nouveau_panier;
     }
 
     if ($action === 'modifier' && $plat_id) {
-        $qte = intval($_POST['quantite'] ?? 1);
+        $qte = isset($_POST['quantite']) ? intval($_POST['quantite']) : 1;
         if ($qte <= 0) {
-            $_SESSION['panier'] = array_values(array_filter($_SESSION['panier'], fn($l) => $l['plat_id'] != $plat_id));
+            $nouveau_panier = [];
+            foreach ($_SESSION['panier'] as $l) {
+                if ($l['plat_id'] != $plat_id) $nouveau_panier[] = $l;
+            }
+            $_SESSION['panier'] = $nouveau_panier;
         } else {
             foreach ($_SESSION['panier'] as &$ligne) {
                 if ($ligne['plat_id'] == $plat_id) { $ligne['quantite'] = $qte; break; }
@@ -54,9 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     }
     if ($action === 'modifier_menu' && $menu_id) {
-        $qte = intval($_POST['quantite'] ?? 1);
+        $qte = isset($_POST['quantite']) ? intval($_POST['quantite']) : 1;
         if ($qte <= 0) {
-            $_SESSION['panier_menus'] = array_values(array_filter($_SESSION['panier_menus'], fn($l) => $l['menu_id'] != $menu_id));
+            $nouveau_panier = [];
+            foreach ($_SESSION['panier_menus'] as $l) {
+                if ($l['menu_id'] != $menu_id) $nouveau_panier[] = $l;
+            }
+            $_SESSION['panier_menus'] = $nouveau_panier;
         } else {
             foreach ($_SESSION['panier_menus'] as &$ligne) {
                 if ($ligne['menu_id'] == $menu_id) { $ligne['quantite'] = $qte; break; }

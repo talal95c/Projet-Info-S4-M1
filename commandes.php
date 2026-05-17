@@ -39,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commande_id'], $_POST
 }
 
 $tous_utilisateurs = lire_json('utilisateurs.json');
-$livreurs = array_filter($tous_utilisateurs, fn($u) => $u['role'] === 'livreur' && $u['actif']);
+$livreurs = [];
+foreach ($tous_utilisateurs as $u) {
+    if ($u['role'] === 'livreur' && $u['actif']) {
+        $livreurs[] = $u;
+    }
+}
 
 // Charger les commandes et les trier par statut.
 // Phase 3 : ajout du statut intermédiaire "prete" entre "a_preparer"
@@ -101,10 +106,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
 
         <!-- Données livreurs disponibles pour le JS (utilisé lors de l'assignation) -->
         <script type="application/json" id="data-livreurs">
-            <?= json_encode(array_map(
-                fn($l) => ['id' => $l['id'], 'nom' => $l['prenom'] . ' ' . $l['nom']],
-                array_values($livreurs)
-            )) ?>
+            <?php
+            $livreurs_simplifies = [];
+            foreach ($livreurs as $l) {
+                $livreurs_simplifies[] = ['id' => $l['id'], 'nom' => $l['prenom'] . ' ' . $l['nom']];
+            }
+            echo json_encode($livreurs_simplifies);
+            ?>
         </script>
 
         <div class="commandes-container">

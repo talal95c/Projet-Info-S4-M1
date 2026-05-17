@@ -14,8 +14,8 @@
         "statut": "gold",
         "date_inscription": "2025-01-10",
         "actif": true,
-        "remise": 6,
-        "date_derniere_connexion": "2026-05-17T20:54:25"
+        "remise": 100,
+        "date_derniere_connexion": "2026-05-17T21:17:16"
     },
     {
         "id": 2,
@@ -95,7 +95,8 @@
         "points_fidelite": 0,
         "statut": "admin",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:18:33"
     },
     {
         "id": 7,
@@ -127,7 +128,8 @@
         "points_fidelite": 0,
         "statut": "staff",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:18:54"
     },
     {
         "id": 9,
@@ -143,7 +145,8 @@
         "points_fidelite": 0,
         "statut": "staff",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:17:42"
     },
     {
         "login": "DQSDQ@F.M",
