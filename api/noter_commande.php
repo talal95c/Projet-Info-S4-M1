@@ -50,7 +50,7 @@ if ($note_produits < 1 || $note_produits > 5) {
     echo json_encode(['succes' => false, 'message' => 'La note des produits doit être entre 1 et 5.']);
     exit;
 }
-if (mb_strlen($commentaire_livraison) > 500 || mb_strlen($commentaire_produits) > 500) {
+if (strlen($commentaire_livraison) > 500 || strlen($commentaire_produits) > 500) {
     echo json_encode(['succes' => false, 'message' => 'Commentaire trop long (max 500 caractères).']);
     exit;
 }

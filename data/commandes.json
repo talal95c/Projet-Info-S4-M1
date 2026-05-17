@@ -53,11 +53,12 @@
         "etage": "2ème étage",
         "telephone": "0711223344",
         "commentaire": "Sonner à l'interphone",
-        "statut": "en_livraison",
+        "statut": "abandonnee",
         "date": "2026-04-03T12:28:00",
         "total": 36.2,
         "paiement_effectue": true,
-        "avis": null
+        "avis": null,
+        "date_fin": "2026-05-17T21:58:58"
     },
     {
         "id": 1042,

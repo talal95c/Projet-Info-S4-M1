@@ -312,7 +312,7 @@ $mode_edition = isset($_GET['edit']);
                                 <?php elseif ($c['statut'] === 'abandonnee'): ?>
                                     <span class="commande-statut" style="color:#dc3545;">❌ Abandonnée</span>
                                 <?php elseif ($c['statut'] === 'a_preparer' || $c['statut'] === 'en_attente'): ?>
-                                    <span class="commande-statut">🍽️ <?= $c['statut'] === 'en_attente' ? 'Programmée' : 'En préparation' ?></span>
+                                    <span class="commande-statut">📝 <?= $c['statut'] === 'en_attente' ? 'Programmée' : 'Validée (À préparer)' ?></span>
                                     <?php if (!empty($c['paiement_effectue'])): ?>
                                         <!-- Phase 3 : seule la commande payée mais pas encore en cuisine
                                              peut être modifiée (cf. sujet + règle prof "un seul paiement"). -->
@@ -321,8 +321,13 @@ $mode_edition = isset($_GET['edit']);
                                             ✏️ Modifier
                                         </a>
                                     <?php endif; ?>
+                                <?php elseif ($c['statut'] === 'en_preparation'): ?>
+                                    <span class="commande-statut" style="background:#fff3cd; color:#856404;">👨‍🍳 En préparation</span>
                                 <?php elseif ($c['statut'] === 'paiement_refuse'): ?>
                                     <span class="commande-statut" style="color:#dc3545;">❌ Paiement refusé</span>
+                                <?php elseif ($c['statut'] === 'en_attente_paiement'): ?>
+                                    <span class="commande-statut" style="background:#fff3cd; color:#856404;">⏳ En attente de paiement</span>
+                                    <a href="paiement.php?commande_id=<?= $c['id'] ?>" class="btn-voir" style="font-size:0.8rem; background:#3da874;">💳 Payer</a>
                                 <?php else: ?>
                                     <span class="commande-statut">🍽️ <?= htmlspecialchars($c['statut']) ?></span>
                                 <?php endif; ?>

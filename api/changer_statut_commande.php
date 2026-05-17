@@ -42,7 +42,7 @@ if ($commande_id <= 0) {
     exit;
 }
 
-$actions_autorisees = ['demarrer_preparation', 'marquer_prete', 'assigner_livreur'];
+$actions_autorisees = ['demarrer_preparation', 'mettre_en_preparation', 'marquer_prete', 'assigner_livreur'];
 if (!in_array($action, $actions_autorisees, true)) {
     echo json_encode(['succes' => false, 'message' => 'Action invalide.']);
     exit;
@@ -60,9 +60,10 @@ if (!$commande) {
 }
 
 $transitions = [
-    'demarrer_preparation' => ['de' => 'en_attente', 'vers' => 'a_preparer',  'libelle' => 'préparation démarrée'],
-    'marquer_prete'        => ['de' => 'a_preparer', 'vers' => 'prete',       'libelle' => 'marquée prête'],
-    'assigner_livreur'     => ['de' => 'prete',      'vers' => 'en_livraison','libelle' => 'assignée et passée en livraison'],
+    'demarrer_preparation'  => ['de' => 'en_attente',     'vers' => 'a_preparer',      'libelle' => 'préparation démarrée'],
+    'mettre_en_preparation' => ['de' => 'a_preparer',     'vers' => 'en_preparation',  'libelle' => 'mise en préparation'],
+    'marquer_prete'         => ['de' => 'en_preparation', 'vers' => 'prete',           'libelle' => 'marquée prête'],
+    'assigner_livreur'      => ['de' => 'prete',          'vers' => 'en_livraison',    'libelle' => 'assignée et passée en livraison'],
 ];
 
 $t = $transitions[$action];
