@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="auth.css">
     <script src="js/theme.js"></script>
 </head>
-<body>
+<body class="auth-body">
     <main class="login-container">
         <header class="logo-section">
             <a href="index.php">

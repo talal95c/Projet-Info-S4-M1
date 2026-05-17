@@ -15,7 +15,7 @@
         "date_inscription": "2025-01-10",
         "actif": true,
         "remise": 100,
-        "date_derniere_connexion": "2026-05-17T21:20:27"
+        "date_derniere_connexion": "2026-05-17T21:54:43"
     },
     {
         "id": 2,
@@ -163,7 +163,8 @@
         "date_inscription": "2026-04-05",
         "actif": true,
         "id": 10
-    }{
+    },
+    {
         "login": "abdelchakour2@gmail.com",
         "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "client",
