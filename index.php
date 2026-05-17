@@ -3,6 +3,9 @@
  * index.php
  * ---------------------------------------------------------------
  * Page d'accueil du site L'Île au Fruit.
+
+
+ 
  *
  * Page statique (pas de formulaire POST) qui présente le concept
  * du restaurant, une barre de recherche qui redirige vers
