@@ -104,6 +104,8 @@ function nav_html($page_active = '') {
             ' . $logo . '
             <ul>
                 <li><a href="presentation.php">Menu</a></li>
+                <li><a href="panier.php">🛒 Panier</a></li>
+                <li><a href="profil.php">Mon Profil</a></li>
                 <li><a href="avis.php">Avis</a></li>
             </ul>
             <div class="nav-actions">

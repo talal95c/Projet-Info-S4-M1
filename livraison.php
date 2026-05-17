@@ -89,39 +89,39 @@ foreach (lire_json('commandes.json') as $c) {
             </section>
 
             <section class="livraison-infos">
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>📍 Adresse</h2>
                     <p><?= htmlspecialchars($commande_en_cours['adresse_livraison']) ?></p>
                 </div>
 
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>🔑 Code interphone</h2>
                     <p><?= htmlspecialchars($commande_en_cours['code_interphone']) ?: 'Aucun' ?></p>
                 </div>
 
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>🏢 Étage</h2>
                     <p><?= htmlspecialchars($commande_en_cours['etage']) ?: 'Non précisé' ?></p>
                 </div>
 
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>📞 Téléphone</h2>
                     <p><?= htmlspecialchars($commande_en_cours['telephone']) ?></p>
                 </div>
 
                 <?php if ($commande_en_cours['commentaire']): ?>
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>💬 Commentaires</h2>
                     <p><?= htmlspecialchars($commande_en_cours['commentaire']) ?></p>
                 </div>
                 <?php endif; ?>
 
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>🛍️ Articles</h2>
                     <p><?= noms_articles($commande_en_cours['articles']) ?></p>
                 </div>
 
-                <div class="info-card">
+                <div class="info-card card">
                     <h2>💰 Total</h2>
                     <p><?= number_format($commande_en_cours['total'], 2, ',', ' ') ?> €</p>
                 </div>
@@ -156,7 +156,7 @@ foreach (lire_json('commandes.json') as $c) {
             </section>
 
             <section class="livraison-infos">
-                <div class="info-card" style="grid-column:1/-1; text-align:center; padding:3rem;">
+                <div class="info-card card" style="grid-column:1/-1; text-align:center; padding:3rem;">
                     <h2>😴 Aucune livraison en cours</h2>
                     <p>Vous n'avez pas de commande assignée pour le moment.</p>
                 </div>

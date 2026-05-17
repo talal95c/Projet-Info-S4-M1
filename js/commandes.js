@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function trouverColonneParStatut(statut) {
         if (statut === 'a_preparer')   return document.querySelector('#colonne-a-preparer');
+        if (statut === 'en_preparation') return document.querySelector('#colonne-en-preparation');
         if (statut === 'prete')        return document.querySelector('#colonne-prete');
         if (statut === 'en_livraison') return document.querySelector('#colonne-en-livraison');
         return null;
@@ -137,6 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const commandeId = carte.dataset.commandeId;
 
         if (statut === 'a_preparer') {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-statut btn-action-commande';
+            btn.style.background = '#ffc107';
+            btn.style.color = '#333';
+            btn.style.marginTop = '0.5rem';
+            btn.dataset.action = 'mettre_en_preparation';
+            btn.dataset.commandeId = commandeId;
+            btn.textContent = '▶ Mettre en préparation';
+            btn.addEventListener('click', () => declencherAction(btn));
+            carte.appendChild(btn);
+
+        } else if (statut === 'en_preparation') {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'btn-statut btn-action-commande';

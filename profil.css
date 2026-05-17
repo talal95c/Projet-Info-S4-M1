@@ -1,3 +1,11 @@
+/*
+ * profil.css
+ * ---------------------------------------------------------------
+ * Styles pour la page de profil client.
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 main {
     max-width: 1100px;
     margin: 0 auto;

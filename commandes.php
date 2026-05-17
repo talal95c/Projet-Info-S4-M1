@@ -39,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['commande_id'], $_POST
 }
 
 $tous_utilisateurs = lire_json('utilisateurs.json');
-$livreurs = array_filter($tous_utilisateurs, fn($u) => $u['role'] === 'livreur' && $u['actif']);
+$livreurs = [];
+foreach ($tous_utilisateurs as $u) {
+    if ($u['role'] === 'livreur' && $u['actif']) {
+        $livreurs[] = $u;
+    }
+}
 
 // Charger les commandes et les trier par statut.
 // Phase 3 : ajout du statut intermédiaire "prete" entre "a_preparer"

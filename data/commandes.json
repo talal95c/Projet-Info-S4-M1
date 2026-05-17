@@ -22,7 +22,13 @@
         "date": "2026-04-03T12:15:00",
         "total": 15.4,
         "paiement_effectue": true,
-        "avis": null
+        "avis": {
+            "note_livraison": 5,
+            "commentaire_livraison": "dsqdq",
+            "note_produits": 5,
+            "commentaire_produits": "sqdqsdq",
+            "date": "2026-05-17 21:23:32"
+        }
     },
     {
         "id": 1041,
@@ -108,5 +114,62 @@
             "commentaire_produits": "Délicieux, très frais",
             "date": "2026-04-03T13:00:00"
         }
+    },
+    {
+        "client_id": 1,
+        "livreur_id": null,
+        "articles": [
+            {
+                "plat_id": 1,
+                "quantite": 1
+            },
+            {
+                "menu_id": 2,
+                "quantite": 1
+            },
+            {
+                "menu_id": 1,
+                "quantite": 1
+            }
+        ],
+        "adresse_livraison": "15 rue des Fleurs, 75001 Paris",
+        "code_interphone": "A1234",
+        "etage": "3ème étage",
+        "telephone": "0612345678",
+        "commentaire": "",
+        "statut": "a_preparer",
+        "type_livraison": "maintenant",
+        "date_souhaitee": null,
+        "date": "2026-05-17T20:55:58",
+        "total": 37.32,
+        "paiement_effectue": true,
+        "transaction_id": "082ea26d74db2b207619",
+        "avis": null,
+        "id": 1043,
+        "date_paiement": "2026-05-17T20:56:36"
+    },
+    {
+        "client_id": 1,
+        "livreur_id": null,
+        "articles": [
+            {
+                "menu_id": 3,
+                "quantite": 1
+            }
+        ],
+        "adresse_livraison": "15 rue des Fleurs, 75001 Paris",
+        "code_interphone": "A1234",
+        "etage": "3ème étage",
+        "telephone": "0612345678",
+        "commentaire": "",
+        "statut": "en_attente_paiement",
+        "type_livraison": "maintenant",
+        "date_souhaitee": null,
+        "date": "2026-05-17T21:15:47",
+        "total": 26.23,
+        "paiement_effectue": false,
+        "transaction_id": "83b909999eeeb320DD70",
+        "avis": null,
+        "id": 1044
     }
 ]

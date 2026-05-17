@@ -1,3 +1,11 @@
+/*
+ * commandes.css
+ * ---------------------------------------------------------------
+ * Styles pour l'affichage et la gestion des commandes.
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 .commandes-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;   /* 3 colonnes : à préparer / prête / en livraison (phase 3) */

@@ -1,0 +1,34 @@
+========================================
+LOGS DE CONNEXION - L'ÎLE AU FRUIT
+========================================
+
+Voici les identifiants pour tester les différents types de comptes sur la plateforme :
+
+1. COMPTES CLIENTS (Accès au Panier, Profil, Commandes)
+------------------------------------------------------
+Email : marie.dupont@email.fr
+Mot de passe : client123
+
+Email : douglas.costa@email.com
+Mot de passe : client123
+
+2. COMPTES ADMINISTRATEUR (Gestion complète)
+------------------------------------------------------
+Email : admin@ileaufruit.fr
+Mot de passe : admin123
+
+Email : admin2@ileaufruit.fr
+Mot de passe : admin123
+
+3. COMPTE RESTAURATEUR (Gestion des commandes côté cuisine)
+------------------------------------------------------
+Email : restaurateur@ileaufruit.fr
+Mot de passe : restaurateur123
+
+4. COMPTE LIVREUR (Gestion des livraisons)
+------------------------------------------------------
+Email : livreur@ileaufruit.fr
+Mot de passe : livreur123
+
+
+Note : Tous les mots de passe ont été vérifiés ou réinitialisés pour correspondre à ces accès.

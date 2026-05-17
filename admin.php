@@ -70,8 +70,15 @@ foreach ($commandes as $c) {
 }
 
 $total_users = count($utilisateurs);
-$clients     = array_filter($utilisateurs, fn($u) => $u['role'] === 'client');
-$nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('Y-m-01'));
+$clients = [];
+foreach ($utilisateurs as $u) {
+    if ($u['role'] === 'client') $clients[] = $u;
+}
+
+$nouveaux = [];
+foreach ($clients as $u) {
+    if ($u['date_inscription'] >= date('Y-m-01')) $nouveaux[] = $u;
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">

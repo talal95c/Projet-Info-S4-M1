@@ -10,11 +10,12 @@
         "adresse": "15 rue des Fleurs, 75001 Paris",
         "code_interphone": "A1234",
         "etage": "3ème étage",
-        "points_fidelite": 230,
+        "points_fidelite": 267,
         "statut": "gold",
         "date_inscription": "2025-01-10",
         "actif": true,
-        "remise": 6
+        "remise": 100,
+        "date_derniere_connexion": "2026-05-17T21:20:27"
     },
     {
         "id": 2,
@@ -94,7 +95,8 @@
         "points_fidelite": 0,
         "statut": "admin",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:18:33"
     },
     {
         "id": 7,
@@ -126,7 +128,8 @@
         "points_fidelite": 0,
         "statut": "staff",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:18:54"
     },
     {
         "id": 9,
@@ -142,7 +145,8 @@
         "points_fidelite": 0,
         "statut": "staff",
         "date_inscription": "2024-01-01",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:17:42"
     },
     {
         "login": "DQSDQ@F.M",
