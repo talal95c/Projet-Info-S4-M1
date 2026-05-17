@@ -22,7 +22,13 @@
         "date": "2026-04-03T12:15:00",
         "total": 15.4,
         "paiement_effectue": true,
-        "avis": null
+        "avis": {
+            "note_livraison": 5,
+            "commentaire_livraison": "dsqdq",
+            "note_produits": 5,
+            "commentaire_produits": "sqdqsdq",
+            "date": "2026-05-17 21:23:32"
+        }
     },
     {
         "id": 1041,

@@ -45,7 +45,7 @@ if ($commande['client_id'] !== $_SESSION['user_id']) {
     exit;
 }
 
-if ($commande['statut'] !== 'en_attente') {
+if (!in_array($commande['statut'], ['en_attente', 'a_preparer'])) {
     http_response_code(403);
     echo json_encode(['succes' => false, 'message' => 'La commande ne peut plus être modifiée (déjà en préparation)']);
     exit;
@@ -69,6 +69,8 @@ $remise = intval($user['remise'] ?? 0);
 if ($remise > 0) {
     $nouveau_total = $nouveau_total * (1 - $remise / 100);
 }
+
+$nouveau_total = round($nouveau_total, 2);
 
 if ($nouveau_total > $commande['total']) {
     http_response_code(403);
