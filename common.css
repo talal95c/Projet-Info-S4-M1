@@ -1,3 +1,11 @@
+/*
+ * common.css
+ * ---------------------------------------------------------------
+ * Feuille de style globale (variables, navbar, footer, boutons globaux).
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
@@ -108,6 +116,24 @@ nav .btn-deconnexion {
 nav .btn-deconnexion:hover {
     transform: scale(1.05);
     background-color: #a93226;
+}
+
+.btn-voir {
+    background-color: #ffd900;
+    color: #4d3d00;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-voir:hover {
+    transform: scale(1.05);
 }
 
 .page-header {

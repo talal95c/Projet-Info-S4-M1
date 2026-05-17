@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($cybank_form !== ''): ?>
 
             <!-- ÉTAPE 2 : redirection vers CY Bank -------------------- -->
-            <div style="background:white; border-radius:16px; padding:2.5rem; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.08);">
+            <div class="card" style="border-radius:16px; padding:2.5rem; text-align:center;">
                 <div style="font-size:3rem; margin-bottom:1rem;">🔒</div>
                 <h1 style="color:#015a17;">Paiement sécurisé</h1>
                 <p style="color:#555; margin:1rem 0;">
@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <!-- Récapitulatif -->
-            <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+            <div class="card" style="border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
                 <h2 style="margin:0 0 1rem;">📋 Récapitulatif</h2>
                 <?php foreach ($lignes as $l): ?>
                 <div style="display:flex; justify-content:space-between; padding:0.4rem 0; border-bottom:1px solid #f5f5f5; font-size:0.95rem;">
@@ -223,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form id="form-paiement" method="POST" action="paiement.php" novalidate>
 
                 <!-- Quand souhaitez-vous être livré ? -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+                <div class="card" style="border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
                     <h2 style="margin:0 0 1rem;">🕐 Quand souhaitez-vous être livré ?</h2>
                     <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
                         <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:600;">
@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <!-- Adresse de livraison -->
-                <div style="background:white; border-radius:12px; padding:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:1.5rem;">
+                <div class="card" style="border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
                     <h2 style="margin:0 0 1rem;">📍 Adresse de livraison</h2>
                     <div class="form-group">
                         <label>Adresse *</label>

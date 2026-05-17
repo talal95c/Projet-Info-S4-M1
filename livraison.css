@@ -1,3 +1,11 @@
+/*
+ * livraison.css
+ * ---------------------------------------------------------------
+ * Styles pour l'interface du livreur.
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 .livraison-infos {
     max-width: 600px;
     margin: 0 auto;

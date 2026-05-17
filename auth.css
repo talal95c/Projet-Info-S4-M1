@@ -1,3 +1,11 @@
+/*
+ * auth.css
+ * ---------------------------------------------------------------
+ * Styles pour les pages d'authentification (connexion, inscription).
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 .auth-body {
     display: flex;
     justify-content: center;

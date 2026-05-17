@@ -1,3 +1,11 @@
+/*
+ * avis.css
+ * ---------------------------------------------------------------
+ * Styles pour la page des avis clients.
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 .avis-main {
     max-width: 600px;
     margin: 40px auto 60px;

@@ -1,3 +1,11 @@
+/*
+ * admin.css
+ * ---------------------------------------------------------------
+ * Styles pour la page d'administration (statistiques, utilisateurs).
+ * Utilité : Ce fichier est chargé automatiquement lorsque la page
+ * correspondante en a besoin pour assurer l'affichage ou l'interactivité.
+ */
+
 .stats-section {
     padding: 20px;
     max-width: 1200px;
