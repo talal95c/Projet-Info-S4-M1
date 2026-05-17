@@ -26,6 +26,7 @@ require_once 'includes/session.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="index.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
 
