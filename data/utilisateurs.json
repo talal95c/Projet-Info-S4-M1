@@ -83,7 +83,7 @@
     {
         "id": 6,
         "login": "admin@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$sxkV4l1mSO\/oZpfFAFOhLO4MixM1j.i5dn.spTb837JXyRNDhqyM6",
+        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Principal",
@@ -99,7 +99,7 @@
     {
         "id": 7,
         "login": "admin2@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$Isp\/hOMCD2UlBuIvQUGqY.F\/\/TD0kDsVGnFcHe7kYFC8fPc2Ldfvu",
+        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Second",
@@ -115,7 +115,7 @@
     {
         "id": 8,
         "login": "restaurateur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$79oNBTVxYvgTHFjVk3gXA.Yqh.BY3TYcd8NaIlvBvkWZKgB1cSx\/W",
+        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "restaurateur",
         "nom": "Dupuis",
         "prenom": "Jean",
@@ -131,7 +131,7 @@
     {
         "id": 9,
         "login": "livreur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$te04HSQcf6xHSU1VE1ztDekNQCl9DrlMsgTPCWfpL8w3xUswtPj6.",
+        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "livreur",
         "nom": "Bernard",
         "prenom": "Lucas",
