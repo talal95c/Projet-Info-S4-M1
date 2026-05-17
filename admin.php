@@ -28,6 +28,10 @@ verifier_connexion(['admin']);
 
 $message = '';
 
+// Phase 3 : le bloquer/débloquer est maintenant traité en AJAX
+// via api/bloquer_utilisateur.php (cf. js/admin.js). On laisse
+// quand même le traitement PHP en fallback pour les éventuels
+// utilisateurs sans JS.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_user_id'])) {
     $id   = intval($_POST['toggle_user_id']);
     $user = trouver_utilisateur_par_id($id);
@@ -80,6 +84,7 @@ $nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="admin.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <header>
@@ -97,6 +102,11 @@ $nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('
                 ✅ <?= htmlspecialchars($message) ?>
             </p>
         <?php endif; ?>
+
+        <!-- Bandeau de feedback AJAX (blocage/déblocage) -->
+        <div id="admin-feedback" class="admin-feedback" style="display:none;
+             max-width:900px; margin:1rem auto; padding:0.8rem 1.5rem;
+             border-radius:8px; text-align:center; font-weight:500;"></div>
 
         <section class="stats-section">
             <div class="stats-grid">
@@ -132,7 +142,7 @@ $nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('
                 </thead>
                 <tbody>
                     <?php foreach ($utilisateurs as $u): ?>
-                    <tr <?= !$u['actif'] ? 'style="opacity:0.5;"' : '' ?>>
+                    <tr class="user-row <?= !$u['actif'] ? 'user-bloque' : '' ?>" data-user-id="<?= $u['id'] ?>">
                         <td><?= htmlspecialchars($u['prenom'] . ' ' . $u['nom']) ?></td>
                         <td><?= htmlspecialchars($u['login']) ?></td>
                         <td><?= htmlspecialchars($u['role']) ?></td>
@@ -182,16 +192,15 @@ $nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('
                             <?php endif; ?>
                         </td>
 
-                        <!-- Bloquer / Activer -->
+                        <!-- Bloquer / Débloquer (en AJAX, phase 3) -->
                         <td>
                             <?php if ($u['id'] != $_SESSION['user_id']): ?>
-                            <form method="POST" action="admin.php" style="display:inline;">
-                                <input type="hidden" name="toggle_user_id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn-voir"
-                                    onclick="return confirm('<?= $u['actif'] ? 'Bloquer' : 'Activer' ?> cet utilisateur ?')">
-                                    <?= $u['actif'] ? '🔒 Bloquer' : '✅ Activer' ?>
+                                <!-- Le bouton est en AJAX (fetch). Il n'y a plus de form POST. -->
+                                <button type="button"
+                                        class="btn-voir btn-toggle-actif <?= $u['actif'] ? 'btn-bloquer' : 'btn-debloquer' ?>"
+                                        data-user-id="<?= $u['id'] ?>">
+                                    <?= $u['actif'] ? '🚫 Bloquer' : '✅ Débloquer' ?>
                                 </button>
-                            </form>
                             <?php else: ?>
                                 <em style="color:#aaa;">Vous</em>
                             <?php endif; ?>
@@ -207,5 +216,7 @@ $nouveaux    = array_filter($clients, fn($u) => $u['date_inscription'] >= date('
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
+
+    <script src="js/admin.js"></script>
 </body>
 </html>

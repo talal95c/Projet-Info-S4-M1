@@ -63,6 +63,7 @@ foreach (lire_json('commandes.json') as $c) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="livraison.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <header>
@@ -77,9 +78,12 @@ foreach (lire_json('commandes.json') as $c) {
             </p>
         <?php endif; ?>
 
+        <!-- Bandeau de feedback AJAX (succès / erreur) -->
+        <div id="livraison-feedback" class="message" style="display:none; margin:1rem; padding:1rem; border-radius:8px; text-align:center; font-weight:600;"></div>
+
         <?php if ($commande_en_cours): ?>
 
-            <section class="page-header">
+            <section class="page-header" id="bloc-commande" data-commande-id="<?= $commande_en_cours['id'] ?>">
                 <h1>Livraison #<?= $commande_en_cours['id'] ?></h1>
                 <h3>Commande en cours</h3>
             </section>
@@ -123,30 +127,26 @@ foreach (lire_json('commandes.json') as $c) {
                 </div>
             </section>
 
-            <section class="livraison-boutons">
+            <section class="livraison-boutons" id="bloc-boutons">
                 <?php $adresse_url = urlencode($commande_en_cours['adresse_livraison']); ?>
                 <a href="https://www.google.com/maps/search/?api=1&query=<?= $adresse_url ?>" class="btn-maps" target="_blank">📍 Ouvrir dans Maps</a>
                 <a href="https://waze.com/ul?q=<?= $adresse_url ?>" class="btn-waze" target="_blank">🚗 Ouvrir dans Waze</a>
 
-                <!-- Bouton : Livraison terminée -->
-                <form method="POST" action="livraison.php" style="display:inline;">
-                    <input type="hidden" name="action" value="livree">
-                    <input type="hidden" name="commande_id" value="<?= $commande_en_cours['id'] ?>">
-                    <button type="submit" class="btn-livree"
-                        onclick="return confirm('Confirmer la livraison ?')">
-                        ✅ Livraison terminée
-                    </button>
-                </form>
+                <!-- Bouton AJAX : Livraison terminée -->
+                <button type="button"
+                        class="btn-livree btn-action-livraison"
+                        data-action="livree"
+                        data-commande-id="<?= $commande_en_cours['id'] ?>">
+                    ✅ Livraison terminée
+                </button>
 
-                <!-- Bouton : Livraison abandonnée -->
-                <form method="POST" action="livraison.php" style="display:inline;">
-                    <input type="hidden" name="action" value="abandonnee">
-                    <input type="hidden" name="commande_id" value="<?= $commande_en_cours['id'] ?>">
-                    <button type="submit" class="btn-abandonnee"
-                        onclick="return confirm('Marquer cette livraison comme abandonnée (adresse introuvable) ?')">
-                        ❌ Livraison abandonnée
-                    </button>
-                </form>
+                <!-- Bouton AJAX : Livraison abandonnée -->
+                <button type="button"
+                        class="btn-abandonnee btn-action-livraison"
+                        data-action="abandonnee"
+                        data-commande-id="<?= $commande_en_cours['id'] ?>">
+                    ❌ Livraison abandonnée
+                </button>
             </section>
 
         <?php else: ?>
@@ -169,5 +169,7 @@ foreach (lire_json('commandes.json') as $c) {
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
+
+    <script src="js/livraison.js"></script>
 </body>
 </html>

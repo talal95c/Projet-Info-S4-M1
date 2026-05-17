@@ -10,11 +10,12 @@
         "adresse": "15 rue des Fleurs, 75001 Paris",
         "code_interphone": "A1234",
         "etage": "3ème étage",
-        "points_fidelite": 230,
+        "points_fidelite": 267,
         "statut": "gold",
         "date_inscription": "2025-01-10",
         "actif": true,
-        "remise": 6
+        "remise": 6,
+        "date_derniere_connexion": "2026-05-17T20:54:25"
     },
     {
         "id": 2,
@@ -115,7 +116,7 @@
     {
         "id": 8,
         "login": "restaurateur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$79oNBTVxYvgTHFjVk3gXA.Yqh.BY3TYcd8NaIlvBvkWZKgB1cSx\/W",
+        "mot_de_passe": "$2y$10$PSkrPwXJCD89yDEQF3JLaeutD3N2eFyQEQPZXVm4IXg2vVx6o4Laq",
         "role": "restaurateur",
         "nom": "Dupuis",
         "prenom": "Jean",

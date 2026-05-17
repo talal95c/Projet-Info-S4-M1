@@ -7,6 +7,7 @@
  *
  * Fonctions disponibles :
  *   est_connecte()              → retourne true si un utilisateur est connecté
+ *                                  ET que son compte est encore actif
  *   get_role()                  → retourne le rôle de l'utilisateur connecté (string)
  *   creer_session($utilisateur) → initialise la session après une connexion réussie
  *   detruire_session()          → vide et détruit la session (déconnexion)
@@ -16,11 +17,41 @@
  *                                  le rôle : visiteur, client, admin, restaurateur,
  *                                  livreur. Le paramètre $page_active permet de
  *                                  marquer le lien courant comme actif.
+ *
+ * Phase 3 — Déconnexion immédiate d'un utilisateur bloqué :
+ *   À chaque chargement de page, on vérifie que le compte de
+ *   l'utilisateur connecté est toujours actif. S'il a été bloqué
+ *   par un admin depuis la dernière requête, sa session est
+ *   immédiatement détruite (cf. verifier_session_active).
  */
+
+require_once __DIR__ . '/data.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+/**
+ * Vérifie que l'utilisateur connecté n'a pas été bloqué par un
+ * admin entre temps. Si c'est le cas, la session est détruite
+ * sur-le-champ (cf. consigne phase 3).
+ *
+ * Appelée automatiquement à l'inclusion de session.php pour
+ * couvrir TOUTES les pages du site. Aucun effet pour les visiteurs
+ * non connectés.
+ */
+function verifier_session_active() {
+    if (!isset($_SESSION['user_id'])) return;
+
+    $user = trouver_utilisateur_par_id($_SESSION['user_id']);
+    if (!$user || empty($user['actif'])) {
+        // Compte introuvable OU bloqué → on coupe immédiatement
+        detruire_session();
+    }
+}
+
+// Vérification automatique pour chaque page incluant session.php
+verifier_session_active();
 
 function est_connecte() {
     return isset($_SESSION['user_id']);
@@ -55,58 +86,32 @@ function verifier_connexion($roles = []) {
 }
 
 function nav_html($page_active = '') {
-    $script_theme = "
-    <script>
-    (function() {
-        function getCookie(name) {
-            let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-            if (match) return match[2];
-            return null;
-        }
-        let theme = getCookie('theme');
-        if (theme === 'dark') {
-            let link = document.createElement('link');
-            link.id = 'theme-dark';
-            link.rel = 'stylesheet';
-            link.href = 'dark.css';
-            document.head.appendChild(link);
-        }
-    })();
-    function toggleDarkMode() {
-        let link = document.getElementById('theme-dark');
-        if (link) {
-            link.remove();
-            document.cookie = 'theme=light; path=/; max-age=31536000';
-        } else {
-            let newLink = document.createElement('link');
-            newLink.id = 'theme-dark';
-            newLink.rel = 'stylesheet';
-            newLink.href = 'dark.css';
-            document.head.appendChild(newLink);
-            document.cookie = 'theme=dark; path=/; max-age=31536000';
-        }
-    }
-    </script>
-    ";
-
-    $btn_theme = '<button onclick="toggleDarkMode()" style="background:none; border:none; font-size:1.4rem; cursor:pointer; padding:5px; transition:transform 0.2s;" title="Changer de thème (Clair/Sombre)" onmouseover="this.style.transform=\'rotate(15deg)\'" onmouseout="this.style.transform=\'rotate(0deg)\'">🌗</button>';
-
-    $logo = '<div class="logo" style="display:flex; align-items:center; gap:15px;">
+    $logo = '<div class="logo">
                 <a href="index.php">
                     <img src="image/lgoo.png" alt="Retour à l\'accueil">
                 </a>
-                ' . $btn_theme . '
              </div>';
 
+    // Bouton de bascule de thème (phase 3) — visible sur toutes les pages.
+    // L'icône et le titre sont mis à jour côté JS (js/theme.js) selon le mode actif.
+    $btn_theme = '<button type="button" id="btn-theme" class="btn-theme"
+                          aria-label="Basculer le thème clair/sombre"
+                          title="Basculer le thème">🌙</button>';
+
     if (!est_connecte()) {
-        return $script_theme . '
+        return '
         <nav>
             ' . $logo . '
             <ul>
                 <li><a href="presentation.php">Menu</a></li>
+                <li><a href="panier.php">🛒 Panier</a></li>
+                <li><a href="profil.php">Mon Profil</a></li>
                 <li><a href="avis.php">Avis</a></li>
             </ul>
-            <a href="connexion.php" class="btn-connexion">Se connecter</a>
+            <div class="nav-actions">
+                ' . $btn_theme . '
+                <a href="connexion.php" class="btn-connexion">Se connecter</a>
+            </div>
         </nav>';
     }
 
@@ -130,13 +135,14 @@ function nav_html($page_active = '') {
         $liens = '<li><a href="livraison.php">Ma Livraison</a></li>';
     }
 
-    return $script_theme . '
+    return '
         <nav>
             ' . $logo . '
             <ul>' . $liens . '</ul>
-            <div style="display:flex; align-items:center; gap:15px;">
-                <span style="font-weight:600; color:var(--text); font-size:0.95rem;">👋 Bonjour, ' . $prenom . '</span>
-                <a href="deconnexion.php" class="btn-deconnexion">Déconnexion</a>
+            <div class="nav-actions">
+                ' . $btn_theme . '
+                <span>Bonjour, ' . $prenom . ' | </span>
+                <a href="deconnexion.php" class="btn-connexion">Déconnexion</a>
             </div>
         </nav>';
 }

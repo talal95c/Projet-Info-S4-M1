@@ -132,6 +132,7 @@ nav .btn-connexion:hover {
 .input-group textarea,
 .input-group select,
 .input-edit,
+.filtre-select,
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -141,6 +142,11 @@ input[type="number"] {
     background: #243832 !important;
     color: var(--text) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text) !important;
 }
 
 .input-group input:focus,
@@ -256,10 +262,27 @@ tr:hover td {
 .carte-plat,
 .carte-menu,
 .plat-card,
-.menu-card {
+.menu-card,
+.product-card {
     background: var(--white) !important;
-    color: var(--text);
+    color: var(--text) !important;
     border: 1px solid var(--border);
+}
+
+.product-card h3, .price {
+    color: var(--green-dark) !important;
+}
+
+.product-description, .commande-detail {
+    color: var(--text) !important;
+}
+
+.recherche-filtre {
+    background: rgba(26, 39, 34, 0.8) !important;
+}
+
+.info-ligne > span:first-child {
+    color: var(--text-soft) !important;
 }
 
 /* ============================================================== */

@@ -181,8 +181,14 @@ footer {
 }
 
 @media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 15px;
+    }
     nav ul {
-        display: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
     }
     .page-header h1 {
         font-size: 36px;

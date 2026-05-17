@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="avis.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <header>
@@ -84,7 +85,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
                     <small><?= htmlspecialchars(noms_articles($commande_a_noter['articles'])) ?></small>
                 </p>
 
-                <form class="auth-form" method="POST" action="avis.php">
+                <!-- Zone de feedback AJAX (succès / erreur) -->
+                <div id="avis-feedback" class="message" style="display:none; margin-bottom:1rem;"></div>
+
+                <!-- Le form garde method=POST + action=avis.php comme fallback no-JS.
+                     Le JS (js/avis.js) intercepte le submit pour faire un POST asynchrone
+                     vers api/noter_commande.php sans recharger la page. -->
+                <form id="formulaire-avis" class="auth-form" method="POST" action="avis.php" novalidate>
+                    <input type="hidden" name="commande_id" value="<?= $commande_a_noter['id'] ?>">
 
                     <div class="avis-section-titre">🚴 Livraison</div>
 
@@ -102,7 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
 
                     <div class="input-group">
                         <label>Commentaire sur la livraison</label>
-                        <textarea name="commentaire_livraison" placeholder="Rapidité, état du colis, livreur..."></textarea>
+                        <textarea name="commentaire_livraison" maxlength="500" data-compteur
+                                  placeholder="Rapidité, état du colis, livreur..."></textarea>
                     </div>
 
                     <div class="avis-section-titre">🍽️ Produits</div>
@@ -121,10 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
 
                     <div class="input-group">
                         <label>Votre avis sur les produits</label>
-                        <textarea name="commentaire_produits" placeholder="Fraîcheur, goût, présentation..."></textarea>
+                        <textarea name="commentaire_produits" maxlength="500" data-compteur
+                                  placeholder="Fraîcheur, goût, présentation..."></textarea>
                     </div>
 
-                    <button type="submit" class="submit-btn">Poster mon avis</button>
+                    <button type="submit" class="submit-btn" id="btn-poster-avis">Poster mon avis</button>
                 </form>
 
             <?php else: ?>
@@ -142,21 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script>
-    document.querySelectorAll('.etoiles').forEach(function(bloc) {
-        var etoiles = bloc.querySelectorAll('.etoile');
-        var input   = document.getElementById('note-' + bloc.id.replace('etoiles-', ''));
-
-        etoiles.forEach(function(etoile) {
-            etoile.addEventListener('click', function() {
-                var val = this.getAttribute('data-value');
-                input.value = val;
-                etoiles.forEach(function(e) {
-                    e.classList.toggle('active', e.getAttribute('data-value') <= val);
-                });
-            });
-        });
-    });
-    </script>
+    <script src="js/common.js"></script>
+    <script src="js/avis.js"></script>
 </body>
 </html>
