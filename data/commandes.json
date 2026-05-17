@@ -172,5 +172,33 @@
         "transaction_id": "83b909999eeeb320DD70",
         "avis": null,
         "id": 1044
+    },
+    {
+        "client_id": 2,
+        "livreur_id": null,
+        "articles": [
+            {
+                "menu_id": 3,
+                "quantite": 1
+            }
+        ],
+        "adresse_livraison": "8 avenue Victor Hugo, 75016 Paris",
+        "code_interphone": "B5678",
+        "etage": "2ème étage",
+        "telephone": "0711223344",
+        "commentaire": "",
+        "statut": "a_preparer",
+        "type_livraison": "maintenant",
+        "date_souhaitee": null,
+        "date": "2026-05-17T22:00:35",
+        "total": 55.8,
+        "paiement_effectue": true,
+        "transaction_id": "2d5830b4da2779c0C63A",
+        "avis": null,
+        "id": 1045,
+        "date_paiement": "2026-05-17T22:00:43",
+        "total_effectif": 27.9,
+        "perte_client": 27.9,
+        "date_modification": "2026-05-17T22:02:43"
     }
 ]
