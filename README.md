@@ -15,3 +15,18 @@
 4. Ouvrir localhost/...
 
 
+
+
+## Comptes de test
+
+### Administrateur
+
+* Email : [admin@ileaufruit.fr](mailto:admin@ileaufruit.fr)
+* Mot de passe : admin123
+
+### Livreur
+
+* Email : [livreur@ileaufruit.fr](mailto:livreur@ileaufruit.fr)
+* Mot de passe : livreur123
+
+
