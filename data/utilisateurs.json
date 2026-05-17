@@ -159,5 +159,21 @@
         "date_inscription": "2026-04-05",
         "actif": true,
         "id": 10
+    }{
+        "login": "abdelchakour2@gmail.com",
+        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "role": "client",
+        "nom": "Ch",
+        "prenom": "Abdel",
+        "telephone": "0767390900",
+        "adresse": "Cy tech",
+        "code_interphone": "",
+        "etage": "",
+        "points_fidelite": 0,
+        "statut": "bronze",
+        "date_inscription": "2026-05-17",
+        "actif": true,
+        "id": 11,
+        "date_derniere_connexion": "2026-05-17T20:09:38"
     }
 ]
