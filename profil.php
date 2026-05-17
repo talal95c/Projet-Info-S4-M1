@@ -86,6 +86,7 @@ $mode_edition = isset($_GET['edit']);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="profil.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <header>
@@ -125,14 +126,49 @@ $mode_edition = isset($_GET['edit']);
             <section class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
                     <h2>📋 Mes informations</h2>
-                    <?php if (!$mode_edition && !$vue_admin): ?>
-                        <a href="profil.php?edit=1" class="btn-voir" style="font-size:0.85rem;">✏️ Modifier</a>
+                    <?php if (!$vue_admin): ?>
+                        <!-- Phase 3 : le bouton bascule en JS sans recharger.
+                             Le href reste un fallback no-JS vers ?edit=1.    -->
+                        <a id="btn-modifier-profil" href="profil.php?edit=1"
+                           class="btn-voir" style="font-size:0.85rem;
+                           <?= $mode_edition ? 'display:none;' : '' ?>">
+                            ✏️ Modifier
+                        </a>
                     <?php endif; ?>
                 </div>
 
-                <?php if ($mode_edition && !$vue_admin): ?>
-                <!-- Formulaire d'édition -->
-                <form method="POST" action="profil.php">
+                <!-- Zone d'alerte AJAX (succès / erreur), pilotée par js/profil.js -->
+                <div id="profil-feedback" class="profil-feedback" style="display:none;"></div>
+
+                <?php if (!$vue_admin): ?>
+                <!-- Bloc d'AFFICHAGE (visible par défaut, masqué en mode édition) -->
+                <div id="bloc-affichage-profil" <?= $mode_edition ? 'style="display:none;"' : '' ?>>
+                    <div class="info-ligne">
+                        <span>📧 Email</span>
+                        <div><span><?= htmlspecialchars($user['login']) ?></span></div>
+                    </div>
+                    <div class="info-ligne">
+                        <span>📱 Téléphone</span>
+                        <div><span data-affichage="telephone"><?= htmlspecialchars($user['telephone']) ?></span></div>
+                    </div>
+                    <div class="info-ligne">
+                        <span>📍 Adresse</span>
+                        <div><span data-affichage="adresse"><?= htmlspecialchars($user['adresse']) ?></span></div>
+                    </div>
+                    <div class="info-ligne">
+                        <span>🔔 Code interphone</span>
+                        <div><span data-affichage="code_interphone"><?= htmlspecialchars($user['code_interphone']) ?: 'Aucun' ?></span></div>
+                    </div>
+                    <div class="info-ligne">
+                        <span>🏢 Étage</span>
+                        <div><span data-affichage="etage"><?= htmlspecialchars($user['etage']) ?: 'Non précisé' ?></span></div>
+                    </div>
+                </div>
+
+                <!-- Bloc d'ÉDITION (masqué par défaut, affiché par JS au clic Modifier) -->
+                <!-- Le form garde method=POST + action=profil.php comme fallback no-JS. -->
+                <form id="formulaire-profil" method="POST" action="profil.php"
+                      <?= $mode_edition ? '' : 'style="display:none;"' ?> novalidate>
                     <input type="hidden" name="action" value="modifier_profil">
 
                     <div class="info-ligne">
@@ -147,6 +183,7 @@ $mode_edition = isset($_GET['edit']);
                         <div>
                             <input type="tel" id="telephone" name="telephone"
                                    value="<?= htmlspecialchars($user['telephone']) ?>"
+                                   maxlength="15" data-compteur
                                    class="input-edit" required>
                         </div>
                     </div>
@@ -156,6 +193,7 @@ $mode_edition = isset($_GET['edit']);
                         <div>
                             <input type="text" id="adresse" name="adresse"
                                    value="<?= htmlspecialchars($user['adresse']) ?>"
+                                   maxlength="200" data-compteur
                                    class="input-edit" required>
                         </div>
                     </div>
@@ -165,6 +203,7 @@ $mode_edition = isset($_GET['edit']);
                         <div>
                             <input type="text" id="code_interphone" name="code_interphone"
                                    value="<?= htmlspecialchars($user['code_interphone']) ?>"
+                                   maxlength="20" data-compteur
                                    class="input-edit">
                         </div>
                     </div>
@@ -174,18 +213,21 @@ $mode_edition = isset($_GET['edit']);
                         <div>
                             <input type="text" id="etage" name="etage"
                                    value="<?= htmlspecialchars($user['etage']) ?>"
+                                   maxlength="100" data-compteur
                                    class="input-edit">
                         </div>
                     </div>
 
                     <div style="display:flex; gap:1rem; margin-top:1.5rem;">
-                        <button type="submit" class="btn-voir">💾 Enregistrer</button>
-                        <a href="profil.php" class="btn-voir" style="background:#aaa;">Annuler</a>
+                        <button type="submit" class="btn-voir" id="btn-enregistrer-profil">
+                            💾 Enregistrer
+                        </button>
+                        <a href="profil.php" id="btn-annuler-profil"
+                           class="btn-voir" style="background:#aaa;">Annuler</a>
                     </div>
                 </form>
-
                 <?php else: ?>
-                <!-- Affichage normal -->
+                <!-- Vue administrateur : lecture seule -->
                 <div class="info-ligne">
                     <span>📧 Email</span>
                     <div><span><?= htmlspecialchars($user['login']) ?></span></div>
@@ -265,10 +307,24 @@ $mode_edition = isset($_GET['edit']);
                                     <?php endif; ?>
                                 <?php elseif ($c['statut'] === 'en_livraison'): ?>
                                     <span class="commande-statut en-cours">🚴 En livraison</span>
+                                <?php elseif ($c['statut'] === 'prete'): ?>
+                                    <span class="commande-statut" style="background:#d1ecf1; color:#0c5460;">📦 Prête</span>
                                 <?php elseif ($c['statut'] === 'abandonnee'): ?>
                                     <span class="commande-statut" style="color:#dc3545;">❌ Abandonnée</span>
+                                <?php elseif ($c['statut'] === 'a_preparer' || $c['statut'] === 'en_attente'): ?>
+                                    <span class="commande-statut">🍽️ <?= $c['statut'] === 'en_attente' ? 'Programmée' : 'En préparation' ?></span>
+                                    <?php if (!empty($c['paiement_effectue'])): ?>
+                                        <!-- Phase 3 : seule la commande payée mais pas encore en cuisine
+                                             peut être modifiée (cf. sujet + règle prof "un seul paiement"). -->
+                                        <a href="modifier_commande.php?id=<?= $c['id'] ?>"
+                                           class="btn-voir" style="font-size:0.8rem; background:#3da874;">
+                                            ✏️ Modifier
+                                        </a>
+                                    <?php endif; ?>
+                                <?php elseif ($c['statut'] === 'paiement_refuse'): ?>
+                                    <span class="commande-statut" style="color:#dc3545;">❌ Paiement refusé</span>
                                 <?php else: ?>
-                                    <span class="commande-statut">🍽️ En préparation</span>
+                                    <span class="commande-statut">🍽️ <?= htmlspecialchars($c['statut']) ?></span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -283,5 +339,8 @@ $mode_edition = isset($_GET['edit']);
         <p>&copy; 2026 L'Île au Fruit - Tous droits réservés.</p>
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
+
+    <script src="js/common.js"></script>
+    <script src="js/profil.js"></script>
 </body>
 </html>
