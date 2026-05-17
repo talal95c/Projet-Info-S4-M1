@@ -2,25 +2,25 @@
     {
         "id": 1,
         "login": "marie.dupont@email.fr",
-        "mot_de_passe": "$2y$10$krDUrFak5nu9DuL7\/Jbmruz8YZ3v1WLzZNtJe7dkn9CPTvJsqajRe",
+        "mot_de_passe": "$2y$10$nPJdI8x6gRONNDOwPUVWWuSgFPbUQMFNsJsDQDvtxC5TvTCItOij6",
         "role": "client",
         "nom": "Dupont",
         "prenom": "Marie",
-        "telephone": "0612345678",
+        "telephone": "0612345673",
         "adresse": "15 rue des Fleurs, 75001 Paris",
         "code_interphone": "A1234",
         "etage": "3ème étage",
         "points_fidelite": 267,
         "statut": "gold",
         "date_inscription": "2025-01-10",
-        "actif": true,
+        "actif": false,
         "remise": 100,
-        "date_derniere_connexion": "2026-05-17T21:20:27"
+        "date_derniere_connexion": "2026-05-17T21:57:08"
     },
     {
         "id": 2,
         "login": "douglas.costa@email.com",
-        "mot_de_passe": "$2y$10$u3ccA0W6Lzk5osQuYbdVROCBLkv9gHa6DFOQlTD\/DPd9t3hLdWeaS",
+        "mot_de_passe": "$2y$10$1tbs2Tn6Vjon2UOB6BgFxOJb6H.91v5TMokaCFwje30AJtdo8a0B2",
         "role": "client",
         "nom": "Costa",
         "prenom": "Douglas",
@@ -28,15 +28,16 @@
         "adresse": "8 avenue Victor Hugo, 75016 Paris",
         "code_interphone": "B5678",
         "etage": "2ème étage",
-        "points_fidelite": 410,
+        "points_fidelite": 465,
         "statut": "platine",
         "date_inscription": "2024-11-02",
-        "actif": true
+        "actif": true,
+        "date_derniere_connexion": "2026-05-17T21:59:49"
     },
     {
         "id": 3,
         "login": "neymar.jr10@email.com",
-        "mot_de_passe": "$2y$10$KWp6AzzfxqFdxWxtOlCcWOANSnsQDfhNia0\/4EgO1LMUKSUJFS6Iq",
+        "mot_de_passe": "$2y$10$fZSCWkX9qVDYhZJx\/5j3vO9xoDflUAGdjSrfhxECR0oXqYTDqC2y2",
         "role": "client",
         "nom": "Jr",
         "prenom": "Neymar",
@@ -84,7 +85,7 @@
     {
         "id": 6,
         "login": "admin@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "mot_de_passe": "$2y$10$4Wfr9GLJFBCZNDIV3y6.v.scjEmBVxSYDc.ZhROalTJe.1\/S3NEGe",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Principal",
@@ -96,12 +97,12 @@
         "statut": "admin",
         "date_inscription": "2024-01-01",
         "actif": true,
-        "date_derniere_connexion": "2026-05-17T21:18:33"
+        "date_derniere_connexion": "2026-05-17T21:58:38"
     },
     {
         "id": 7,
         "login": "admin2@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "mot_de_passe": "$2y$10$bUw68jZZmaLfuqRB6YYqkeSHfX8GKFby3JZh3Nz\/fupw\/qmWN.gnC",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Second",
@@ -117,7 +118,7 @@
     {
         "id": 8,
         "login": "restaurateur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "mot_de_passe": "$2y$10$ZC7xIhfflG8WLimQAQ7aYezH36yaNrzYB7ISgl0M3T2aDO0tDv5mu",
         "role": "restaurateur",
         "nom": "Dupuis",
         "prenom": "Jean",
@@ -129,12 +130,12 @@
         "statut": "staff",
         "date_inscription": "2024-01-01",
         "actif": true,
-        "date_derniere_connexion": "2026-05-17T21:18:54"
+        "date_derniere_connexion": "2026-05-17T21:59:15"
     },
     {
         "id": 9,
         "login": "livreur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "mot_de_passe": "$2y$10$bz8VrGZkXgVe8Eq38JHrleyWK5aJ\/E.ui2LIJzAgwJ.xRe.rqVROy",
         "role": "livreur",
         "nom": "Bernard",
         "prenom": "Lucas",
@@ -146,7 +147,7 @@
         "statut": "staff",
         "date_inscription": "2024-01-01",
         "actif": true,
-        "date_derniere_connexion": "2026-05-17T21:17:42"
+        "date_derniere_connexion": "2026-05-17T21:58:53"
     },
     {
         "login": "DQSDQ@F.M",
@@ -163,7 +164,8 @@
         "date_inscription": "2026-04-05",
         "actif": true,
         "id": 10
-    }{
+    },
+    {
         "login": "abdelchakour2@gmail.com",
         "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
         "role": "client",

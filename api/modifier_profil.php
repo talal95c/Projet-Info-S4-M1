@@ -52,19 +52,19 @@ if ($adresse === '') {
     echo json_encode(['succes' => false, 'champ' => 'adresse', 'message' => 'L\'adresse est obligatoire.']);
     exit;
 }
-if (mb_strlen($adresse) < 5) {
+if (strlen($adresse) < 5) {
     echo json_encode(['succes' => false, 'champ' => 'adresse', 'message' => 'L\'adresse doit faire au moins 5 caractères.']);
     exit;
 }
-if (mb_strlen($adresse) > 200) {
+if (strlen($adresse) > 200) {
     echo json_encode(['succes' => false, 'champ' => 'adresse', 'message' => 'Adresse trop longue (max 200).']);
     exit;
 }
-if (mb_strlen($code_interphone) > 20) {
+if (strlen($code_interphone) > 20) {
     echo json_encode(['succes' => false, 'champ' => 'code_interphone', 'message' => 'Code interphone trop long (max 20).']);
     exit;
 }
-if (mb_strlen($etage) > 100) {
+if (strlen($etage) > 100) {
     echo json_encode(['succes' => false, 'champ' => 'etage', 'message' => 'Étage trop long (max 100).']);
     exit;
 }
