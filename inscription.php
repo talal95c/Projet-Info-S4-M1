@@ -76,8 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="auth.css">
+    <script src="js/theme.js"></script>
 </head>
-<body class="auth-page">
+<body>
     <main class="login-container">
         <header class="logo-section">
             <a href="index.php">
@@ -95,35 +96,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="message erreur">❌ <?= $erreur ?></div>
             <?php endif; ?>
 
-            <form class="auth-form" method="POST" action="inscription.php">
+            <form class="auth-form" method="POST" action="inscription.php" novalidate>
                 <h2>Créer un compte</h2>
 
                 <div class="input-group">
-                    <input type="text" name="nom" placeholder="Nom *" required>
+                    <input type="text" name="nom" placeholder="Nom *"
+                           maxlength="50" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="prenom" placeholder="Prénom *" required>
+                    <input type="text" name="prenom" placeholder="Prénom *"
+                           maxlength="50" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="email" name="login" placeholder="Adresse e-mail *" required>
+                    <input type="email" name="login" placeholder="Adresse e-mail *"
+                           maxlength="100" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="tel" name="telephone" placeholder="Numéro de téléphone *" required>
+                    <input type="tel" name="telephone" placeholder="Numéro de téléphone *"
+                           maxlength="15" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="adresse" placeholder="Adresse de livraison *" required>
+                    <input type="text" name="adresse" placeholder="Adresse de livraison *"
+                           maxlength="200" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="code_interphone" placeholder="Code interphone (ex: A1234)">
+                    <input type="text" name="code_interphone" placeholder="Code interphone (ex: A1234)"
+                           maxlength="20" data-compteur>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="etage" placeholder="Étage / Informations complémentaires">
+                    <input type="text" name="etage" placeholder="Étage / Informations complémentaires"
+                           maxlength="100" data-compteur>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe" placeholder="Mot de passe * (min. 6 caractères)" required>
+                    <input type="password" name="mot_de_passe" placeholder="Mot de passe * (min. 6 caractères)"
+                           maxlength="50" data-toggle-password required>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe2" placeholder="Confirmer le mot de passe *" required>
+                    <input type="password" name="mot_de_passe2" placeholder="Confirmer le mot de passe *"
+                           maxlength="50" data-toggle-password required>
                 </div>
 
                 <button type="submit" class="submit-btn">S'inscrire</button>
@@ -131,5 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </section>
     </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/inscription.js"></script>
 </body>
 </html>
