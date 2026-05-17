@@ -51,12 +51,14 @@ foreach ($tous_utilisateurs as $u) {
 // et "en_livraison", comme demandé par le sujet.
 $toutes       = lire_json('commandes.json');
 $a_preparer   = [];
+$en_preparation = [];
 $en_attente   = [];
 $pretes       = [];
 $en_livraison = [];
 
 foreach ($toutes as $c) {
     if ($c['statut'] === 'a_preparer')   $a_preparer[]   = $c;
+    if ($c['statut'] === 'en_preparation')$en_preparation[] = $c;
     if ($c['statut'] === 'en_attente')   $en_attente[]   = $c;
     if ($c['statut'] === 'prete')        $pretes[]       = $c;
     if ($c['statut'] === 'en_livraison') $en_livraison[] = $c;
@@ -187,7 +189,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
 
-                        <!-- Phase 3 : bouton AJAX pour marquer la commande PRÊTE -->
+                        <button type="button"
+                                class="btn-statut btn-action-commande"
+                                style="background:#ffc107; color:#333; margin-top:0.5rem;"
+                                data-action="mettre_en_preparation"
+                                data-commande-id="<?= $c['id'] ?>">
+                            ▶ Mettre en préparation
+                        </button>
+                    </div>
+                <?php endforeach; ?>
+            </section>
+
+            <!-- Colonne : En préparation -->
+            <section class="commandes-colonne" id="colonne-en-preparation">
+                <div class="colonne-titre en-preparation" style="background:#fff3cd; color:#856404;">
+                    <h2>🔥 En préparation <span class="badge-count" data-count="en_preparation"><?= count($en_preparation) ?></span></h2>
+                </div>
+
+                <p class="vide-colonne" style="padding:1rem; color:#888; <?= empty($en_preparation) ? '' : 'display:none;' ?>">
+                    Aucune commande en préparation.
+                </p>
+
+                <?php foreach ($en_preparation as $c):
+                    $client = trouver_utilisateur_par_id($c['client_id']);
+                    $heure  = date('H:i', strtotime($c['date']));
+                ?>
+                    <div class="commande-card" data-commande-id="<?= $c['id'] ?>">
+                        <div class="commande-header">
+                            <span class="commande-id">#<?= $c['id'] ?></span>
+                            <span class="commande-heure"><?= $heure ?></span>
+                        </div>
+                        <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
+                        <ul class="commande-items">
+                            <?php foreach ($c['articles'] as $article):
+                                $plat = trouver_plat_par_id($article['plat_id']);
+                            ?>
+                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
+
                         <button type="button"
                                 class="btn-statut btn-action-commande"
                                 style="background:#28a745; margin-top:0.5rem;"

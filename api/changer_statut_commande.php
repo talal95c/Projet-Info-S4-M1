@@ -37,7 +37,12 @@ if ($commande_index === -1) {
 $statut_actuel = $commandes[$commande_index]['statut'];
 $nouveau_statut = $statut_actuel;
 
-if ($action === 'marquer_prete' && $statut_actuel === 'a_preparer') {
+if ($action === 'mettre_en_preparation' && $statut_actuel === 'a_preparer') {
+    $nouveau_statut = 'en_preparation';
+} elseif ($action === 'marquer_prete' && $statut_actuel === 'en_preparation') {
+    $nouveau_statut = 'prete';
+} elseif ($action === 'marquer_prete' && $statut_actuel === 'a_preparer') {
+    // Fallback if needed
     $nouveau_statut = 'prete';
 } elseif ($action === 'assigner_livreur' && $statut_actuel === 'prete') {
     if ($livreur_id <= 0) {
