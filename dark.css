@@ -1,146 +1,298 @@
-/* dark.css - Charte Graphique Mode Sombre (Corrigée et Harmonieuse) */
+/*
+ * dark.css
+ * ---------------------------------------------------------------
+ * Charte graphique alternative (mode sombre) — phase 3.
+ *
+ * Ce fichier est chargé dynamiquement par js/theme.js quand
+ * l'utilisateur active le mode sombre via le bouton 🌙/☀️.
+ * Pour le désactiver, on retire le <link> du <head> sans
+ * recharger la page (cf. consigne phase 3 du sujet).
+ *
+ * Palette retenue (cohérente avec la charte vert/jaune
+ * d'origine, mais en version sombre) :
+ *   - fond très sombre   : #0f1814   (vert nuit)
+ *   - surface (cards)    : #1a2722
+ *   - vert principal     : #3da874   (plus lumineux pour contraste)
+ *   - vert foncé         : #6dd9a8
+ *   - vert clair         : #2a3f33
+ *   - jaune accent       : #ffd900   (inchangé : déjà parfait)
+ *   - texte principal    : #e8efe9
+ *   - texte secondaire   : #9aa8a0
+ *   - bordures           : rgba(255, 255, 255, 0.08)
+ */
+
 :root {
-    --green-dark:  #8ce99a;
-    --green-main:  #40c057;
-    --green-light: #1b2f21;
-    --yellow:      #ffd43b;
-    --yellow-dark: #f08c00;
-    --primary-color: #fcc419;
-    --text-color:  #d8f5a2;
-    --text:        #f1f3f5;
-    --text-soft:   #ced4da;
-    --white:       #212529;
-    --border:      rgba(255, 255, 255, 0.15);
+    --green-dark:  #6dd9a8;
+    --green-main:  #3da874;
+    --green-light: #1a2722;
+    --yellow:      #ffd900;
+    --yellow-dark: #fff4b0;
+    --primary-color: #f3b121;
+    --text-color: #b8e6c5;
+    --text:        #e8efe9;
+    --text-soft:   #9aa8a0;
+    --white:       #1a2722;
+    --border:      rgba(255, 255, 255, 0.08);
 }
 
+/* ============================================================== */
+/*  Corps de page                                                  */
+/* ============================================================== */
+
 body {
-    /* Fond dynamique et subtil au lieu du noir complet */
-    background-image: radial-gradient(circle at 50% 0%, #162c1e 0%, #0d0d0d 60%) !important;
-    background-color: #0d0d0d !important;
+    background-image: none !important;
+    background: #0f1814 !important;
+    color: var(--text);
+}
+
+/* ============================================================== */
+/*  Barre de navigation                                            */
+/* ============================================================== */
+
+nav {
+    background: rgba(15, 24, 20, 0.85) !important;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+}
+
+nav ul li a {
+    color: var(--text);
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: var(--green-dark);
+}
+
+nav span {
+    color: var(--text-soft);
+}
+
+/* ============================================================== */
+/*  Boutons                                                        */
+/* ============================================================== */
+
+nav .btn-connexion {
+    background-color: var(--green-main);
+    color: #0f1814;
+}
+
+nav .btn-connexion:hover {
+    background-color: var(--green-dark);
+}
+
+.btn-voir,
+.submit-btn {
+    color: #0f1814 !important;
+}
+
+/* ============================================================== */
+/*  Page d'accueil — titres                                        */
+/* ============================================================== */
+
+.page-header h1 {
+    color: var(--green-dark) !important;
+}
+
+.page-header h3 {
     color: var(--text) !important;
 }
 
-/* Navbar */
-nav {
-    background: rgba(15, 15, 15, 0.85) !important;
-    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+/* ============================================================== */
+/*  Cartes (cards) — fond sombre, bordure légère                   */
+/* ============================================================== */
+
+.card,
+.auth-card,
+.profil-header,
+.profil-grid .card {
+    background: var(--white) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
-nav a, nav span {
-    color: #f1f3f5 !important;
+.card h2,
+.card h3,
+.profil-header h1 {
+    color: var(--green-dark);
 }
 
-/* Footer et espace pour panier */
-main {
-    padding-bottom: 50px !important;
+.card p,
+.profil-header p,
+.card span {
+    color: var(--text);
 }
+
+/* ============================================================== */
+/*  Formulaires (inscription, connexion, profil, paiement)         */
+/* ============================================================== */
+
+.input-group input,
+.input-group textarea,
+.input-group select,
+.input-edit,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="datetime-local"],
+input[type="number"] {
+    background: #243832 !important;
+    color: var(--text) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.input-group input:focus,
+.input-edit:focus {
+    border-color: var(--green-dark) !important;
+    background: #2a3f37 !important;
+}
+
+::placeholder {
+    color: var(--text-soft) !important;
+    opacity: 1;
+}
+
+label {
+    color: var(--text) !important;
+}
+
+/* ============================================================== */
+/*  Footer                                                         */
+/* ============================================================== */
 
 footer {
-    background: #111 !important;
-    color: #888 !important;
-    border-top: 1px solid #222 !important;
-    margin-top: 40px !important;
+    background: rgba(15, 24, 20, 0.6);
+    color: var(--text-soft);
+    border-top-color: var(--border);
 }
 
-/* Cartes (Profil, Menus, Recherche, Auth) */
-.card, .auth-card, .product-card, .profil-header, .recherche-filtre,
-[style*="background:white"], 
-[style*="background: white"], 
-[style*="background:#fff"], 
-[style*="background: #fff"] {
-    background: #1a1a1a !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-    color: #f1f3f5 !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+/* ============================================================== */
+/*  Messages (succès / erreur / info)                              */
+/* ============================================================== */
+
+.message.succes,
+.profil-feedback-succes {
+    background: rgba(45, 122, 78, 0.2) !important;
+    color: #6dd9a8 !important;
+    border-color: rgba(109, 217, 168, 0.3) !important;
 }
 
-/* Correction Typographie Profil et Menus */
-.product-info h3, .profil-header h1, h1, h2, h3, h4, strong {
-    color: #f1f3f5 !important;
+.message.erreur,
+.profil-feedback-erreur {
+    background: rgba(192, 57, 43, 0.2) !important;
+    color: #f5a39a !important;
+    border-color: rgba(245, 163, 154, 0.3) !important;
 }
 
-.product-description, .info-ligne > span:first-child, .fidelite-info, .commande-date {
-    color: #aaa !important;
+.message-erreur-champ {
+    color: #f5a39a !important;
 }
 
-.info-ligne > div span, .commande-detail, .commande-prix {
-    color: #e0e0e0 !important;
+.input-erreur,
+.input-edit.input-erreur {
+    background: rgba(192, 57, 43, 0.15) !important;
+    border-color: #f5a39a !important;
 }
 
-.price {
-    color: #8ce99a !important;
+/* ============================================================== */
+/*  Compteur de caractères                                         */
+/* ============================================================== */
+
+.compteur-info {
+    color: var(--text-soft) !important;
 }
 
-.cercle-fond {
-    stroke: #333 !important;
+.compteur-info.compteur-limite {
+    color: #f5a39a !important;
 }
 
-/* Tags Menu (Ex: Vegan, Sans gluten) */
-.tag.vegan, .tag.vegetarian, .tag.sans-gluten {
-    background: #2a2a2a !important;
-    color: #ccc !important;
-    border: 1px solid #444 !important;
+/* ============================================================== */
+/*  Bouton œil (toggle password) en dark mode                      */
+/* ============================================================== */
+
+.btn-oeil {
+    color: var(--text-soft) !important;
 }
 
-/* Messages */
-.message.succes {
-    background: rgba(43, 138, 62, 0.2) !important;
-    color: #75b798 !important;
-    border-color: #2b8a3e !important;
+/* ============================================================== */
+/*  Bouton de bascule de thème                                     */
+/* ============================================================== */
+
+.btn-theme {
+    background: rgba(255, 217, 0, 0.15);
+    color: #ffd900;
+    border: 1px solid rgba(255, 217, 0, 0.3);
 }
 
-.message.erreur {
-    background: rgba(201, 42, 42, 0.2) !important;
-    color: #ea868f !important;
-    border-color: #c92a2a !important;
+/* ============================================================== */
+/*  Tableaux (admin, commandes)                                    */
+/* ============================================================== */
+
+table {
+    background: var(--white) !important;
+    color: var(--text);
 }
 
-.btn-voir[style*="background:#f5f5f5"] {
-    background: #333 !important;
-    color: #eee !important;
-    border: 1px solid #444 !important;
+th,
+td {
+    border-color: var(--border) !important;
 }
 
-/* Champs de formulaire */
-.input-group input, 
-.input-group textarea, 
-.input-group select,
-input[type="text"],
-input[type="number"],
-input[type="datetime-local"],
-input[type="email"],
-input[type="password"],
-input[type="tel"] {
-    background: #222 !important;
-    border: 1px solid #444 !important;
-    color: white !important;
+th {
+    background: #243832 !important;
+    color: var(--green-dark) !important;
 }
 
-input:focus {
-    border-color: #40c057 !important;
+tr:hover td {
+    background: rgba(61, 168, 116, 0.08) !important;
 }
 
-/* Cas spécifiques où la couleur est fixée en inline */
-[style*="color:#015a17"], [style*="color:#014d14"] {
-    color: #8ce99a !important;
+/* ============================================================== */
+/*  Page de présentation des plats / menus                         */
+/* ============================================================== */
+
+.carte-plat,
+.carte-menu,
+.plat-card,
+.menu-card {
+    background: var(--white) !important;
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 
-[style*="color:#555"], [style*="color:#777"], [style*="color:#888"] {
-    color: #adb5bd !important;
+/* ============================================================== */
+/*  Commandes (statuts)                                            */
+/* ============================================================== */
+
+.commande-statut.livree {
+    background: rgba(46, 125, 50, 0.25) !important;
+    color: #8fe0a0 !important;
 }
 
-[style*="background:#eef5f0"] {
-    background: #1b2f21 !important;
-    color: #8ce99a !important;
+.commande-statut.en-cours {
+    background: rgba(230, 81, 0, 0.25) !important;
+    color: #ffb380 !important;
 }
 
-[style*="background:#fff0f0"] {
-    background: rgba(201, 42, 42, 0.2) !important;
-    border-color: #c92a2a !important;
-    color: #ea868f !important;
+.commande-prix {
+    color: var(--green-dark) !important;
 }
 
-[style*="border-bottom:1px solid #f5f5f5"], [style*="border-top:1px solid #eee"], [style*="border-top:2px solid #eee"] {
-    border-color: #333 !important;
+/* ============================================================== */
+/*  Badge fidélité / avatar                                        */
+/* ============================================================== */
+
+.badge {
+    background: linear-gradient(135deg, #ffd900, #fff4b0);
+    color: #4d3d00;
+}
+
+/* ============================================================== */
+/*  Texte de petite police "non modifiable", "Aucun", etc.         */
+/* ============================================================== */
+
+small {
+    color: var(--text-soft) !important;
 }

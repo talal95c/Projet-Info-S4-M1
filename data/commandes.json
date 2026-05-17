@@ -22,13 +22,7 @@
         "date": "2026-04-03T12:15:00",
         "total": 15.4,
         "paiement_effectue": true,
-        "avis": {
-            "note_livraison": 5,
-            "commentaire_livraison": "sqdqs",
-            "note_produits": 4,
-            "commentaire_produits": "dqsdq",
-            "date": "2026-05-16 12:51:13"
-        }
+        "avis": null
     },
     {
         "id": 1041,
@@ -116,30 +110,32 @@
         }
     },
     {
-        "client_id": 998,
-        "livreur_id": 9,
+        "client_id": 1,
+        "livreur_id": null,
         "articles": [
             {
-                "plat_id": 12,
-                "quantite": 1
+                "menu_id": 3,
+                "quantite": 4
             },
             {
-                "plat_id": 1,
+                "menu_id": 2,
                 "quantite": 1
             }
         ],
-        "adresse_livraison": "10 rue Test Client, 75000 Paris",
-        "code_interphone": "T123",
-        "etage": "1er étage",
-        "telephone": "0600000001",
+        "adresse_livraison": "15 rue des Fleurs, 75001 Paris",
+        "code_interphone": "A1234",
+        "etage": "3ème étage",
+        "telephone": "0612345678",
         "commentaire": "",
-        "statut": "en_livraison",
+        "statut": "a_preparer",
+        "type_livraison": "maintenant",
         "date_souhaitee": null,
-        "date": "2026-05-16T12:41:05",
-        "total": 14.8,
+        "date": "2026-05-17T14:26:16",
+        "total": 120.79,
         "paiement_effectue": true,
-        "transaction_id": "tx6a0865c09322d",
+        "transaction_id": "28f504648a014743CC12",
         "avis": null,
-        "id": 1043
+        "id": 1043,
+        "date_paiement": "2026-05-17T14:27:15"
     }
 ]
