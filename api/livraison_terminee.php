@@ -1,67 +1,81 @@
 <?php
-require_once '../includes/session.php';
-require_once '../includes/data.php';
+// Marque une livraison comme effectuée ou abandonnée par le livreur.
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/data.php';
 
-if (!est_connecte() || $_SESSION['role'] !== 'livreur') {
+header('Content-Type: application/json; charset=utf-8');
+
+if (!est_connecte()) {
     http_response_code(401);
-    echo json_encode(['succes' => false, 'message' => 'Non autorisé']);
+    echo json_encode(['succes' => false, 'message' => 'Vous devez être connecté.']);
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input || !isset($input['commande_id'], $input['action'])) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Données manquantes']);
+if (get_role() !== 'livreur') {
+    http_response_code(403);
+    echo json_encode(['succes' => false, 'message' => 'Action réservée aux livreurs.']);
     exit;
 }
 
-$commande_id = intval($input['commande_id']);
-$action = $input['action'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['succes' => false, 'message' => 'Méthode non autorisée.']);
+    exit;
+}
 
-if (!in_array($action, ['livree', 'abandonnee'])) {
-    echo json_encode(['succes' => false, 'message' => 'Action invalide']);
+$donnees = $_POST;
+if (empty($donnees)) {
+    $brut = file_get_contents('php://input');
+    if ($brut) {
+        $decode = json_decode($brut, true);
+        if (is_array($decode)) $donnees = $decode;
+    }
+}
+
+$commande_id = intval($donnees['commande_id'] ?? 0);
+$action      = $donnees['action']             ?? '';
+
+if ($commande_id <= 0) {
+    echo json_encode(['succes' => false, 'message' => 'Identifiant de commande invalide.']);
+    exit;
+}
+
+if (!in_array($action, ['livree', 'abandonnee'], true)) {
+    echo json_encode(['succes' => false, 'message' => 'Action invalide.']);
     exit;
 }
 
 $commandes = lire_json('commandes.json');
-$commande_index = -1;
-
-for ($i = 0; $i < count($commandes); $i++) {
-    if ($commandes[$i]['id'] === $commande_id) {
-        $commande_index = $i;
-        break;
-    }
+$commande = null;
+foreach ($commandes as $c) {
+    if ($c['id'] == $commande_id) { $commande = $c; break; }
 }
 
-if ($commande_index === -1) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Commande introuvable']);
+if (!$commande) {
+    echo json_encode(['succes' => false, 'message' => 'Commande introuvable.']);
     exit;
 }
 
-$commande = $commandes[$commande_index];
-
-if ($commande['livreur_id'] !== $_SESSION['user_id']) {
+if ($commande['livreur_id'] != $_SESSION['user_id']) {
     http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Cette commande ne vous est pas assignée']);
+    echo json_encode(['succes' => false, 'message' => 'Cette livraison ne vous est pas attribuée.']);
     exit;
 }
 
 if ($commande['statut'] !== 'en_livraison') {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'La commande n\'est pas en cours de livraison']);
+    echo json_encode(['succes' => false, 'message' => 'Statut actuel : ' . $commande['statut'] . '. Impossible de modifier.']);
     exit;
 }
 
-$commandes[$commande_index]['statut'] = $action;
-ecrire_json('commandes.json', $commandes);
+mettre_a_jour_commande($commande_id, [
+    'statut'   => $action,
+    'date_fin' => date('Y-m-d\TH:i:s'),
+]);
 
 echo json_encode([
-    'succes' => true,
-    'message' => $action === 'livree' 
-        ? '✅ Commande marquée comme livrée !' 
-        : '❌ Commande marquée comme abandonnée.'
+    'succes'  => true,
+    'statut'  => $action,
+    'message' => $action === 'livree'
+        ? '✅ Livraison #' . $commande_id . ' marquée comme effectuée.'
+        : '❌ Livraison #' . $commande_id . ' marquée comme abandonnée.',
 ]);

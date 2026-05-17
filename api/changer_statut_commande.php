@@ -1,66 +1,102 @@
 <?php
-require_once '../includes/session.php';
-require_once '../includes/data.php';
+// Transitions de statut côté restaurateur :
+// en_attente → a_preparer → prete → en_livraison
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/data.php';
 
-if (!est_connecte() || !in_array($_SESSION['role'], ['restaurateur', 'admin'])) {
-    echo json_encode(['succes' => false, 'message' => 'Non autorisé']);
+header('Content-Type: application/json; charset=utf-8');
+
+if (!est_connecte()) {
+    http_response_code(401);
+    echo json_encode(['succes' => false, 'message' => 'Vous devez être connecté.']);
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-if (!$input || !isset($input['commande_id'], $input['action'])) {
-    echo json_encode(['succes' => false, 'message' => 'Données manquantes']);
+if (!in_array(get_role(), ['restaurateur', 'admin'], true)) {
+    http_response_code(403);
+    echo json_encode(['succes' => false, 'message' => 'Action réservée au restaurateur.']);
     exit;
 }
 
-$commande_id = intval($input['commande_id']);
-$action      = $input['action'];
-$livreur_id  = isset($input['livreur_id']) ? intval($input['livreur_id']) : 0;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['succes' => false, 'message' => 'Méthode non autorisée.']);
+    exit;
+}
+
+$donnees = $_POST;
+if (empty($donnees)) {
+    $brut = file_get_contents('php://input');
+    if ($brut) {
+        $decode = json_decode($brut, true);
+        if (is_array($decode)) $donnees = $decode;
+    }
+}
+
+$commande_id = intval($donnees['commande_id'] ?? 0);
+$action      = $donnees['action']             ?? '';
+$livreur_id  = intval($donnees['livreur_id']  ?? 0);
+
+if ($commande_id <= 0) {
+    echo json_encode(['succes' => false, 'message' => 'Identifiant de commande invalide.']);
+    exit;
+}
+
+$actions_autorisees = ['demarrer_preparation', 'marquer_prete', 'assigner_livreur'];
+if (!in_array($action, $actions_autorisees, true)) {
+    echo json_encode(['succes' => false, 'message' => 'Action invalide.']);
+    exit;
+}
 
 $commandes = lire_json('commandes.json');
-$commande_index = -1;
-
-for ($i = 0; $i < count($commandes); $i++) {
-    if ($commandes[$i]['id'] === $commande_id) {
-        $commande_index = $i;
-        break;
-    }
+$commande = null;
+foreach ($commandes as $c) {
+    if ($c['id'] == $commande_id) { $commande = $c; break; }
 }
 
-if ($commande_index === -1) {
-    echo json_encode(['succes' => false, 'message' => 'Commande introuvable']);
+if (!$commande) {
+    echo json_encode(['succes' => false, 'message' => 'Commande introuvable.']);
     exit;
 }
 
-$statut_actuel = $commandes[$commande_index]['statut'];
-$nouveau_statut = $statut_actuel;
+$transitions = [
+    'demarrer_preparation' => ['de' => 'en_attente', 'vers' => 'a_preparer',  'libelle' => 'préparation démarrée'],
+    'marquer_prete'        => ['de' => 'a_preparer', 'vers' => 'prete',       'libelle' => 'marquée prête'],
+    'assigner_livreur'     => ['de' => 'prete',      'vers' => 'en_livraison','libelle' => 'assignée et passée en livraison'],
+];
 
-if ($action === 'mettre_en_preparation' && $statut_actuel === 'a_preparer') {
-    $nouveau_statut = 'en_preparation';
-} elseif ($action === 'marquer_prete' && $statut_actuel === 'en_preparation') {
-    $nouveau_statut = 'prete';
-} elseif ($action === 'marquer_prete' && $statut_actuel === 'a_preparer') {
-    // Fallback if needed
-    $nouveau_statut = 'prete';
-} elseif ($action === 'assigner_livreur' && $statut_actuel === 'prete') {
+$t = $transitions[$action];
+
+if ($commande['statut'] !== $t['de']) {
+    echo json_encode([
+        'succes'  => false,
+        'message' => 'Transition impossible : la commande est actuellement "' . $commande['statut']
+                    . '" et doit être "' . $t['de'] . '" pour cette action.',
+    ]);
+    exit;
+}
+
+$maj = ['statut' => $t['vers']];
+
+if ($action === 'assigner_livreur') {
     if ($livreur_id <= 0) {
-        echo json_encode(['succes' => false, 'message' => 'Livreur invalide']);
+        echo json_encode(['succes' => false, 'message' => 'Veuillez choisir un livreur.']);
         exit;
     }
-    $nouveau_statut = 'en_livraison';
-    $commandes[$commande_index]['livreur_id'] = $livreur_id;
-} else {
-    echo json_encode(['succes' => false, 'message' => 'Action invalide pour le statut actuel']);
-    exit;
+    $livreur = trouver_utilisateur_par_id($livreur_id);
+    if (!$livreur || $livreur['role'] !== 'livreur' || !$livreur['actif']) {
+        echo json_encode(['succes' => false, 'message' => 'Livreur invalide ou inactif.']);
+        exit;
+    }
+    $maj['livreur_id'] = $livreur_id;
 }
 
-$commandes[$commande_index]['statut'] = $nouveau_statut;
-ecrire_json('commandes.json', $commandes);
+mettre_a_jour_commande($commande_id, $maj);
 
 echo json_encode([
-    'succes' => true,
-    'nouveau_statut' => $nouveau_statut,
-    'message' => 'Statut mis à jour'
+    'succes'         => true,
+    'commande_id'    => $commande_id,
+    'nouveau_statut' => $t['vers'],
+    'livreur_id'     => $maj['livreur_id'] ?? null,
+    'message'        => 'Commande #' . $commande_id . ' ' . $t['libelle'] . '.',
 ]);

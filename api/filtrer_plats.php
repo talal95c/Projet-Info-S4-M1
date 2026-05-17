@@ -1,59 +1,41 @@
 <?php
-require_once '../includes/data.php';
+// Renvoie les plats filtrés en JSON pour le filtrage AJAX de la page produits.
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/data.php';
 
-$tous_plats = lire_json('plats.json');
-$plats = [];
-foreach ($tous_plats as $p) {
-    if ($p['disponible']) {
-        $plats[] = $p;
-    }
-}
+header('Content-Type: application/json; charset=utf-8');
 
-$categorie = isset($_GET['categorie']) ? trim($_GET['categorie']) : '';
-$regime    = isset($_GET['regime'])    ? trim($_GET['regime'])    : '';
-$prix      = isset($_GET['prix'])      ? trim($_GET['prix'])      : '';
-$recherche = isset($_GET['recherche']) ? trim($_GET['recherche']) : '';
+$plats = lire_json('plats.json');
+$plats = array_filter($plats, fn($p) => $p['disponible']);
+
+$recherche = trim($_GET['recherche'] ?? '');
+$categorie = trim($_GET['categorie'] ?? '');
+$regime    = trim($_GET['regime']    ?? '');
+$prix      = trim($_GET['prix']      ?? '');
 
 if ($categorie !== '') {
-    $nouveaux_plats = [];
-    foreach ($plats as $p) {
-        if ($p['categorie'] === $categorie) $nouveaux_plats[] = $p;
-    }
-    $plats = $nouveaux_plats;
+    $plats = array_filter($plats, fn($p) => $p['categorie'] === $categorie);
 }
 if ($regime !== '') {
-    $nouveaux_plats = [];
-    foreach ($plats as $p) {
-        if (in_array($regime, $p['tags'])) $nouveaux_plats[] = $p;
-    }
-    $plats = $nouveaux_plats;
+    $plats = array_filter($plats, fn($p) => in_array($regime, $p['tags']));
 }
 if ($prix !== '') {
-    $nouveaux_plats = [];
-    foreach ($plats as $p) {
-        if ($prix === '0-5' && $p['prix'] < 5) $nouveaux_plats[] = $p;
-        elseif ($prix === '5-10' && $p['prix'] >= 5 && $p['prix'] <= 10) $nouveaux_plats[] = $p;
-        elseif ($prix === '10-15' && $p['prix'] > 10 && $p['prix'] <= 15) $nouveaux_plats[] = $p;
-        elseif ($prix === '15+' && $p['prix'] > 15) $nouveaux_plats[] = $p;
-    }
-    $plats = $nouveaux_plats;
+    if ($prix === '0-5')        $plats = array_filter($plats, fn($p) => $p['prix'] < 5);
+    elseif ($prix === '5-10')   $plats = array_filter($plats, fn($p) => $p['prix'] >= 5 && $p['prix'] <= 10);
+    elseif ($prix === '10-15')  $plats = array_filter($plats, fn($p) => $p['prix'] > 10 && $p['prix'] <= 15);
+    elseif ($prix === '15+')    $plats = array_filter($plats, fn($p) => $p['prix'] > 15);
 }
 if ($recherche !== '') {
-    $nouveaux_plats = [];
-    foreach ($plats as $p) {
-        if (stripos($p['nom'], $recherche) !== false || stripos($p['description'], $recherche) !== false) {
-            $nouveaux_plats[] = $p;
-        }
-    }
-    $plats = $nouveaux_plats;
+    $plats = array_filter($plats, fn($p) =>
+        stripos($p['nom'], $recherche) !== false ||
+        stripos($p['description'], $recherche) !== false
+    );
 }
 
-// Convert indices to 0-based array values so json_encode doesn't make an object
 $plats = array_values($plats);
 
 echo json_encode([
     'succes' => true,
-    'plats' => $plats
-]);
+    'total'  => count($plats),
+    'plats'  => $plats,
+], JSON_UNESCAPED_UNICODE);

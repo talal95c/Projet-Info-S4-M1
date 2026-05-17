@@ -1,82 +1,99 @@
 <?php
-require_once '../includes/session.php';
-require_once '../includes/data.php';
+// Enregistre l'avis du client sur une commande livrée (une seule fois).
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/data.php';
 
-if (!est_connecte() || $_SESSION['role'] !== 'client') {
+header('Content-Type: application/json; charset=utf-8');
+
+if (!est_connecte()) {
     http_response_code(401);
-    echo json_encode(['succes' => false, 'message' => 'Non autorisé']);
+    echo json_encode(['succes' => false, 'message' => 'Vous devez être connecté.']);
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input || !isset($input['commande_id'], $input['note_livraison'], $input['note_produits'])) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Données manquantes']);
+if (get_role() !== 'client') {
+    http_response_code(403);
+    echo json_encode(['succes' => false, 'message' => 'Action réservée aux clients.']);
     exit;
 }
 
-$commande_id = intval($input['commande_id']);
-$note_livraison = intval($input['note_livraison']);
-$note_produits = intval($input['note_produits']);
-$commentaire_livraison = trim($input['commentaire_livraison'] ?? '');
-$commentaire_produits = trim($input['commentaire_produits'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['succes' => false, 'message' => 'Méthode non autorisée.']);
+    exit;
+}
 
-if ($note_livraison < 1 || $note_livraison > 5 || $note_produits < 1 || $note_produits > 5) {
-    echo json_encode(['succes' => false, 'message' => 'Les notes doivent être entre 1 et 5']);
+$donnees = $_POST;
+if (empty($donnees)) {
+    $brut = file_get_contents('php://input');
+    if ($brut) {
+        $decode = json_decode($brut, true);
+        if (is_array($decode)) $donnees = $decode;
+    }
+}
+
+$commande_id           = intval($donnees['commande_id']            ?? 0);
+$note_livraison        = intval($donnees['note_livraison']         ?? 0);
+$commentaire_livraison = trim(  $donnees['commentaire_livraison']  ?? '');
+$note_produits         = intval($donnees['note_produits']          ?? 0);
+$commentaire_produits  = trim(  $donnees['commentaire_produits']   ?? '');
+
+if ($commande_id <= 0) {
+    echo json_encode(['succes' => false, 'message' => 'Identifiant de commande invalide.']);
+    exit;
+}
+if ($note_livraison < 1 || $note_livraison > 5) {
+    echo json_encode(['succes' => false, 'message' => 'La note de livraison doit être entre 1 et 5.']);
+    exit;
+}
+if ($note_produits < 1 || $note_produits > 5) {
+    echo json_encode(['succes' => false, 'message' => 'La note des produits doit être entre 1 et 5.']);
+    exit;
+}
+if (mb_strlen($commentaire_livraison) > 500 || mb_strlen($commentaire_produits) > 500) {
+    echo json_encode(['succes' => false, 'message' => 'Commentaire trop long (max 500 caractères).']);
     exit;
 }
 
 $commandes = lire_json('commandes.json');
-$commande_index = -1;
-
-for ($i = 0; $i < count($commandes); $i++) {
-    if ($commandes[$i]['id'] === $commande_id) {
-        $commande_index = $i;
-        break;
-    }
+$commande = null;
+foreach ($commandes as $c) {
+    if ($c['id'] == $commande_id) { $commande = $c; break; }
 }
 
-if ($commande_index === -1) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Commande introuvable']);
+if (!$commande) {
+    echo json_encode(['succes' => false, 'message' => 'Commande introuvable.']);
     exit;
 }
 
-$commande = $commandes[$commande_index];
-
-if ($commande['client_id'] !== $_SESSION['user_id']) {
+if ($commande['client_id'] != $_SESSION['user_id']) {
     http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Cette commande ne vous appartient pas']);
+    echo json_encode(['succes' => false, 'message' => 'Cette commande ne vous appartient pas.']);
     exit;
 }
 
 if ($commande['statut'] !== 'livree') {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Vous ne pouvez noter qu\'une commande livrée']);
+    echo json_encode(['succes' => false, 'message' => 'Vous ne pouvez noter qu\'une commande livrée.']);
     exit;
 }
 
-if ($commande['avis'] !== null) {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Vous avez déjà noté cette commande']);
+if (!empty($commande['avis'])) {
+    echo json_encode(['succes' => false, 'message' => 'Cette commande a déjà été notée.']);
     exit;
 }
 
 $avis = [
-    'note_livraison' => $note_livraison,
+    'note_livraison'        => $note_livraison,
     'commentaire_livraison' => $commentaire_livraison,
-    'note_produits' => $note_produits,
-    'commentaire_produits' => $commentaire_produits,
-    'date' => date('Y-m-d H:i:s')
+    'note_produits'         => $note_produits,
+    'commentaire_produits'  => $commentaire_produits,
+    'date'                  => date('Y-m-d H:i:s'),
 ];
 
-$commandes[$commande_index]['avis'] = $avis;
-ecrire_json('commandes.json', $commandes);
+mettre_a_jour_commande($commande_id, ['avis' => $avis]);
 
 echo json_encode([
-    'succes' => true,
-    'message' => 'Votre avis a été posté avec succès ! Merci.'
+    'succes'  => true,
+    'message' => 'Merci pour votre avis sur la commande #' . $commande_id . ' !',
+    'avis'    => $avis,
 ]);

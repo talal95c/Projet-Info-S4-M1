@@ -17,7 +17,7 @@
  *                         (adresse introuvable)
  * Si aucune commande n'est assignée, affiche un message d'attente.
  * Le CSS mobile-first (livraison.css) prévoit de grands boutons
- * (min 64px) pour une utilisation avec des gants.
+ *  pour une utilisation avec des gants.
  *
  * Accès : livreur uniquement
  * Dépendances : includes/session.php, includes/data.php

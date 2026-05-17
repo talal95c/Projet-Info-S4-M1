@@ -1,89 +1,153 @@
 <?php
-require_once '../includes/session.php';
-require_once '../includes/data.php';
+// Modification d'une commande payée mais pas encore en préparation.
+// Règle prof : un seul paiement par commande → on REFUSE si le nouveau
+// total dépasse le montant déjà payé.
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/data.php';
 
-if (!est_connecte() || $_SESSION['role'] !== 'client') {
+header('Content-Type: application/json; charset=utf-8');
+
+if (!est_connecte()) {
     http_response_code(401);
-    echo json_encode(['succes' => false, 'message' => 'Non autorisé']);
+    echo json_encode(['succes' => false, 'message' => 'Vous devez être connecté.']);
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-if (!$input || !isset($input['commande_id'], $input['articles'])) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Données manquantes']);
+if (get_role() !== 'client') {
+    http_response_code(403);
+    echo json_encode(['succes' => false, 'message' => 'Action réservée aux clients.']);
     exit;
 }
 
-$commande_id = intval($input['commande_id']);
-$nouveaux_articles = $input['articles'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['succes' => false, 'message' => 'Méthode non autorisée.']);
+    exit;
+}
+
+$donnees = $_POST;
+if (empty($donnees)) {
+    $brut = file_get_contents('php://input');
+    if ($brut) {
+        $decode = json_decode($brut, true);
+        if (is_array($decode)) $donnees = $decode;
+    }
+}
+
+$commande_id = intval($donnees['commande_id'] ?? 0);
+$articles    = $donnees['articles']            ?? [];
+
+if ($commande_id <= 0) {
+    echo json_encode(['succes' => false, 'message' => 'Identifiant de commande invalide.']);
+    exit;
+}
+
+if (!is_array($articles) || empty($articles)) {
+    echo json_encode(['succes' => false, 'message' => 'La commande ne peut pas être vide. Annulez plutôt la commande.']);
+    exit;
+}
 
 $commandes = lire_json('commandes.json');
-$commande_index = -1;
+$commande = null;
+foreach ($commandes as $c) {
+    if ($c['id'] == $commande_id) { $commande = $c; break; }
+}
 
-for ($i = 0; $i < count($commandes); $i++) {
-    if ($commandes[$i]['id'] === $commande_id) {
-        $commande_index = $i;
-        break;
+if (!$commande) {
+    echo json_encode(['succes' => false, 'message' => 'Commande introuvable.']);
+    exit;
+}
+
+if ($commande['client_id'] != $_SESSION['user_id']) {
+    http_response_code(403);
+    echo json_encode(['succes' => false, 'message' => 'Cette commande ne vous appartient pas.']);
+    exit;
+}
+
+if (empty($commande['paiement_effectue'])) {
+    echo json_encode(['succes' => false, 'message' => 'Cette commande n\'a pas encore été payée.']);
+    exit;
+}
+
+if (!in_array($commande['statut'], ['a_preparer', 'en_attente'], true)) {
+    echo json_encode([
+        'succes'  => false,
+        'message' => 'Modification impossible : la commande est déjà ' . $commande['statut'] . '.',
+    ]);
+    exit;
+}
+
+$articles_propres = [];
+$nouveau_total = 0.0;
+
+foreach ($articles as $a) {
+    $quantite = intval($a['quantite'] ?? 0);
+    if ($quantite <= 0) continue;
+
+    if (isset($a['menu_id'])) {
+        $menu_id = intval($a['menu_id']);
+        $menu = trouver_menu_par_id($menu_id);
+        if (!$menu) {
+            echo json_encode(['succes' => false, 'message' => 'Menu #' . $menu_id . ' introuvable.']);
+            exit;
+        }
+        $articles_propres[] = ['menu_id' => $menu_id, 'quantite' => $quantite];
+        $nouveau_total += $menu['prix_total'] * $quantite;
+    } else {
+        $plat_id = intval($a['plat_id'] ?? 0);
+        if ($plat_id <= 0) {
+            echo json_encode(['succes' => false, 'message' => 'Article invalide.']);
+            exit;
+        }
+        $plat = trouver_plat_par_id($plat_id);
+        if (!$plat) {
+            echo json_encode(['succes' => false, 'message' => 'Plat #' . $plat_id . ' introuvable.']);
+            exit;
+        }
+        $articles_propres[] = ['plat_id' => $plat_id, 'quantite' => $quantite];
+        $nouveau_total += $plat['prix'] * $quantite;
     }
 }
 
-if ($commande_index === -1) {
-    http_response_code(404);
-    echo json_encode(['succes' => false, 'message' => 'Commande introuvable']);
+if (empty($articles_propres)) {
+    echo json_encode(['succes' => false, 'message' => 'La commande ne peut pas être vide.']);
     exit;
-}
-
-$commande = $commandes[$commande_index];
-
-if ($commande['client_id'] !== $_SESSION['user_id']) {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Cette commande ne vous appartient pas']);
-    exit;
-}
-
-if (!in_array($commande['statut'], ['en_attente', 'a_preparer'])) {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'La commande ne peut plus être modifiée (déjà en préparation)']);
-    exit;
-}
-
-// Calcul du nouveau total
-$nouveau_total = 0;
-foreach ($nouveaux_articles as $article) {
-    if (isset($article['menu_id'])) {
-        $menu = trouver_menu_par_id($article['menu_id']);
-        if ($menu) $nouveau_total += $menu['prix_total'] * $article['quantite'];
-    } elseif (isset($article['plat_id'])) {
-        $plat = trouver_plat_par_id($article['plat_id']);
-        if ($plat) $nouveau_total += $plat['prix'] * $article['quantite'];
-    }
-}
-
-// Appliquer la remise du client si elle existe
-$user = trouver_utilisateur_par_id($_SESSION['user_id']);
-$remise = intval($user['remise'] ?? 0);
-if ($remise > 0) {
-    $nouveau_total = $nouveau_total * (1 - $remise / 100);
 }
 
 $nouveau_total = round($nouveau_total, 2);
+$total_paye    = (float)$commande['total'];
 
-if ($nouveau_total > $commande['total']) {
-    http_response_code(403);
-    echo json_encode(['succes' => false, 'message' => 'Le nouveau total dépasse le montant déjà payé']);
+// Règle prof : interdiction de second paiement → refus si total dépasse
+if ($nouveau_total > $total_paye) {
+    echo json_encode([
+        'succes'  => false,
+        'message' => 'Le nouveau total (' . number_format($nouveau_total, 2, ',', ' ') . ' €) dépasse le montant payé ('
+                    . number_format($total_paye, 2, ',', ' ') . ' €). Un second paiement n\'est pas autorisé. '
+                    . 'Retirez des articles pour rester sous le montant payé.',
+        'nouveau_total' => $nouveau_total,
+        'total_paye'    => $total_paye,
+    ]);
     exit;
 }
 
-// Enregistrement
-$commandes[$commande_index]['articles'] = $nouveaux_articles;
-$commandes[$commande_index]['nouveau_total'] = $nouveau_total; // Optionnel : on peut garder trace du nouveau calcul
-ecrire_json('commandes.json', $commandes);
+$perte = round($total_paye - $nouveau_total, 2);
+
+mettre_a_jour_commande($commande_id, [
+    'articles'         => $articles_propres,
+    'total_effectif'   => $nouveau_total,
+    'perte_client'     => $perte,
+    'date_modification'=> date('Y-m-d\TH:i:s'),
+]);
+
+$message = $perte > 0
+    ? 'Commande modifiée. Vous êtes perdant de ' . number_format($perte, 2, ',', ' ') . ' € (pas de remboursement).'
+    : 'Commande modifiée.';
 
 echo json_encode([
-    'succes' => true,
-    'message' => 'Commande modifiée avec succès.'
+    'succes'         => true,
+    'commande_id'    => $commande_id,
+    'nouveau_total'  => $nouveau_total,
+    'total_paye'     => $total_paye,
+    'perte'          => $perte,
+    'message'        => $message,
 ]);
