@@ -198,10 +198,6 @@
         "actif": true,
         "id": 12,
         "date_derniere_connexion": "2026-06-01T12:27:48",
-        "favoris": [
-            2,
-            3,
-            1
-        ]
+        "favoris": []
     }
 ]

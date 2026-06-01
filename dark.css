@@ -385,3 +385,41 @@ main a:not(.btn-voir):not(.btn-add):not(.btn-connexion):not(.btn-filtrer):not(.b
 hr {
     border-top-color: var(--border) !important;
 }
+
+/* === Favoris (Mode Sombre) === */
+
+.favoris-column h3 {
+    color: var(--green-dark) !important;
+    border-bottom-color: var(--border) !important;
+}
+
+.favori-card {
+    background: var(--white) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.favori-card:hover {
+    border-color: var(--green-dark) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+.favori-card-title {
+    color: var(--green-dark) !important;
+}
+
+.favori-card-desc {
+    color: var(--text-soft) !important;
+}
+
+.favori-card-meta {
+    color: var(--text-soft) !important;
+}
+
+.favori-card-price {
+    color: var(--green-dark) !important;
+}
+
+.favori-card-img {
+    border-color: var(--border) !important;
+}

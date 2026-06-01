@@ -20,16 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function toggleFavori(btn) {
     const menuId = parseInt(btn.dataset.menuId, 10);
-    if (!menuId) return;
+    const platId = parseInt(btn.dataset.platId, 10);
+    if (!menuId && !platId) return;
 
     // Désactiver pendant la requête pour éviter les double-clics
     btn.disabled = true;
 
     try {
+        const payload = {};
+        if (menuId) payload.menu_id = menuId;
+        if (platId) payload.plat_id = platId;
+
         const res = await fetch('api/favoris.php', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ menu_id: menuId }),
+            body:    JSON.stringify(payload),
         });
 
         if (!res.ok) {
@@ -54,6 +59,29 @@ async function toggleFavori(btn) {
 
             // Afficher un petit message temporaire
             afficherToast(data.message);
+
+            // Micro-animation spécifique pour la page profil
+            if (window.location.pathname.includes('profil.php') && !data.favori) {
+                const card = btn.closest('.favori-card');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9) translateY(10px)';
+                    card.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+                    setTimeout(() => {
+                        const col = card.closest('.favoris-column');
+                        card.remove();
+                        // Si plus aucun favori dans cette colonne, afficher le message vide
+                        if (col && col.querySelectorAll('.favori-card').length === 0) {
+                            const p = document.createElement('p');
+                            p.style.cssText = 'color:#888; text-align:center; padding:2rem;';
+                            p.textContent = col.dataset.type === 'menus' 
+                                ? "Vous n'avez pas encore de menu favori. Retrouvez nos menus sur la carte et cliquez sur ❤️ pour en sauvegarder."
+                                : "Vous n'avez pas encore de plat favori. Retrouvez nos plats sur la carte et cliquez sur ❤️ pour en sauvegarder.";
+                            col.appendChild(p);
+                        }
+                    }, 350);
+                }
+            }
         }
     } catch (err) {
         console.error('Erreur réseau favoris', err);

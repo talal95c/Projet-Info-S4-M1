@@ -53,43 +53,85 @@ if (empty($donnees)) {
 }
 
 $menu_id = intval($donnees['menu_id'] ?? 0);
-if ($menu_id <= 0) {
-    echo json_encode(['succes' => false, 'message' => 'Identifiant de menu invalide.']);
+$plat_id = intval($donnees['plat_id'] ?? 0);
+
+if ($menu_id <= 0 && $plat_id <= 0) {
+    echo json_encode(['succes' => false, 'message' => 'Identifiant invalide.']);
     exit;
 }
 
-// Vérifier que le menu existe
-$menu = trouver_menu_par_id($menu_id);
-if (!$menu) {
-    echo json_encode(['succes' => false, 'message' => 'Menu introuvable.']);
+$user = trouver_utilisateur_par_id($_SESSION['user_id']);
+
+if ($menu_id > 0) {
+    // Vérifier que le menu existe
+    $menu = trouver_menu_par_id($menu_id);
+    if (!$menu) {
+        echo json_encode(['succes' => false, 'message' => 'Menu introuvable.']);
+        exit;
+    }
+
+    // Récupérer les favoris actuels de l'utilisateur
+    $favoris = $user['favoris'] ?? [];
+
+    // Toggle : ajouter ou retirer
+    $est_favori = in_array($menu_id, $favoris);
+
+    if ($est_favori) {
+        // Retirer des favoris
+        $favoris = array_values(array_filter($favoris, fn($id) => $id !== $menu_id));
+        $nouveau_statut = false;
+    } else {
+        // Ajouter aux favoris
+        $favoris[] = $menu_id;
+        $nouveau_statut = true;
+    }
+
+    // Sauvegarder
+    mettre_a_jour_utilisateur($_SESSION['user_id'], ['favoris' => $favoris]);
+
+    echo json_encode([
+        'succes'  => true,
+        'favori'  => $nouveau_statut,
+        'menu_id' => $menu_id,
+        'message' => $nouveau_statut
+            ? htmlspecialchars($menu['nom']) . ' ajouté à vos favoris.'
+            : htmlspecialchars($menu['nom']) . ' retiré de vos favoris.',
+    ]);
     exit;
-}
-
-// Récupérer les favoris actuels de l'utilisateur
-$user   = trouver_utilisateur_par_id($_SESSION['user_id']);
-$favoris = $user['favoris'] ?? [];
-
-// Toggle : ajouter ou retirer
-$est_favori = in_array($menu_id, $favoris);
-
-if ($est_favori) {
-    // Retirer des favoris
-    $favoris = array_values(array_filter($favoris, fn($id) => $id !== $menu_id));
-    $nouveau_statut = false;
 } else {
-    // Ajouter aux favoris
-    $favoris[] = $menu_id;
-    $nouveau_statut = true;
+    // Vérifier que le plat existe
+    $plat = trouver_plat_par_id($plat_id);
+    if (!$plat) {
+        echo json_encode(['succes' => false, 'message' => 'Plat introuvable.']);
+        exit;
+    }
+
+    // Récupérer les favoris plats actuels de l'utilisateur
+    $favoris_plats = $user['favoris_plats'] ?? [];
+
+    // Toggle : ajouter ou retirer
+    $est_favori = in_array($plat_id, $favoris_plats);
+
+    if ($est_favori) {
+        // Retirer des favoris
+        $favoris_plats = array_values(array_filter($favoris_plats, fn($id) => $id !== $plat_id));
+        $nouveau_statut = false;
+    } else {
+        // Ajouter aux favoris
+        $favoris_plats[] = $plat_id;
+        $nouveau_statut = true;
+    }
+
+    // Sauvegarder
+    mettre_a_jour_utilisateur($_SESSION['user_id'], ['favoris_plats' => $favoris_plats]);
+
+    echo json_encode([
+        'succes'  => true,
+        'favori'  => $nouveau_statut,
+        'plat_id' => $plat_id,
+        'message' => $nouveau_statut
+            ? htmlspecialchars($plat['nom']) . ' ajouté à vos favoris.'
+            : htmlspecialchars($plat['nom']) . ' retiré de vos favoris.',
+    ]);
+    exit;
 }
-
-// Sauvegarder
-mettre_a_jour_utilisateur($_SESSION['user_id'], ['favoris' => $favoris]);
-
-echo json_encode([
-    'succes'  => true,
-    'favori'  => $nouveau_statut,
-    'menu_id' => $menu_id,
-    'message' => $nouveau_statut
-        ? htmlspecialchars($menu['nom']) . ' ajouté à vos favoris.'
-        : htmlspecialchars($menu['nom']) . ' retiré de vos favoris.',
-]);

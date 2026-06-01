@@ -340,35 +340,98 @@ $mode_edition = isset($_GET['edit']);
                 <?php endif; ?>
             </section>
 
-            <!-- Section Mes menus favoris (visible uniquement pour les clients) -->
+            <!-- Section Mes Favoris (visible uniquement pour les clients) -->
             <?php if (!$vue_admin): ?>
             <?php
+                // Menus favoris
                 $favoris_ids = $user['favoris'] ?? [];
                 $menus_favoris = [];
                 foreach ($favoris_ids as $fid) {
                     $m = trouver_menu_par_id($fid);
                     if ($m) $menus_favoris[] = $m;
                 }
+
+                // Plats favoris
+                $favoris_plats_ids = $user['favoris_plats'] ?? [];
+                $plats_favoris = [];
+                foreach ($favoris_plats_ids as $pid) {
+                    $p = trouver_plat_par_id($pid);
+                    if ($p) $plats_favoris[] = $p;
+                }
             ?>
-            <section class="card card-full">
-                <h2>❤️ Mes menus favoris</h2>
-                <?php if (empty($menus_favoris)): ?>
-                    <p style="color:#888; text-align:center; padding:2rem;">
-                        Vous n'avez pas encore de menu favori. Retrouvez nos menus sur
-                        <a href="presentation.php">la carte</a> et cliquez sur ❤️ pour en sauvegarder.
-                    </p>
-                <?php else: ?>
-                    <div style="display:flex; flex-wrap:wrap; gap:1rem;">
-                        <?php foreach ($menus_favoris as $mf): ?>
-                        <div style="background:var(--green-light); border-radius:10px; padding:1rem 1.2rem; min-width:220px; flex:1;">
-                            <strong style="color:var(--green-dark);"><?= htmlspecialchars($mf['nom']) ?></strong>
-                            <p style="font-size:0.85rem; color:#555; margin:0.3rem 0;"><?= htmlspecialchars($mf['description']) ?></p>
-                            <p style="font-size:0.85rem; color:#888; margin:0.2rem 0;">🕐 <?= htmlspecialchars($mf['creneaux']) ?> | 👥 <?= $mf['nb_personnes'] ?> pers.</p>
-                            <p style="font-weight:700; color:var(--green-main); margin:0.4rem 0;"><?= number_format($mf['prix_total'], 2, ',', ' ') ?> €</p>
-                        </div>
-                        <?php endforeach; ?>
+            <section class="card card-full favoris-section">
+                <h2>❤️ Mes favoris</h2>
+                <div class="favoris-grid-container">
+                    
+                    <!-- Colonne Menus favoris -->
+                    <div class="favoris-column" data-type="menus">
+                        <h3>🍽️ Menus favoris</h3>
+                        <?php if (empty($menus_favoris)): ?>
+                            <p style="color:#888; text-align:center; padding:2rem;">
+                                Vous n'avez pas encore de menu favori. Retrouvez nos menus sur
+                                <a href="presentation.php">la carte</a> et cliquez sur ❤️ pour en sauvegarder.
+                            </p>
+                        <?php else: ?>
+                            <?php foreach ($menus_favoris as $mf): ?>
+                                <div class="favori-card">
+                                    <div class="favori-card-content">
+                                        <h4 class="favori-card-title"><?= htmlspecialchars($mf['nom']) ?></h4>
+                                        <p class="favori-card-desc"><?= htmlspecialchars($mf['description']) ?></p>
+                                        <div class="favori-card-meta">
+                                            <span>🕐 <?= htmlspecialchars($mf['creneaux']) ?></span>
+                                            <span>👥 <?= $mf['nb_personnes'] ?> pers.</span>
+                                            <span class="favori-card-price"><?= number_format($mf['prix_total'], 2, ',', ' ') ?> €</span>
+                                        </div>
+                                    </div>
+                                    <div class="favori-card-actions">
+                                        <button class="btn-favori btn-favori-remove btn-favori-actif"
+                                                data-menu-id="<?= $mf['id'] ?>"
+                                                title="Retirer des favoris"
+                                                style="background:none; border:none; cursor:pointer;"
+                                        >❤️</button>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
+
+                    <!-- Colonne Plats favoris -->
+                    <div class="favoris-column" data-type="plats">
+                        <h3>🥗 Plats favoris</h3>
+                        <?php if (empty($plats_favoris)): ?>
+                            <p style="color:#888; text-align:center; padding:2rem;">
+                                Vous n'avez pas encore de plat favori. Retrouvez nos plats sur
+                                <a href="presentation.php">la carte</a> et cliquez sur ❤️ pour en sauvegarder.
+                            </p>
+                        <?php else: ?>
+                            <?php foreach ($plats_favoris as $pf): ?>
+                                <div class="favori-card">
+                                    <?php if (!empty($pf['image'])): ?>
+                                        <img src="<?= htmlspecialchars($pf['image']) ?>" alt="<?= htmlspecialchars($pf['nom']) ?>" class="favori-card-img">
+                                    <?php endif; ?>
+                                    <div class="favori-card-content">
+                                        <h4 class="favori-card-title"><?= htmlspecialchars($pf['nom']) ?></h4>
+                                        <p class="favori-card-desc"><?= htmlspecialchars($pf['description']) ?></p>
+                                        <div class="favori-card-meta">
+                                            <?php if (!empty($pf['categorie'])): ?>
+                                                <span style="text-transform: capitalize;">🏷️ <?= htmlspecialchars($pf['categorie']) ?></span>
+                                            <?php endif; ?>
+                                            <span class="favori-card-price"><?= number_format($pf['prix'], 2, ',', ' ') ?> €</span>
+                                        </div>
+                                    </div>
+                                    <div class="favori-card-actions">
+                                        <button class="btn-favori btn-favori-remove btn-favori-actif"
+                                                data-plat-id="<?= $pf['id'] ?>"
+                                                title="Retirer des favoris"
+                                                style="background:none; border:none; cursor:pointer;"
+                                        >❤️</button>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+
+                </div>
             </section>
             <?php endif; ?>
 

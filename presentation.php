@@ -132,9 +132,11 @@ $labels_tags = [
 
 // Récupère les favoris du client connecté pour initialiser les boutons ❤️
 $favoris_client = [];
+$favoris_plats_client = [];
 if (est_connecte() && get_role() === 'client') {
     $user_connecte  = trouver_utilisateur_par_id($_SESSION['user_id']);
     $favoris_client = $user_connecte['favoris'] ?? [];
+    $favoris_plats_client = $user_connecte['favoris_plats'] ?? [];
 }
 ?>
 <!DOCTYPE html>
@@ -311,10 +313,18 @@ if (est_connecte() && get_role() === 'client') {
                         <div class="product-footer">
                             <span class="price"><?= number_format($plat['prix'], 2, ',', ' ') ?> €</span>
                             <?php if (est_connecte() && get_role() === 'client'): ?>
-                                <form method="POST" action="presentation.php?<?= htmlspecialchars(http_build_query($_GET)) ?>" style="display:inline;">
-                                    <input type="hidden" name="plat_id" value="<?= $plat['id'] ?>">
-                                    <button type="submit" class="btn-add">+ Ajouter</button>
-                                </form>
+                                <?php $est_favori = in_array($plat['id'], $favoris_plats_client); ?>
+                                <div style="display:flex; gap:0.5rem; align-items:center;">
+                                    <form method="POST" action="presentation.php?<?= htmlspecialchars(http_build_query($_GET)) ?>" style="display:inline;">
+                                        <input type="hidden" name="plat_id" value="<?= $plat['id'] ?>">
+                                        <button type="submit" class="btn-add">+ Ajouter</button>
+                                    </form>
+                                    <button class="btn-favori <?= $est_favori ? 'btn-favori-actif' : '' ?>"
+                                            data-plat-id="<?= $plat['id'] ?>"
+                                            title="<?= $est_favori ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>"
+                                            style="background:none; border:none; font-size:1.4rem; cursor:pointer; padding:2px 6px;"
+                                    ><?= $est_favori ? '❤️' : '🤍' ?></button>
+                                </div>
                             <?php else: ?>
                                 <a href="connexion.php" class="btn-add">Se connecter</a>
                             <?php endif; ?>
