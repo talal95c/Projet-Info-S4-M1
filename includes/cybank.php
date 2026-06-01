@@ -64,3 +64,12 @@ function cybank_url_retour($transaction_id) {
     $dir  = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
     return $protocole . '://' . $host . $dir . '/retour_paiement.php?session=' . urlencode($transaction_id);
 }
+
+// URL de retour pour le paiement d'un supplément de modification de commande.
+function cybank_url_retour_supplement($transaction_id, $commande_id) {
+    $protocole = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+    $dir  = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+    return $protocole . '://' . $host . $dir . '/retour_supplement.php?commande_id=' . intval($commande_id);
+}
+

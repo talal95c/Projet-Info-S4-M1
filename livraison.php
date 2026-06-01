@@ -64,6 +64,7 @@ foreach (lire_json('commandes.json') as $c) {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="livraison.css">
     <script src="js/theme.js"></script>
+    <script src="js/livraison.js" defer></script>
 </head>
 <body>
     <header>
@@ -170,6 +171,6 @@ foreach (lire_json('commandes.json') as $c) {
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/livraison.js"></script>
+
 </body>
 </html>

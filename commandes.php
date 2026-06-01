@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="commandes.css">
     <script src="js/theme.js"></script>
+    <script src="js/commandes.js" defer></script>
 </head>
 <body>
     <header>
@@ -138,9 +139,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
                         <ul class="commande-items">
                             <?php foreach ($c['articles'] as $article):
-                                $plat = trouver_plat_par_id($article['plat_id']);
+                                if (isset($article['menu_id'])) {
+                                    $item = trouver_menu_par_id($article['menu_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Menu #' . $article['menu_id'];
+                                } else {
+                                    $item = trouver_plat_par_id($article['plat_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Plat #' . $article['plat_id'];
+                                }
                             ?>
-                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                                <li>× <?= $article['quantite'] ?> <?= $nom ?></li>
                             <?php endforeach; ?>
                         </ul>
                         <div style="font-size:0.85rem; color:#856404; margin:4px 0;">📅 Souhaitée le : <strong><?= $date_s ?></strong></div>
@@ -335,6 +342,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/commandes.js"></script>
+
 </body>
 </html>

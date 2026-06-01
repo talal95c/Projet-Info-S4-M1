@@ -92,6 +92,7 @@ foreach ($clients as $u) {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="admin.css">
     <script src="js/theme.js"></script>
+    <script src="js/admin.js" defer></script>
 </head>
 <body>
     <header>
@@ -224,6 +225,6 @@ foreach ($clients as $u) {
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/admin.js"></script>
+
 </body>
 </html>

@@ -63,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="avis.css">
     <script src="js/theme.js"></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/avis.js" defer></script>
 </head>
 <body>
     <header>
@@ -152,7 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $commande_a_noter) {
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/common.js"></script>
-    <script src="js/avis.js"></script>
+
 </body>
 </html>

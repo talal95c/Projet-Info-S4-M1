@@ -1,7 +1,18 @@
 <?php
-// Modification d'une commande payée mais pas encore en préparation.
-// Règle prof : un seul paiement par commande → on REFUSE si le nouveau
-// total dépasse le montant déjà payé.
+/*
+ * api/modifier_commande.php
+ * ---------------------------------------------------------------
+ * Modification d'une commande payée mais pas encore en préparation.
+ *
+ * Deux cas possibles :
+ *   1. Nouveau total <= montant payé → modification directe (les articles
+ *      sont mis à jour immédiatement, la différence est perdue pour le client).
+ *   2. Nouveau total > montant payé → on sauvegarde la modification en
+ *      "attente de supplément" et on retourne les infos pour que le JS
+ *      redirige vers paiement_supplement.php.
+ *
+ * Dépendances : includes/session.php, includes/data.php
+ */
 
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/data.php';
@@ -43,7 +54,7 @@ if ($commande_id <= 0) {
 }
 
 if (!is_array($articles) || empty($articles)) {
-    echo json_encode(['succes' => false, 'message' => 'La commande ne peut pas être vide. Annulez plutôt la commande.']);
+    echo json_encode(['succes' => false, 'message' => 'La commande ne peut pas être vide.']);
     exit;
 }
 
@@ -77,6 +88,7 @@ if (!in_array($commande['statut'], ['a_preparer', 'en_attente'], true)) {
     exit;
 }
 
+// Calcul du nouveau total et construction du tableau articles propre
 $articles_propres = [];
 $nouveau_total = 0.0;
 
@@ -117,37 +129,53 @@ if (empty($articles_propres)) {
 $nouveau_total = round($nouveau_total, 2);
 $total_paye    = (float)$commande['total'];
 
-// Règle prof : interdiction de second paiement → refus si total dépasse
+// --- CAS 1 : le nouveau total dépasse le montant payé ---
+// On enregistre la modification "en attente de supplément" et on
+// retourne les infos pour que le JS redirige vers paiement_supplement.php.
 if ($nouveau_total > $total_paye) {
+    $supplement = round($nouveau_total - $total_paye, 2);
+
+    // On stocke la modification en attente dans la commande
+    mettre_a_jour_commande($commande_id, [
+        'modification_en_attente' => [
+            'articles'           => $articles_propres,
+            'nouveau_total'      => $nouveau_total,
+            'supplement_montant' => $supplement,
+            'date'               => date('Y-m-d\TH:i:s'),
+        ],
+    ]);
+
     echo json_encode([
-        'succes'  => false,
-        'message' => 'Le nouveau total (' . number_format($nouveau_total, 2, ',', ' ') . ' €) dépasse le montant payé ('
-                    . number_format($total_paye, 2, ',', ' ') . ' €). Un second paiement n\'est pas autorisé. '
-                    . 'Retirez des articles pour rester sous le montant payé.',
-        'nouveau_total' => $nouveau_total,
-        'total_paye'    => $total_paye,
+        'succes'             => true,
+        'supplement'         => true,
+        'supplement_montant' => $supplement,
+        'commande_id'        => $commande_id,
+        'message'            => 'Un supplément de ' . number_format($supplement, 2, ',', ' ') . ' € est requis.',
     ]);
     exit;
 }
 
+// --- CAS 2 : le nouveau total est inférieur ou égal au montant payé ---
+// Modification directe sans paiement supplémentaire.
 $perte = round($total_paye - $nouveau_total, 2);
 
 mettre_a_jour_commande($commande_id, [
-    'articles'         => $articles_propres,
-    'total_effectif'   => $nouveau_total,
-    'perte_client'     => $perte,
-    'date_modification'=> date('Y-m-d\TH:i:s'),
+    'articles'          => $articles_propres,
+    'total_effectif'    => $nouveau_total,
+    'perte_client'      => $perte,
+    'date_modification' => date('Y-m-d\TH:i:s'),
 ]);
 
 $message = $perte > 0
-    ? 'Commande modifiée. Vous êtes perdant de ' . number_format($perte, 2, ',', ' ') . ' € (pas de remboursement).'
-    : 'Commande modifiée.';
+    ? 'Commande modifiée. La différence de ' . number_format($perte, 2, ',', ' ') . ' € ne sera pas remboursée.'
+    : 'Commande modifiée avec succès.';
 
 echo json_encode([
-    'succes'         => true,
-    'commande_id'    => $commande_id,
-    'nouveau_total'  => $nouveau_total,
-    'total_paye'     => $total_paye,
-    'perte'          => $perte,
-    'message'        => $message,
+    'succes'        => true,
+    'supplement'    => false,
+    'commande_id'   => $commande_id,
+    'nouveau_total' => $nouveau_total,
+    'total_paye'    => $total_paye,
+    'perte'         => $perte,
+    'message'       => $message,
 ]);

@@ -77,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="auth.css">
     <script src="js/theme.js"></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/inscription.js" defer></script>
 </head>
 <body class="auth-body">
     <main class="login-container">
@@ -100,39 +102,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Créer un compte</h2>
 
                 <div class="input-group">
-                    <input type="text" name="nom" placeholder="Nom *"
+                    <label for="nom" class="sr-label">Nom *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Nom *"
                            maxlength="50" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="prenom" placeholder="Prénom *"
+                    <label for="prenom" class="sr-label">Prénom *</label>
+                    <input type="text" id="prenom" name="prenom" placeholder="Prénom *"
                            maxlength="50" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="email" name="login" placeholder="Adresse e-mail *"
+                    <label for="login_insc" class="sr-label">Adresse e-mail *</label>
+                    <input type="email" id="login_insc" name="login" placeholder="Adresse e-mail *"
                            maxlength="100" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="tel" name="telephone" placeholder="Numéro de téléphone *"
+                    <label for="telephone" class="sr-label">Numéro de téléphone *</label>
+                    <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone *"
                            maxlength="15" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="adresse" placeholder="Adresse de livraison *"
+                    <label for="adresse" class="sr-label">Adresse de livraison *</label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Adresse de livraison *"
                            maxlength="200" data-compteur required>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="code_interphone" placeholder="Code interphone (ex: A1234)"
+                    <label for="code_interphone" class="sr-label">Code interphone</label>
+                    <input type="text" id="code_interphone" name="code_interphone" placeholder="Code interphone (ex: A1234)"
                            maxlength="20" data-compteur>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="etage" placeholder="Étage / Informations complémentaires"
+                    <label for="etage" class="sr-label">Étage / Informations complémentaires</label>
+                    <input type="text" id="etage" name="etage" placeholder="Étage / Informations complémentaires"
                            maxlength="100" data-compteur>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe" placeholder="Mot de passe * (min. 6 caractères)"
+                    <label for="mot_de_passe" class="sr-label">Mot de passe * (min. 6 caractères)</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe * (min. 6 caractères)"
                            maxlength="50" data-toggle-password required>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe2" placeholder="Confirmer le mot de passe *"
+                    <label for="mot_de_passe2" class="sr-label">Confirmer le mot de passe *</label>
+                    <input type="password" id="mot_de_passe2" name="mot_de_passe2" placeholder="Confirmer le mot de passe *"
                            maxlength="50" data-toggle-password required>
                 </div>
 
@@ -142,7 +153,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </main>
 
-    <script src="js/common.js"></script>
-    <script src="js/inscription.js"></script>
 </body>
 </html>

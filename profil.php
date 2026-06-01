@@ -87,6 +87,9 @@ $mode_edition = isset($_GET['edit']);
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="profil.css">
     <script src="js/theme.js"></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/profil.js" defer></script>
+    <script src="js/favoris.js" defer></script>
 </head>
 <body>
     <header>
@@ -337,6 +340,38 @@ $mode_edition = isset($_GET['edit']);
                 <?php endif; ?>
             </section>
 
+            <!-- Section Mes menus favoris (visible uniquement pour les clients) -->
+            <?php if (!$vue_admin): ?>
+            <?php
+                $favoris_ids = $user['favoris'] ?? [];
+                $menus_favoris = [];
+                foreach ($favoris_ids as $fid) {
+                    $m = trouver_menu_par_id($fid);
+                    if ($m) $menus_favoris[] = $m;
+                }
+            ?>
+            <section class="card card-full">
+                <h2>❤️ Mes menus favoris</h2>
+                <?php if (empty($menus_favoris)): ?>
+                    <p style="color:#888; text-align:center; padding:2rem;">
+                        Vous n'avez pas encore de menu favori. Retrouvez nos menus sur
+                        <a href="presentation.php">la carte</a> et cliquez sur ❤️ pour en sauvegarder.
+                    </p>
+                <?php else: ?>
+                    <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                        <?php foreach ($menus_favoris as $mf): ?>
+                        <div style="background:var(--green-light); border-radius:10px; padding:1rem 1.2rem; min-width:220px; flex:1;">
+                            <strong style="color:var(--green-dark);"><?= htmlspecialchars($mf['nom']) ?></strong>
+                            <p style="font-size:0.85rem; color:#555; margin:0.3rem 0;"><?= htmlspecialchars($mf['description']) ?></p>
+                            <p style="font-size:0.85rem; color:#888; margin:0.2rem 0;">🕐 <?= htmlspecialchars($mf['creneaux']) ?> | 👥 <?= $mf['nb_personnes'] ?> pers.</p>
+                            <p style="font-weight:700; color:var(--green-main); margin:0.4rem 0;"><?= number_format($mf['prix_total'], 2, ',', ' ') ?> €</p>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+            <?php endif; ?>
+
         </div>
     </main>
 
@@ -345,7 +380,6 @@ $mode_edition = isset($_GET['edit']);
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/common.js"></script>
-    <script src="js/profil.js"></script>
+
 </body>
 </html>

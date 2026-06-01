@@ -129,6 +129,13 @@ $labels_tags = [
     'sans-gluten'  => '🌾 Sans gluten',
     'sans-lactose' => '🥛 Sans lactose',
 ];
+
+// Récupère les favoris du client connecté pour initialiser les boutons ❤️
+$favoris_client = [];
+if (est_connecte() && get_role() === 'client') {
+    $user_connecte  = trouver_utilisateur_par_id($_SESSION['user_id']);
+    $favoris_client = $user_connecte['favoris'] ?? [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -142,6 +149,8 @@ $labels_tags = [
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="presentation.css">
     <script src="js/theme.js"></script>
+    <script src="js/presentation.js" defer></script>
+    <script src="js/favoris.js" defer></script>
 </head>
 <body>
     <header>
@@ -249,10 +258,18 @@ $labels_tags = [
                         <div class="product-footer" style="margin-top:1rem;">
                             <span class="price"><?= number_format($menu['prix_total'], 2, ',', ' ') ?> €</span>
                             <?php if (est_connecte() && get_role() === 'client'): ?>
-                                <form method="POST" action="presentation.php?<?= htmlspecialchars(http_build_query($_GET)) ?>" style="display:inline;">
-                                    <input type="hidden" name="menu_id" value="<?= $menu['id'] ?>">
-                                    <button type="submit" class="btn-add">+ Ajouter</button>
-                                </form>
+                                <?php $est_favori = in_array($menu['id'], $favoris_client); ?>
+                                <div style="display:flex; gap:0.5rem; align-items:center;">
+                                    <form method="POST" action="presentation.php?<?= htmlspecialchars(http_build_query($_GET)) ?>" style="display:inline;">
+                                        <input type="hidden" name="menu_id" value="<?= $menu['id'] ?>">
+                                        <button type="submit" class="btn-add">+ Ajouter</button>
+                                    </form>
+                                    <button class="btn-favori <?= $est_favori ? 'btn-favori-actif' : '' ?>"
+                                            data-menu-id="<?= $menu['id'] ?>"
+                                            title="<?= $est_favori ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>"
+                                            style="background:none; border:none; font-size:1.4rem; cursor:pointer; padding:2px 6px;"
+                                    ><?= $est_favori ? '❤️' : '🤍' ?></button>
+                                </div>
                             <?php else: ?>
                                 <a href="connexion.php" class="btn-add">Se connecter</a>
                             <?php endif; ?>
@@ -323,6 +340,6 @@ $labels_tags = [
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/presentation.js"></script>
+
 </body>
 </html>

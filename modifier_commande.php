@@ -66,6 +66,7 @@ $total_paye = floatval($commande['total']);
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="panier.css">
     <script src="js/theme.js"></script>
+    <script src="js/modifier_commande.js" defer></script>
     <style>
         .modif-container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
         .article-card { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 0.5rem; }
@@ -144,8 +145,8 @@ $total_paye = floatval($commande['total']);
                 <div id="perte-info" style="display:none; background: #fff3cd; color: #856404; padding: 0.8rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem;">
                     💡 Votre nouveau total est inférieur au montant payé. Conformément à nos CGV, la différence de <strong><span id="perte-montant"></span></strong> ne vous sera pas remboursée.
                 </div>
-                <div id="depassement-info" style="display:none; background: #f8d7da; color: #721c24; padding: 0.8rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem;">
-                    ⚠️ Dépassement de budget : votre nouveau panier excède le montant initialement payé de <strong><span id="depassement-montant"></span></strong>. Veuillez réduire les quantités.
+                <div id="depassement-info" style="display:none; background: #fff3cd; color: #856404; padding: 0.8rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem;">
+                    💳 Supplément requis : votre nouveau panier dépasse de <strong><span id="depassement-montant"></span></strong> le montant déjà payé. Un deuxième paiement CY Bank sera nécessaire.
                 </div>
 
                 <div style="margin-top: 2rem; text-align: right;">
@@ -164,6 +165,6 @@ $total_paye = floatval($commande['total']);
         <p>123 Rue des Fruits, 75000 Paris | Tél : 01 23 45 67 89 | Email : contact@ileaufruit.fr</p>
     </footer>
 
-    <script src="js/modifier_commande.js"></script>
+
 </body>
 </html>

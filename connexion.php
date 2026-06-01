@@ -66,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="auth.css">
     <script src="js/theme.js"></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/connexion.js" defer></script>
 </head>
 <body class="auth-body">
     <main class="login-container">
@@ -93,12 +95,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Bienvenue</h2>
 
                 <div class="input-group">
-                    <input type="email" name="login" placeholder="Adresse e-mail"
+                    <label for="login" class="sr-label">Adresse e-mail</label>
+                    <input type="email" id="login" name="login" placeholder="Adresse e-mail"
                            maxlength="100" data-compteur required>
                 </div>
 
                 <div class="input-group">
-                    <input type="password" name="mot_de_passe" placeholder="Mot de passe"
+                    <label for="mot_de_passe" class="sr-label">Mot de passe</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe"
                            maxlength="50" data-toggle-password required>
                 </div>
 
@@ -108,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </main>
 
-    <script src="js/common.js"></script>
-    <script src="js/connexion.js"></script>
+
 </body>
 </html>
