@@ -2,7 +2,7 @@
     {
         "id": 1,
         "login": "marie.dupont@email.fr",
-        "mot_de_passe": "$2y$10$nPJdI8x6gRONNDOwPUVWWuSgFPbUQMFNsJsDQDvtxC5TvTCItOij6",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Dupont",
         "prenom": "Marie",
@@ -20,7 +20,7 @@
     {
         "id": 2,
         "login": "douglas.costa@email.com",
-        "mot_de_passe": "$2y$10$1tbs2Tn6Vjon2UOB6BgFxOJb6H.91v5TMokaCFwje30AJtdo8a0B2",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Costa",
         "prenom": "Douglas",
@@ -37,7 +37,7 @@
     {
         "id": 3,
         "login": "neymar.jr10@email.com",
-        "mot_de_passe": "$2y$10$fZSCWkX9qVDYhZJx\/5j3vO9xoDflUAGdjSrfhxECR0oXqYTDqC2y2",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Jr",
         "prenom": "Neymar",
@@ -53,7 +53,7 @@
     {
         "id": 4,
         "login": "mark.evans@email.com",
-        "mot_de_passe": "$2y$10$\/mcPqYcXoXnjHwWJdbalKOwMklmd4LZTJvScwe.3FGl5Z6ihXcQoK",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Evans",
         "prenom": "Mark",
@@ -69,7 +69,7 @@
     {
         "id": 5,
         "login": "roberto.hongo@email.com",
-        "mot_de_passe": "$2y$10$bsv77GvR9\/upz.uoTYLlnev\/\/S2oe2k\/Br7X6eJKrYJLp8\/3TxYl6",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Hongo",
         "prenom": "Roberto",
@@ -85,7 +85,7 @@
     {
         "id": 6,
         "login": "admin@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$4Wfr9GLJFBCZNDIV3y6.v.scjEmBVxSYDc.ZhROalTJe.1\/S3NEGe",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Principal",
@@ -97,12 +97,12 @@
         "statut": "admin",
         "date_inscription": "2024-01-01",
         "actif": true,
-        "date_derniere_connexion": "2026-05-17T21:58:38"
+        "date_derniere_connexion": "2026-06-01T12:23:46"
     },
     {
         "id": 7,
         "login": "admin2@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$bUw68jZZmaLfuqRB6YYqkeSHfX8GKFby3JZh3Nz\/fupw\/qmWN.gnC",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "admin",
         "nom": "Admin",
         "prenom": "Second",
@@ -118,7 +118,7 @@
     {
         "id": 8,
         "login": "restaurateur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$ZC7xIhfflG8WLimQAQ7aYezH36yaNrzYB7ISgl0M3T2aDO0tDv5mu",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "restaurateur",
         "nom": "Dupuis",
         "prenom": "Jean",
@@ -135,7 +135,7 @@
     {
         "id": 9,
         "login": "livreur@ileaufruit.fr",
-        "mot_de_passe": "$2y$10$bz8VrGZkXgVe8Eq38JHrleyWK5aJ\/E.ui2LIJzAgwJ.xRe.rqVROy",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "livreur",
         "nom": "Bernard",
         "prenom": "Lucas",
@@ -147,11 +147,11 @@
         "statut": "staff",
         "date_inscription": "2024-01-01",
         "actif": true,
-        "date_derniere_connexion": "2026-05-17T21:58:53"
+        "date_derniere_connexion": "2026-06-01T12:23:55"
     },
     {
         "login": "DQSDQ@F.M",
-        "mot_de_passe": "$2y$10$lnjxGEr50cvLv6c3HTXJj.hXmkHqdNB5wO2y.ZCnIJedERMhf07SO",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "QDQSD",
         "prenom": "QDQSDQ",
@@ -167,7 +167,7 @@
     },
     {
         "login": "abdelchakour2@gmail.com",
-        "mot_de_passe": "$2y$10$e4xyyP5oLfV4AIdF0CsLvu17GZcN0xsxLe46CmZpuXAx1a2k3wosq",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
         "role": "client",
         "nom": "Ch",
         "prenom": "Abdel",
@@ -181,5 +181,27 @@
         "actif": true,
         "id": 11,
         "date_derniere_connexion": "2026-05-17T20:09:38"
+    },
+    {
+        "login": "livreussssr@ileaufruit.fr",
+        "mot_de_passe": "$2y$10$zthgS4MDgV\/\/QkRrugvwPOne.uvyl10iC\/fn0zDAvEBNEUw3c.pV6",
+        "role": "client",
+        "nom": "aamir",
+        "prenom": "talal",
+        "telephone": "0780258101",
+        "adresse": "26 allée de la futaie",
+        "code_interphone": "sq",
+        "etage": "qq",
+        "points_fidelite": 0,
+        "statut": "bronze",
+        "date_inscription": "2026-06-01",
+        "actif": true,
+        "id": 12,
+        "date_derniere_connexion": "2026-06-01T12:27:48",
+        "favoris": [
+            2,
+            3,
+            1
+        ]
     }
 ]
