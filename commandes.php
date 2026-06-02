@@ -186,9 +186,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
                         <ul class="commande-items">
                             <?php foreach ($c['articles'] as $article):
-                                $plat = trouver_plat_par_id($article['plat_id']);
+                                if (isset($article['menu_id'])) {
+                                    $item = trouver_menu_par_id($article['menu_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Menu #' . $article['menu_id'];
+                                } else {
+                                    $item = trouver_plat_par_id($article['plat_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Plat #' . $article['plat_id'];
+                                }
                             ?>
-                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                                <li>× <?= $article['quantite'] ?> <?= $nom ?></li>
                             <?php endforeach; ?>
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
@@ -227,9 +233,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
                         <ul class="commande-items">
                             <?php foreach ($c['articles'] as $article):
-                                $plat = trouver_plat_par_id($article['plat_id']);
+                                if (isset($article['menu_id'])) {
+                                    $item = trouver_menu_par_id($article['menu_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Menu #' . $article['menu_id'];
+                                } else {
+                                    $item = trouver_plat_par_id($article['plat_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Plat #' . $article['plat_id'];
+                                }
                             ?>
-                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                                <li>× <?= $article['quantite'] ?> <?= $nom ?></li>
                             <?php endforeach; ?>
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
@@ -268,9 +280,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
                         <ul class="commande-items">
                             <?php foreach ($c['articles'] as $article):
-                                $plat = trouver_plat_par_id($article['plat_id']);
+                                if (isset($article['menu_id'])) {
+                                    $item = trouver_menu_par_id($article['menu_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Menu #' . $article['menu_id'];
+                                } else {
+                                    $item = trouver_plat_par_id($article['plat_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Plat #' . $article['plat_id'];
+                                }
                             ?>
-                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                                <li>× <?= $article['quantite'] ?> <?= $nom ?></li>
                             <?php endforeach; ?>
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
@@ -320,9 +338,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preparer_id'])) {
                         <div class="commande-client">👤 <?= $client ? htmlspecialchars($client['prenom'] . ' ' . $client['nom']) : 'Client inconnu' ?></div>
                         <ul class="commande-items">
                             <?php foreach ($c['articles'] as $article):
-                                $plat = trouver_plat_par_id($article['plat_id']);
+                                if (isset($article['menu_id'])) {
+                                    $item = trouver_menu_par_id($article['menu_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Menu #' . $article['menu_id'];
+                                } else {
+                                    $item = trouver_plat_par_id($article['plat_id']);
+                                    $nom = $item ? htmlspecialchars($item['nom']) : 'Plat #' . $article['plat_id'];
+                                }
                             ?>
-                                <li>× <?= $article['quantite'] ?> <?= $plat ? htmlspecialchars($plat['nom']) : 'Plat #' . $article['plat_id'] ?></li>
+                                <li>× <?= $article['quantite'] ?> <?= $nom ?></li>
                             <?php endforeach; ?>
                         </ul>
                         <div class="commande-adresse">📍 <?= htmlspecialchars($c['adresse_livraison']) ?></div>
